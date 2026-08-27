@@ -1,0 +1,1 @@
+{"version":3,"file":"SparkBadge.d.ts","sourceRoot":"","sources":["../../../src/shaders/spark-badge/SparkBadge.tsx"],"names":[],"mappings":"AACA,MAAM,MAAM,iBAAiB,GAAG,OAAO,CAAC;AACxC,MAAM,MAAM,eAAe,GAAG;IAAE,SAAS,CAAC,EAAE,MAAM,CAAC;IAAC,SAAS,CAAC,EAAE,MAAM,CAAC;IAAC,OAAO,CAAC,EAAE,iBAAiB,CAAA;CAAE,CAAC;AACtG,wBAAgB,UAAU,CAAC,EAAE,SAAc,EAAE,SAA+B,EAAE,EAAE,eAAe,+BAK9F"}

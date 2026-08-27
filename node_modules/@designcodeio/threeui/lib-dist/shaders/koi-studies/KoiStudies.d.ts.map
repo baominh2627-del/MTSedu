@@ -1,0 +1,1 @@
+{"version":3,"file":"KoiStudies.d.ts","sourceRoot":"","sources":["../../../src/shaders/koi-studies/KoiStudies.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAY,KAAK,aAAa,EAAE,MAAM,OAAO,CAAC;AAIrD,MAAM,MAAM,eAAe,GAAG;IAC5B,SAAS,CAAC,EAAE,MAAM,CAAC;IACnB,KAAK,CAAC,EAAE,aAAa,CAAC;CACvB,CAAC;AAEF,wBAAgB,UAAU,CAAC,EAAE,SAAc,EAAE,KAAK,EAAE,EAAE,eAAe,+BAmCpE"}

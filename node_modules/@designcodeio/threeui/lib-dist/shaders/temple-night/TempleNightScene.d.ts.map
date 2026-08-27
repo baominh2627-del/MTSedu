@@ -1,0 +1,1 @@
+{"version":3,"file":"TempleNightScene.d.ts","sourceRoot":"","sources":["../../../src/shaders/temple-night/TempleNightScene.tsx"],"names":[],"mappings":"AAEA,MAAM,MAAM,kBAAkB,GAAG,cAAc,CAAC;AAChD,MAAM,MAAM,qBAAqB,GAAG;IAAE,SAAS,CAAC,EAAE,MAAM,CAAC;IAAC,OAAO,CAAC,EAAE,kBAAkB,CAAA;CAAE,CAAC;AACzF,wBAAgB,gBAAgB,CAAC,EAAE,SAAc,EAAE,EAAE,qBAAqB,+BAIzE"}

@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite",
+    "preview": "vite"
+  },
+  "dependencies": {
+    "@designcodeio/threeui": "^1.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.179.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^7.0.0"
+  }
+}
