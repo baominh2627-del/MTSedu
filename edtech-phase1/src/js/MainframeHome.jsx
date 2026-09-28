@@ -124,7 +124,7 @@ export default function MainframeHome({ onNavigateToLogin }) {
       />
 
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-10 w-full px-5 sm:px-8 py-4 sm:py-5 flex flex-row justify-between items-center bg-transparent">
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 py-4 sm:py-5 flex flex-row justify-between items-center bg-transparent">
         {/* Logo */}
         <div className="flex flex-row gap-3 items-center">
           <span className="text-[21px] sm:text-[26px] tracking-tight text-black" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -168,19 +168,19 @@ export default function MainframeHome({ onNavigateToLogin }) {
 
       {/* Mobile Overlay */}
       <div 
-        className={`fixed inset-0 bg-white/95 backdrop-blur-sm z-[9] flex flex-col justify-center px-8 gap-6 transition-opacity duration-300 overflow-y-auto pt-20 pb-10 ${
+        className={`fixed inset-0 bg-white/98 backdrop-blur-md z-40 flex flex-col justify-center px-8 gap-5 transition-opacity duration-300 overflow-y-auto pt-20 pb-10 ${
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         } lg:hidden`}
       >
-        <a href="#" className="text-[28px] font-medium text-black">Toán</a>
-        <a href="#" className="text-[28px] font-medium text-black">Lý</a>
-        <a href="#" className="text-[28px] font-medium text-black">Hóa</a>
-        <a href="#" className="text-[28px] font-medium text-black">Tin</a>
-        <a href="#" className="text-[28px] font-medium text-black">Đề thi HSA/TSA/VACT</a>
-        <a href="#" className="text-[28px] font-medium text-black">Thi thử TNTHPT</a>
+        <a href="#" className="text-[24px] font-medium text-black">Toán</a>
+        <a href="#" className="text-[24px] font-medium text-black">Lý</a>
+        <a href="#" className="text-[24px] font-medium text-black">Hóa</a>
+        <a href="#" className="text-[24px] font-medium text-black">Tin</a>
+        <a href="#" className="text-[24px] font-medium text-black">Đề thi HSA/TSA/VACT</a>
+        <a href="#" className="text-[24px] font-medium text-black">Thi thử TNTHPT</a>
         <div className="w-full h-[1px] bg-black/10 my-2"></div>
-        <button onClick={onNavigateToLogin} className="text-[28px] font-medium text-black text-left">Đăng nhập</button>
-        <a href="#" className="text-[28px] font-medium text-black underline underline-offset-2">Vào học ngay</a>
+        <button onClick={onNavigateToLogin} className="text-[24px] font-medium text-black text-left">Đăng nhập</button>
+        <a href="#" className="text-[24px] font-medium text-black underline underline-offset-2">Vào học ngay</a>
       </div>
 
       {/* Hero Section */}
