@@ -136,7 +136,7 @@ export default function MainframeHome({ onNavigateToLogin }) {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex flex-row gap-4 text-[20px] text-black">
+        <div className="hidden lg:flex flex-row gap-6 text-[23px] text-black">
           <a href="#" className="hover:opacity-60 transition-opacity">Toán</a>
           <a href="#" className="hover:opacity-60 transition-opacity">Lý</a>
           <a href="#" className="hover:opacity-60 transition-opacity">Hóa</a>
@@ -147,10 +147,10 @@ export default function MainframeHome({ onNavigateToLogin }) {
 
         {/* Desktop CTA / Login */}
         <div className="hidden lg:flex flex-row gap-6 items-center">
-          <button onClick={onNavigateToLogin} className="text-[20px] text-black hover:opacity-60 transition-opacity">
+          <button onClick={onNavigateToLogin} className="text-[23px] text-black hover:opacity-60 transition-opacity">
             Đăng nhập
           </button>
-          <a href="#" className="text-[20px] text-black underline underline-offset-2 hover:opacity-60 transition-opacity">
+          <a href="#" className="text-[23px] text-black underline underline-offset-2 hover:opacity-60 transition-opacity">
             Vào học ngay
           </a>
         </div>
