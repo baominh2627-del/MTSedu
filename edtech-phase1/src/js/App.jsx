@@ -19,33 +19,34 @@
 import { useState } from "react";
 import LoginPage from "./LoginPage.jsx";
 import MainframeHome from "./MainframeHome.jsx";
+import PhysicsPage from "./PhysicsPage.jsx";
 import "../css/App.css";
 
 function App() {
-  /* ============================================================
-     STATE ĐIỀU HƯỚNG TRANG
-     - "home"  : Hiển thị trang chủ
-     - "login" : Hiển thị trang đăng nhập
-     ============================================================ */
   const [currentPage, setCurrentPage] = useState("home");
 
-  /* ============================================================
-     TRANG ĐĂNG NHẬP
-     Khi state = "login", render component LoginPage
-     ============================================================ */
   if (currentPage === "login") {
     return (
       <LoginPage
-        // Truyền hàm callback để LoginPage có thể quay về trang chủ
         onBack={() => setCurrentPage("home")}
       />
     );
   }
 
-  /* ============================================================
-     TRANG CHỦ (Mainframe)
-     ============================================================ */
-  return <MainframeHome onNavigateToLogin={() => setCurrentPage("login")} />;
+  if (currentPage === "physics") {
+    return (
+      <PhysicsPage 
+        onNavigate={(page) => setCurrentPage(page)} 
+      />
+    );
+  }
+
+  return (
+    <MainframeHome 
+      onNavigateToLogin={() => setCurrentPage("login")} 
+      onNavigate={(page) => setCurrentPage(page)}
+    />
+  );
 }
 
 export default App;

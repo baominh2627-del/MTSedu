@@ -32,7 +32,7 @@ function useTypewriter(text, speed = 38, startDelay = 600) {
 }
 
 // --- Component ---
-export default function MainframeHome({ onNavigateToLogin }) {
+export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showPills, setShowPills] = useState(false);
   const videoRef = useRef(null);
@@ -138,7 +138,7 @@ export default function MainframeHome({ onNavigateToLogin }) {
         {/* Desktop Nav */}
         <div className="hidden lg:flex flex-row gap-6 text-[23px] text-black">
           <a href="#" className="hover:opacity-60 transition-opacity">Toán</a>
-          <a href="#" className="hover:opacity-60 transition-opacity">Lý</a>
+          <button onClick={() => onNavigate('physics')} className="hover:opacity-60 transition-opacity">Lý</button>
           <a href="#" className="hover:opacity-60 transition-opacity">Hóa</a>
           <a href="#" className="hover:opacity-60 transition-opacity">Tin</a>
           <a href="#" className="hover:opacity-60 transition-opacity">Đề thi HSA/TSA/VACT</a>
@@ -173,7 +173,7 @@ export default function MainframeHome({ onNavigateToLogin }) {
         } lg:hidden`}
       >
         <a href="#" className="text-[24px] font-medium text-black">Toán</a>
-        <a href="#" className="text-[24px] font-medium text-black">Lý</a>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('physics'); }} className="text-[24px] font-medium text-black text-left">Lý</button>
         <a href="#" className="text-[24px] font-medium text-black">Hóa</a>
         <a href="#" className="text-[24px] font-medium text-black">Tin</a>
         <a href="#" className="text-[24px] font-medium text-black">Đề thi HSA/TSA/VACT</a>
