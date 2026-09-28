@@ -1,1 +1,0 @@
-{"version":3,"file":"UplinkLoader.d.ts","sourceRoot":"","sources":["../../../src/shaders/uplink-loader/UplinkLoader.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAY,KAAK,aAAa,EAAE,MAAM,OAAO,CAAC;AAIrD,MAAM,MAAM,iBAAiB,GAAG;IAC9B,SAAS,CAAC,EAAE,MAAM,CAAC;IACnB,KAAK,CAAC,EAAE,aAAa,CAAC;CACvB,CAAC;AAEF,wBAAgB,YAAY,CAAC,EAAE,SAAc,EAAE,KAAK,EAAE,EAAE,iBAAiB,+BAkCxE"}

@@ -1,1 +1,0 @@
-{"version":3,"file":"WarpFieldBackground.d.ts","sourceRoot":"","sources":["../../../src/shaders/warp-field/WarpFieldBackground.tsx"],"names":[],"mappings":"AACA,OAAO,EAAgD,KAAK,gBAAgB,EAAE,MAAM,qBAAqB,CAAC;AAE1G,MAAM,MAAM,wBAAwB,GAAG,OAAO,CAAC,gBAAgB,CAAC,GAAG;IAAE,SAAS,CAAC,EAAE,MAAM,CAAA;CAAE,CAAC;AAC1F,wBAAgB,mBAAmB,CAAC,EAAE,SAAc,EAAE,GAAG,KAAK,EAAE,EAAE,wBAAwB,+BAIzF"}

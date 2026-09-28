@@ -1,1 +1,0 @@
-{"version":3,"file":"DataPixelArcCanvas.d.ts","sourceRoot":"","sources":["../../../src/shaders/data-pixel-arc/DataPixelArcCanvas.tsx"],"names":[],"mappings":"AACA,OAAO,EAAuD,KAAK,mBAAmB,EAAE,MAAM,wBAAwB,CAAC;AAEvH,MAAM,MAAM,uBAAuB,GAAG,OAAO,CAAC,mBAAmB,CAAC,GAAG;IAAE,SAAS,CAAC,EAAE,MAAM,CAAA;CAAE,CAAC;AAE5F,wBAAgB,kBAAkB,CAAC,EAAE,SAAc,EAAE,GAAG,KAAK,EAAE,EAAE,uBAAuB,+BAqCvF"}
