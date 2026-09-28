@@ -1,0 +1,475 @@
+/* ============================================================
+   LOGIN PAGE - Glassmorphism Dark Mode
+   Phong cách: Hiệu ứng kính mờ trên nền gradient tối
+   Dùng cho: Trang đăng nhập dự án WEB GIA SƯ (MTSedu)
+   ============================================================ */
+
+/* --- 1. RESET & FONT CHUNG --- */
+/* Đảm bảo mọi phần tử tính kích thước đúng cách */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* --- 2. NỀN TỔNG THỂ TRANG ĐĂNG NHẬP --- */
+/* Sử dụng gradient tối màu + animation di chuyển nhẹ để tạo cảm giác sống động */
+.login-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  /* Nền gradient tối với các mảng màu xanh/tím tạo cảm giác công nghệ */
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 30%, #0d1117 50%, #1a1040 70%, #0d2137 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite; /* Nền chuyển động nhẹ */
+}
+
+/* Animation làm nền gradient dịch chuyển từ từ */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* --- 3. CÁC VÒNG TRÒN MỜ TRANG TRÍ NỀN --- */
+/* Hai vòng tròn lớn bán trong suốt, bị blur mạnh, nằm phía sau thẻ kính */
+.login-page__bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px); /* Làm mờ mạnh để tạo ánh sáng lan tỏa */
+  z-index: 0;         /* Nằm dưới tất cả nội dung */
+  pointer-events: none;
+}
+
+/* Vòng tròn xanh dương - Góc trên bên phải */
+.login-page__bg-circle--blue {
+  width: 400px;
+  height: 400px;
+  background: rgba(59, 130, 246, 0.15); /* Xanh dương nhạt */
+  top: -100px;
+  right: -100px;
+}
+
+/* Vòng tròn tím - Góc dưới bên trái */
+.login-page__bg-circle--purple {
+  width: 350px;
+  height: 350px;
+  background: rgba(139, 92, 246, 0.12); /* Tím nhạt */
+  bottom: -80px;
+  left: -80px;
+}
+
+/* --- 4. THẺ KÍNH MỜ CHÍNH (GLASSMORPHISM CARD) --- */
+/* Đây là trung tâm của toàn bộ giao diện */
+.login-card {
+  position: relative;
+  z-index: 1; /* Nằm trên các vòng tròn nền */
+  display: flex;
+  width: 880px;
+  min-height: 520px;
+  /* ============================================
+     BÍ QUYẾT TẠO HIỆU ỨNG KÍNH MỜ:
+     - background: rgba(...) với độ trong suốt rất cao (0.04)
+     - backdrop-filter: blur() làm mờ nền phía sau
+     ============================================ */
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px); /* Hỗ trợ trình duyệt Safari */
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Viền mỏng sáng nhẹ, giống mép kính */
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3); /* Bóng đổ sâu tạo chiều sâu */
+  overflow: hidden;
+  /* Hiệu ứng xuất hiện (fade in + trượt lên) khi tải trang */
+  animation: cardAppear 0.6s ease-out;
+}
+
+/* Animation thẻ kính xuất hiện */
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --- 5. CỘT TRÁI: BRANDING / HÌNH ẢNH MINH HỌA --- */
+.login-card__left {
+  flex: 1;
+  /* Nền gradient nhẹ hơn so với nền chung, tạo sự phân tách 2 cột */
+  background: linear-gradient(
+    160deg,
+    rgba(59, 130, 246, 0.08) 0%,
+    rgba(139, 92, 246, 0.05) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.06); /* Đường kẻ phân cách 2 cột */
+}
+
+/* Logo icon (biểu tượng mũ tốt nghiệp - dạng text emoji) */
+.login-card__logo-icon {
+  font-size: 56px;
+  margin-bottom: 20px;
+  /* Làm icon nhấp nhô nhẹ */
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* Tiêu đề "Hệ thống ôn luyện" */
+.login-card__brand-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  /* Chữ gradient xanh-tím rất bắt mắt */
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Dòng mô tả phụ */
+.login-card__brand-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.7;
+  max-width: 260px;
+}
+
+/* Viền trang trí nhỏ ngăn cách */
+.login-card__brand-divider {
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  border-radius: 2px;
+  margin: 24px 0;
+}
+
+/* --- 6. CỘT PHẢI: FORM ĐĂNG NHẬP --- */
+.login-card__right {
+  flex: 1;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Tiêu đề "Đăng nhập" */
+.login-card__form-title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* Dòng phụ dưới tiêu đề */
+.login-card__form-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 30px;
+}
+
+/* --- 7. NHÓM Ô NHẬP LIỆU (INPUT GROUP) --- */
+.login-input-group {
+  margin-bottom: 20px;
+}
+
+/* Nhãn (Label) phía trên ô input */
+.login-input-group__label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #a1a1aa; /* Xám nhạt */
+  font-weight: 500;
+}
+
+/* --- 8. INPUT VỚI ICON BÊN TRONG --- */
+/* Thẻ bao ngoài: dùng position: relative để icon position: absolute nổi lên trên */
+.login-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Icon SVG bên trong ô input */
+.login-input-wrapper__icon {
+  position: absolute;
+  left: 14px;             /* Cách lề trái 14px */
+  width: 18px;
+  height: 18px;
+  color: #a1a1aa;          /* Màu xám nhạt đồng bộ với label */
+  pointer-events: none;    /* QUAN TRỌNG: Click xuyên qua icon để focus vào input */
+  transition: color 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Ô nhập liệu */
+.login-input-wrapper__field {
+  width: 100%;
+  /* padding-left lớn (44px) để chữ không bị đè lên icon */
+  padding: 14px 16px 14px 44px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Placeholder mờ nhạt */
+.login-input-wrapper__field::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* Khi người dùng click vào (focus): viền + nền đổi màu */
+.login-input-wrapper__field:focus {
+  border-color: #3b82f6;                     /* Viền xanh dương */
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); /* Hào quang xanh nhẹ */
+}
+
+/* Khi focus: icon cũng đổi sang màu xanh dương */
+.login-input-wrapper:focus-within .login-input-wrapper__icon {
+  color: #3b82f6;
+}
+
+/* --- 9. HÀNH ĐỘNG PHỤ (Ghi nhớ & Quên mật khẩu) --- */
+.login-form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 25px;
+  color: #a1a1aa;
+}
+
+/* Checkbox "Ghi nhớ tài khoản" */
+.login-form-actions__remember {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #a1a1aa;
+}
+
+.login-form-actions__remember input[type="checkbox"] {
+  accent-color: #3b82f6; /* Đổi màu checkbox thành xanh dương */
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+/* Link "Quên mật khẩu?" */
+.login-form-actions__forgot {
+  color: #3b82f6;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.login-form-actions__forgot:hover {
+  color: #60a5fa; /* Sáng hơn khi hover */
+  text-decoration: underline;
+}
+
+/* --- 10. NÚT ĐĂNG NHẬP --- */
+.login-submit-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  /* Gradient xanh dương-tím đẹp mắt */
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.login-submit-btn:hover {
+  /* Đảo gradient khi hover để tạo hiệu ứng lấp lánh */
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.login-submit-btn:active {
+  transform: translateY(0);
+}
+
+/* --- 11. KHU VỰC ĐĂNG NHẬP BẰNG MẠNG XÃ HỘI --- */
+.login-social {
+  margin-top: 28px;
+  text-align: center;
+}
+
+/* Dòng ngăn cách "Hoặc tiếp tục với" có đường kẻ 2 bên */
+.login-social__divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.login-social__divider::before,
+.login-social__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.login-social__divider-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+}
+
+/* Các nút icon mạng xã hội (Google, Facebook) */
+.login-social__icons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.login-social__btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #a1a1aa;
+}
+
+.login-social__btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.login-social__btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* --- 12. LINK ĐĂNG KÝ Ở CUỐI --- */
+.login-signup-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.login-signup-link a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* --- 13. NÚT QUAY LẠI TRANG CHỦ --- */
+.login-back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px 18px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-back-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.login-back-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================================
+   14. RESPONSIVE - Tối ưu cho màn hình nhỏ (Tablet & Mobile)
+   ============================================================ */
+
+/* Tablet: Ẩn cột trái, chỉ hiện form */
+@media (max-width: 768px) {
+  .login-card {
+    flex-direction: column;
+    width: 90%;
+    max-width: 440px;
+    min-height: auto;
+  }
+
+  .login-card__left {
+    padding: 30px 20px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .login-card__right {
+    padding: 30px 24px;
+  }
+
+  .login-card__logo-icon {
+    font-size: 40px;
+  }
+
+  .login-card__brand-title {
+    font-size: 20px;
+  }
+}
+
+/* Mobile nhỏ: Thu gọn thêm */
+@media (max-width: 480px) {
+  .login-card {
+    width: 95%;
+    border-radius: 14px;
+  }
+
+  .login-card__left {
+    display: none; /* Ẩn hẳn cột trái trên mobile rất nhỏ */
+  }
+
+  .login-card__right {
+    padding: 30px 20px;
+  }
+}
