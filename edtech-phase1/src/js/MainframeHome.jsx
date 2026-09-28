@@ -42,7 +42,7 @@ export default function MainframeHome({ onNavigateToLogin }) {
 
   // Typewriter
   const { displayed, done } = useTypewriter(
-    "Glad you stopped in. Good taste tends to find us. Now, what are we building?"
+    "Bạn không bắt buộc phải thành công ngay từ đầu. Mà là bắt đầu để sau đó thành công. Nhưng muốn thành công thì học tập và rèn luyện mỗi ngày là một việc không thể thiếu."
   );
 
   // Show pill buttons after 400ms
@@ -128,7 +128,7 @@ export default function MainframeHome({ onNavigateToLogin }) {
         {/* Logo */}
         <div className="flex flex-row gap-3 items-center">
           <span className="text-[21px] sm:text-[26px] tracking-tight text-black" style={{ fontFamily: 'var(--font-heading)' }}>
-            Mainframe&reg;
+            MTS Education
           </span>
           <span className="text-[25px] sm:text-[30px] text-black select-none tracking-[-0.02em]">
             &#10033;
@@ -136,26 +136,28 @@ export default function MainframeHome({ onNavigateToLogin }) {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex flex-row text-[23px] text-black">
-          <a href="#" className="hover:opacity-60 transition-opacity">Labs</a>, &nbsp;
-          <a href="#" className="hover:opacity-60 transition-opacity">Studio</a>, &nbsp;
-          <a href="#" className="hover:opacity-60 transition-opacity">Openings</a>, &nbsp;
-          <a href="#" className="hover:opacity-60 transition-opacity">Shop</a>
+        <div className="hidden lg:flex flex-row gap-4 text-[20px] text-black">
+          <a href="#" className="hover:opacity-60 transition-opacity">Toán</a>
+          <a href="#" className="hover:opacity-60 transition-opacity">Lý</a>
+          <a href="#" className="hover:opacity-60 transition-opacity">Hóa</a>
+          <a href="#" className="hover:opacity-60 transition-opacity">Tin</a>
+          <a href="#" className="hover:opacity-60 transition-opacity">Đề thi HSA/TSA/VACT</a>
+          <a href="#" className="hover:opacity-60 transition-opacity">Thi thử TNTHPT</a>
         </div>
 
         {/* Desktop CTA / Login */}
-        <div className="hidden md:flex flex-row gap-6 items-center">
-          <button onClick={onNavigateToLogin} className="text-[23px] text-black hover:opacity-60 transition-opacity">
+        <div className="hidden lg:flex flex-row gap-6 items-center">
+          <button onClick={onNavigateToLogin} className="text-[20px] text-black hover:opacity-60 transition-opacity">
             Đăng nhập
           </button>
-          <a href="#" className="text-[23px] text-black underline underline-offset-2 hover:opacity-60 transition-opacity">
-            Get in touch
+          <a href="#" className="text-[20px] text-black underline underline-offset-2 hover:opacity-60 transition-opacity">
+            Vào học ngay
           </a>
         </div>
 
         {/* Mobile Hamburger */}
         <button 
-          className="md:hidden flex flex-col gap-[5px] z-50 relative"
+          className="lg:hidden flex flex-col gap-[5px] z-50 relative"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <div className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
@@ -166,16 +168,19 @@ export default function MainframeHome({ onNavigateToLogin }) {
 
       {/* Mobile Overlay */}
       <div 
-        className={`fixed inset-0 bg-white/95 backdrop-blur-sm z-[9] flex flex-col justify-center px-8 gap-8 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-white/95 backdrop-blur-sm z-[9] flex flex-col justify-center px-8 gap-6 transition-opacity duration-300 overflow-y-auto pt-20 pb-10 ${
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        } md:hidden`}
+        } lg:hidden`}
       >
-        <a href="#" className="text-[32px] font-medium text-black">Labs</a>
-        <a href="#" className="text-[32px] font-medium text-black">Studio</a>
-        <a href="#" className="text-[32px] font-medium text-black">Openings</a>
-        <a href="#" className="text-[32px] font-medium text-black">Shop</a>
-        <button onClick={onNavigateToLogin} className="text-[32px] font-medium text-black text-left">Đăng nhập</button>
-        <a href="#" className="text-[32px] font-medium text-black underline underline-offset-2">Get in touch</a>
+        <a href="#" className="text-[28px] font-medium text-black">Toán</a>
+        <a href="#" className="text-[28px] font-medium text-black">Lý</a>
+        <a href="#" className="text-[28px] font-medium text-black">Hóa</a>
+        <a href="#" className="text-[28px] font-medium text-black">Tin</a>
+        <a href="#" className="text-[28px] font-medium text-black">Đề thi HSA/TSA/VACT</a>
+        <a href="#" className="text-[28px] font-medium text-black">Thi thử TNTHPT</a>
+        <div className="w-full h-[1px] bg-black/10 my-2"></div>
+        <button onClick={onNavigateToLogin} className="text-[28px] font-medium text-black text-left">Đăng nhập</button>
+        <a href="#" className="text-[28px] font-medium text-black underline underline-offset-2">Vào học ngay</a>
       </div>
 
       {/* Hero Section */}
