@@ -13,8 +13,8 @@ function useTypewriter(text, speed = 38, startDelay = 600) {
       let currentIndex = 0;
       interval = setInterval(() => {
         if (currentIndex < text.length) {
-          setDisplayed((prev) => prev + text.charAt(currentIndex));
           currentIndex++;
+          setDisplayed(text.slice(0, currentIndex));
         } else {
           clearInterval(interval);
           setDone(true);
@@ -205,7 +205,9 @@ export default function MainframeHome({ onNavigateToLogin }) {
             className="text-black mb-5 sm:mb-6 font-normal min-h-[54px]"
             style={{ 
               fontSize: 'clamp(18px, 4vw, 26px)', 
-              lineHeight: 1.35 
+              lineHeight: 1.35,
+              fontFamily: "'Lora', serif",
+              fontStyle: 'italic'
             }}
           >
             {displayed}
