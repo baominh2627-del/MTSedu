@@ -91,6 +91,17 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail: "https://images.unsplash.com/photo-1509228468518-180dd4864904?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
         instructor: "Thầy Minh"
+      },
+      {
+        id: "math_2",
+        title: "Đề 1 Kiểm tra Lượng giác - Toán 11",
+        tag: "Lớp 11",
+        questions: 40,
+        time: 45,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Minh",
+        link: "https://baominh2627-del.github.io/de-1-ktra-luong-giac-toan-11/"
       }
     ]
   },
