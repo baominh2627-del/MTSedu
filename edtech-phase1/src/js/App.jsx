@@ -16,19 +16,45 @@
  * ============================================================
  */
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import LoginPage from "./LoginPage.jsx";
 import MainframeHome from "./MainframeHome.jsx";
 import SubjectPage from "./SubjectPage.jsx";
 import "../css/App.css";
 
+// Đọc trang hiện tại từ URL hash (ví dụ: #math -> "math")
+function getPageFromHash() {
+  const hash = window.location.hash.replace("#", "").trim();
+  return hash || "home";
+}
+
 function App() {
-  const [currentPage, setCurrentPage] = useState("home");
+  const [currentPage, setCurrentPage] = useState(getPageFromHash);
+
+  // Khi user nhấn nút quay lại trình duyệt hoặc hash thay đổi
+  useEffect(() => {
+    const handleHashChange = () => {
+      setCurrentPage(getPageFromHash());
+    };
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  // Hàm navigate cập nhật cả hash URL và state
+  const navigateTo = useCallback((page) => {
+    if (page === "home") {
+      // Xóa hash khi về trang chủ
+      window.history.pushState(null, "", window.location.pathname);
+    } else {
+      window.location.hash = page;
+    }
+    setCurrentPage(page);
+  }, []);
 
   if (currentPage === "login") {
     return (
       <LoginPage
-        onBack={() => setCurrentPage("home")}
+        onBack={() => navigateTo("home")}
       />
     );
   }
@@ -38,7 +64,7 @@ function App() {
   if (subjects.includes(currentPage)) {
     return (
       <SubjectPage 
-        onNavigate={(page) => setCurrentPage(page)} 
+        onNavigate={navigateTo} 
         subjectKey={currentPage}
       />
     );
@@ -46,8 +72,8 @@ function App() {
 
   return (
     <MainframeHome 
-      onNavigateToLogin={() => setCurrentPage("login")} 
-      onNavigate={(page) => setCurrentPage(page)}
+      onNavigateToLogin={() => navigateTo("login")} 
+      onNavigate={navigateTo}
     />
   );
 }
