@@ -129,56 +129,56 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
       />
 
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 py-4 sm:py-5 flex flex-row justify-between items-center bg-transparent">
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row justify-between items-center bg-black/90 backdrop-blur-sm px-5 sm:px-8 py-3">
         {/* Logo */}
         <div className="flex flex-row gap-3 items-center">
           <span
-            className="text-[21px] sm:text-[26px] tracking-tight text-black"
+            className="text-[18px] sm:text-[22px] tracking-tight text-white font-bold"
             style={{ fontFamily: "var(--font-heading)" }}
           >
             MTS Education
           </span>
-          <span className="text-[25px] sm:text-[30px] text-black select-none tracking-[-0.02em]">
+          <span className="text-[22px] sm:text-[26px] text-white/60 select-none">
             &#10033;
           </span>
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex flex-row gap-2 items-center">
-          <a href="#" className="text-[15px] font-semibold text-blue-700 border border-blue-200 bg-blue-50 px-4 py-2 rounded-xl hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all">
+        <div className="hidden lg:flex flex-row gap-1 items-center">
+          <a href="#" className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all">
             Toán Học
           </a>
           <button
             onClick={() => onNavigate("physics")}
-            className="text-[15px] font-semibold text-green-700 border border-green-200 bg-green-50 px-4 py-2 rounded-xl hover:bg-green-600 hover:text-white hover:border-green-600 transition-all"
+            className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all"
           >
             Vật Lý
           </button>
-          <a href="#" className="text-[15px] font-semibold text-orange-700 border border-orange-200 bg-orange-50 px-4 py-2 rounded-xl hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-all">
+          <a href="#" className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all">
             Hóa Học
           </a>
-          <a href="#" className="text-[15px] font-semibold text-purple-700 border border-purple-200 bg-purple-50 px-4 py-2 rounded-xl hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all">
+          <a href="#" className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all">
             Tin Học
           </a>
-          <a href="#" className="text-[15px] font-semibold text-rose-700 border border-rose-200 bg-rose-50 px-4 py-2 rounded-xl hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-all">
+          <a href="#" className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all">
             Đề thi HSA/TSA
           </a>
-          <a href="#" className="text-[15px] font-semibold text-gray-700 border border-gray-200 bg-gray-50 px-4 py-2 rounded-xl hover:bg-gray-700 hover:text-white hover:border-gray-700 transition-all">
+          <a href="#" className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all">
             Thi thử TNTHPT
           </a>
         </div>
 
         {/* Desktop CTA / Login */}
-        <div className="hidden lg:flex flex-row gap-3 items-center ml-4">
+        <div className="hidden lg:flex flex-row gap-3 items-center">
           <button
             onClick={onNavigateToLogin}
-            className="text-[15px] font-semibold text-gray-700 border border-gray-200 px-5 py-2 rounded-xl hover:bg-gray-100 transition-colors"
+            className="text-[13px] font-bold text-white/70 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all"
           >
             Đăng nhập
           </button>
           <a
             href="#"
-            className="text-[15px] font-bold text-white bg-blue-600 px-5 py-2 rounded-xl shadow-md hover:bg-blue-700 transition-colors"
+            className="text-[13px] font-bold text-black bg-white px-5 py-2 rounded-lg hover:bg-white/90 transition-colors shadow"
           >
             Vào học ngay
           </a>
@@ -190,13 +190,13 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <div
-            className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "rotate-45 translate-y-[7px]" : ""}`}
+            className={`w-6 h-[2px] bg-white transition-all duration-300 ${isMenuOpen ? "rotate-45 translate-y-[7px]" : ""}`}
           />
           <div
-            className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "opacity-0" : "opacity-100"}`}
+            className={`w-6 h-[2px] bg-white transition-all duration-300 ${isMenuOpen ? "opacity-0" : "opacity-100"}`}
           />
           <div
-            className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}
+            className={`w-6 h-[2px] bg-white transition-all duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}
           />
         </button>
       </nav>
