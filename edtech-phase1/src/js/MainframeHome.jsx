@@ -144,41 +144,41 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex flex-row gap-1 items-center">
-          <a href="#" className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all">
+        <div className="hidden lg:flex flex-row gap-2 items-center">
+          <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Toán Học
           </a>
           <button
             onClick={() => onNavigate("physics")}
-            className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all"
+            className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap"
           >
             Vật Lý
           </button>
-          <a href="#" className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all">
+          <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Hóa Học
           </a>
-          <a href="#" className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all">
+          <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Tin Học
           </a>
-          <a href="#" className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all">
+          <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Đề thi HSA/TSA
           </a>
-          <a href="#" className="text-[13px] font-bold text-white/80 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all">
+          <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Thi thử TNTHPT
           </a>
         </div>
 
         {/* Desktop CTA / Login */}
-        <div className="hidden lg:flex flex-row gap-3 items-center">
+        <div className="hidden lg:flex flex-row gap-4 items-center">
           <button
             onClick={onNavigateToLogin}
-            className="text-[13px] font-bold text-white/70 uppercase tracking-widest px-4 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-all"
+            className="text-[16px] font-bold text-white/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap"
           >
             Đăng nhập
           </button>
           <a
             href="#"
-            className="text-[13px] font-bold text-black bg-white px-5 py-2 rounded-lg hover:bg-white/90 transition-colors shadow"
+            className="text-[15px] font-bold text-black bg-white px-6 py-2.5 rounded-lg hover:bg-white/90 transition-colors shadow whitespace-nowrap"
           >
             Vào học ngay
           </a>
