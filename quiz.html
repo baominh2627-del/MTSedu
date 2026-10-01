@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thi Trắc Nghiệm - MTSedu</title>
+    <!-- Nhúng thư viện Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; padding: 20px; margin: 0; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { text-align: center; color: #3ECF8E; border-bottom: 2px solid #3ECF8E; padding-bottom: 10px; }
+        .question-card { margin-bottom: 25px; padding: 20px; border: 1px solid #e1e4e8; border-radius: 8px; background: #fff; transition: box-shadow 0.3s; }
+        .question-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .question-title { font-weight: bold; font-size: 1.2em; margin-bottom: 15px; color: #2c3e50; }
+        .topic-badge { background: #e0f2f1; color: #00897b; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; font-weight: normal; }
+        .option { display: block; margin: 10px 0; cursor: pointer; padding: 12px; border-radius: 6px; border: 1px solid #ddd; transition: all 0.2s; }
+        .option:hover { background: #f8f9fa; border-color: #3ECF8E; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); cursor: pointer; }
+        .btn-submit { display: block; width: 100%; padding: 15px; font-size: 18px; color: white; background-color: #3ECF8E; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 30px; transition: background 0.3s; }
+        .btn-submit:hover { background-color: #24b47e; }
+        #result { margin-top: 25px; font-size: 22px; font-weight: bold; text-align: center; color: #28a745; padding: 20px; border-radius: 8px; }
+        .loading { text-align: center; font-style: italic; color: #888; font-size: 1.2em; padding: 40px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Đề Thi Thử - Hệ thống MTSedu</h1>
+        <div id="loading" class="loading">⏳ Đang tải dữ liệu từ CSDL Supabase...</div>
+        
+        <!-- Nơi chứa các câu hỏi -->
+        <div id="quiz-container"></div>
+        
+        <!-- Nút nộp bài -->
+        <button id="submit-btn" class="btn-submit" style="display: none;" onclick="chamDiem()">📝 NỘP BÀI</button>
+        
+        <!-- Nơi hiển thị điểm -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // 1. Kết nối với Supabase
+        const supabaseUrl = 'https://gnusguddzzvfbeyuzrcs.supabase.co';
+        const supabaseKey = 'sb_publishable_aiZUhdvCdBHMd8tgAI8agw_hLeVIQAU';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        let danhSachCauHoi = []; // Biến lưu trữ dữ liệu kéo về
+
+        // 2. Hàm kéo dữ liệu từ CSDL
+        async function taiCauHoi() {
+            // Lệnh lấy toàn bộ câu hỏi (Tương đương SELECT * FROM questions)
+            const { data, error } = await supabase.from('questions').select('*');
+            
+            document.getElementById('loading').style.display = 'none';
+
+            if (error) {
+                document.getElementById('quiz-container').innerHTML = `<p style="color:red">Lỗi tải dữ liệu: ${error.message}</p>`;
+                return;
+            }
+
+            danhSachCauHoi = data;
+            hienThiGiaoDien(data);
+        }
+
+        // 3. Hàm in câu hỏi ra màn hình web
+        function hienThiGiaoDien(data) {
+            const container = document.getElementById('quiz-container');
+            
+            if(data.length === 0) {
+                container.innerHTML = "<p style='text-align:center;'>Chưa có câu hỏi nào trong ngân hàng đề.</p>";
+                return;
+            }
+
+            let html = '';
+            // Vòng lặp duyệt qua từng câu hỏi
+            data.forEach((cau, index) => {
+                html += `
+                    <div class="question-card" id="q_${index}">
+                        <div class="question-title">
+                            Câu ${index + 1}: ${cau.content} 
+                            <span class="topic-badge">${cau.topic}</span>
+                        </div>
+                        <label class="option"><input type="radio" name="cau_${index}" value="A"> A. ${cau.option_a}</label>
+                        <label class="option"><input type="radio" name="cau_${index}" value="B"> B. ${cau.option_b}</label>
+                        <label class="option"><input type="radio" name="cau_${index}" value="C"> C. ${cau.option_c}</label>
+                        <label class="option"><input type="radio" name="cau_${index}" value="D"> D. ${cau.option_d}</label>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('submit-btn').style.display = 'block'; // Hiện nút nộp bài
+        }
+
+        // 4. Hàm chấm điểm
+        function chamDiem() {
+            let soCauDung = 0;
+
+            danhSachCauHoi.forEach((cau, index) => {
+                // Lấy đáp án học sinh chọn
+                const luaChon = document.querySelector(`input[name="cau_${index}"]:checked`);
+                const theCauHoi = document.getElementById(`q_${index}`);
+                
+                if (luaChon && luaChon.value === cau.correct_answer) {
+                    soCauDung++;
+                    theCauHoi.style.border = "2px solid #28a745"; // Đổi khung màu Xanh nếu đúng
+                    theCauHoi.style.backgroundColor = "#e8f5e9";
+                } else {
+                    theCauHoi.style.border = "2px solid #dc3545"; // Đổi khung màu Đỏ nếu sai
+                    theCauHoi.style.backgroundColor = "#ffebee";
+                }
+            });
+
+            // Tính điểm thang 10
+            const tongSoCau = danhSachCauHoi.length;
+            let diem = (soCauDung / tongSoCau) * 10;
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.backgroundColor = '#e8f5e9';
+            resultDiv.style.border = '2px solid #28a745';
+            resultDiv.innerHTML = `
+                🎉 Nộp bài thành công!<br>
+                Bạn làm đúng ${soCauDung}/${tongSoCau} câu.<br>
+                <span style="font-size: 30px; color: #d32f2f;">Điểm số: ${diem.toFixed(1)} / 10</span>
+            `;
+            
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Chạy hàm tải câu hỏi ngay khi mở web
+        taiCauHoi();
+    </script>
+</body>
+</html>

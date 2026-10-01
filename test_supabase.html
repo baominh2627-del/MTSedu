@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Kết Nối Supabase - MTSedu</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+        h1 { color: #3ECF8E; }
+        button { padding: 12px 24px; font-size: 16px; cursor: pointer; background: #3ECF8E; color: black; font-weight: bold; border: none; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button:hover { background: #24b47e; }
+        #status { margin-top: 20px; font-size: 16px; font-weight: bold; line-height: 1.5; padding: 15px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Thử nghiệm Database MTSedu</h1>
+    <p>Bấm vào nút dưới đây để bắn 1 câu hỏi mẫu lên Database của bạn trên Cloud.</p>
+    <button onclick="themCauHoi()">🚀 Bắn Câu Hỏi Lên Supabase</button>
+    <div id="status"></div>
+
+    <script>
+        async function themCauHoi() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.style.backgroundColor = "#f0f0f0";
+            statusDiv.style.color = "#333";
+            statusDiv.innerHTML = "⏳ Đang kiểm tra hệ thống...";
+
+            try {
+                // Kiểm tra xem trình duyệt có chặn thư viện không (Cốc Cốc hay chặn)
+                if (typeof window.supabase === 'undefined') {
+                    throw new Error("Cốc Cốc đang chặn tải thư viện kết nối. Hãy thử tắt khiên chặn quảng cáo của Cốc Cốc hoặc mở file này bằng Google Chrome nhé!");
+                }
+
+                // Cấu hình
+                const supabaseUrl = 'https://gnusguddzzvfbeyuzrcs.supabase.co';
+                
+                // MÃ KEY CHUẨN PHẢI BẮT ĐẦU BẰNG CHỮ eyJ...
+                // Tôi tạm thời vẫn dùng mã cũ bạn gửi để bạn thấy nó sẽ báo lỗi như thế nào
+                const supabaseKey = 'sb_publishable_aiZUhdvCdBHMd8tgAI8agw_hLeVIQAU'; 
+                
+                statusDiv.innerHTML = "⏳ Đang kết nối tới máy chủ Database...";
+                const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+                statusDiv.innerHTML = "⏳ Đang gửi câu hỏi toán học lên...";
+                const { error } = await supabaseClient
+                    .from('questions')
+                    .insert([
+                        { 
+                            topic: 'Toán 12', 
+                            content: 'Đạo hàm của x^2 là gì?', 
+                            option_a: 'x', 
+                            option_b: '2x', 
+                            option_c: 'x^3/3', 
+                            option_d: '2',
+                            correct_answer: 'B'
+                        }
+                    ]);
+                
+                if (error) throw error; // Ném lỗi xuống block catch bên dưới
+
+                // Thành công
+                statusDiv.style.backgroundColor = "#d4edda";
+                statusDiv.style.color = "green";
+                statusDiv.innerHTML = "🎉 THÀNH CÔNG RỰC RỠ!<br>Hãy mở lại trình duyệt Supabase > Chọn Table Editor > Bấm vào bảng 'questions' để xem câu hỏi vừa bay vào nhé!";
+
+            } catch (err) {
+                console.error(err);
+                statusDiv.style.backgroundColor = "#f8d7da";
+                statusDiv.style.color = "red";
+                statusDiv.innerHTML = `❌ <b>Gặp lỗi:</b> ${err.message} <br><br>
+                <span style="color: black; font-weight: normal;">
+                💡 <b>Giải thích:</b> Nếu lỗi báo về liên quan đến "JWT" hoặc "Auth", nghĩa là <b>Chìa khóa API bạn copy bị sai</b>. Mã bạn gửi (sb_publishable...) không đúng định dạng.
+                <br><br>
+                👉 <b>Cách sửa:</b> Hãy vào Supabase -> Bấm biểu tượng <b>Bánh răng ⚙️</b> -> Chọn <b>API</b> -> Tìm dòng chữ <b>anon / public</b> và copy đoạn mã RẤT DÀI (bắt đầu bằng chữ <b>eyJ...</b>). Sau đó gửi lại cho tôi nhé!
+                </span>`;
+            }
+        }
+    </script>
+</body>
+</html>

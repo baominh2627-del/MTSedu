@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useAuth } from "./AuthContext.jsx";
 
 // --- Custom Hook ---
 function useTypewriter(text, speed = 38, startDelay = 600) {
@@ -35,6 +36,7 @@ function useTypewriter(text, speed = 38, startDelay = 600) {
 export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showPills, setShowPills] = useState(false);
+  const { user, isLoggedIn, logout } = useAuth();
   const videoRef = useRef(null);
   const prevXRef = useRef(0);
   const targetTimeRef = useRef(0);
@@ -170,18 +172,35 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
 
         {/* Desktop CTA / Login */}
         <div className="hidden lg:flex flex-row gap-4 items-center">
-          <button
-            onClick={onNavigateToLogin}
-            className="text-[16px] font-bold text-white/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap"
-          >
-            Đăng nhập
-          </button>
-          <a
-            href="#"
-            className="text-[15px] font-bold text-black bg-white px-6 py-2.5 rounded-lg hover:bg-white/90 transition-colors shadow whitespace-nowrap"
-          >
-            Vào học ngay
-          </a>
+          {isLoggedIn ? (
+            <>
+              <span className="text-[15px] text-white/70 flex items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                {user?.displayName || user?.username}
+              </span>
+              <button
+                onClick={logout}
+                className="text-[15px] font-bold text-red-400 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-red-500/20 transition-all whitespace-nowrap"
+              >
+                Đăng xuất
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={onNavigateToLogin}
+                className="text-[16px] font-bold text-white/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap"
+              >
+                Đăng nhập
+              </button>
+              <a
+                href="#"
+                className="text-[15px] font-bold text-black bg-white px-6 py-2.5 rounded-lg hover:bg-white/90 transition-colors shadow whitespace-nowrap"
+              >
+                Vào học ngay
+              </a>
+            </>
+          )}
         </div>
 
         {/* Mobile Hamburger */}
@@ -264,18 +283,35 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
           Thi thử TNTHPT
         </button>
         <div className="w-full h-[1px] bg-black/10 my-2"></div>
-        <button
-          onClick={onNavigateToLogin}
-          className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-gray-100 transition-colors text-center"
-        >
-          Đăng nhập
-        </button>
-        <a
-          href="#"
-          className="text-[18px] font-medium text-white bg-blue-600 px-5 py-3 rounded-xl shadow-sm hover:bg-blue-700 transition-colors text-center"
-        >
-          Vào học ngay
-        </a>
+        {isLoggedIn ? (
+          <>
+            <div className="text-[18px] font-medium text-black/60 flex items-center gap-2 px-5 py-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+              {user?.displayName || user?.username}
+            </div>
+            <button
+              onClick={() => { setIsMenuOpen(false); logout(); }}
+              className="text-[18px] font-medium text-red-500 border border-red-200 px-5 py-3 rounded-xl hover:bg-red-50 transition-colors text-center"
+            >
+              Đăng xuất
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={onNavigateToLogin}
+              className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-gray-100 transition-colors text-center"
+            >
+              Đăng nhập
+            </button>
+            <a
+              href="#"
+              className="text-[18px] font-medium text-white bg-blue-600 px-5 py-3 rounded-xl shadow-sm hover:bg-blue-700 transition-colors text-center"
+            >
+              Vào học ngay
+            </a>
+          </>
+        )}
       </div>
 
       {/* Hero Section */}

@@ -7,16 +7,17 @@
  *   - Trang chủ (HomePage): Giao diện chính với danh sách gia sư
  *   - Trang đăng nhập (LoginPage): Giao diện Glassmorphism
  * 
- * Cơ chế: Sử dụng state "currentPage" để quyết định hiển thị
- *          trang nào. Khi nhấn "Đăng nhập" -> chuyển sang LoginPage.
- *          Khi nhấn "Quay lại" trong LoginPage -> quay về HomePage.
+ * Cơ chế: Sử dụng hash-based routing để giữ nguyên trang khi F5.
+ *         Khi nhấn "Đăng nhập" -> chuyển sang LoginPage.
+ *         Khi nhấn "Quay lại" trong LoginPage -> quay về HomePage.
  * 
- * Lưu ý: Sau này khi tích hợp React Router, bạn có thể thay thế
- *         cơ chế state này bằng <Route path="/login"> để có URL thật.
+ * Authentication: Sử dụng AuthContext + Firebase Realtime Database.
+ *         User phải đăng nhập để làm bài thi.
  * ============================================================
  */
 
 import { useState, useEffect, useCallback } from "react";
+import { AuthProvider } from "./AuthContext.jsx";
 import LoginPage from "./LoginPage.jsx";
 import MainframeHome from "./MainframeHome.jsx";
 import SubjectPage from "./SubjectPage.jsx";
@@ -28,8 +29,10 @@ function getPageFromHash() {
   return hash || "home";
 }
 
-function App() {
+function AppContent() {
   const [currentPage, setCurrentPage] = useState(getPageFromHash);
+  // Lưu trang trước đó để quay lại sau khi đăng nhập
+  const [returnPage, setReturnPage] = useState(null);
 
   // Khi user nhấn nút quay lại trình duyệt hoặc hash thay đổi
   useEffect(() => {
@@ -51,10 +54,34 @@ function App() {
     setCurrentPage(page);
   }, []);
 
+  // Hàm chuyển đến login và lưu trang hiện tại để quay lại sau
+  const navigateToLoginWithReturn = useCallback((fromPage) => {
+    setReturnPage(fromPage || currentPage);
+    navigateTo("login");
+  }, [currentPage, navigateTo]);
+
+  // Callback khi đăng nhập thành công
+  const handleLoginSuccess = useCallback(() => {
+    if (returnPage && returnPage !== "login") {
+      navigateTo(returnPage);
+      setReturnPage(null);
+    } else {
+      navigateTo("home");
+    }
+  }, [returnPage, navigateTo]);
+
   if (currentPage === "login") {
     return (
       <LoginPage
-        onBack={() => navigateTo("home")}
+        onBack={() => {
+          if (returnPage && returnPage !== "login") {
+            navigateTo(returnPage);
+            setReturnPage(null);
+          } else {
+            navigateTo("home");
+          }
+        }}
+        onLoginSuccess={handleLoginSuccess}
       />
     );
   }
@@ -66,6 +93,7 @@ function App() {
       <SubjectPage 
         onNavigate={navigateTo} 
         subjectKey={currentPage}
+        onRequireLogin={() => navigateToLoginWithReturn(currentPage)}
       />
     );
   }
@@ -75,6 +103,14 @@ function App() {
       onNavigateToLogin={() => navigateTo("login")} 
       onNavigate={navigateTo}
     />
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

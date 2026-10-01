@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
 import { subjectsData } from '../data/subjectsData.js';
+import { useAuth } from './AuthContext.jsx';
 
-export default function SubjectPage({ onNavigate, subjectKey }) {
+export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isLoggedIn, logout } = useAuth();
   
   const data = subjectsData[subjectKey] || subjectsData['physics'];
   const mockTests = data.tests;
+
+  // Xử lý khi click vào bài thi: kiểm tra đăng nhập trước
+  const handleTestClick = (test) => {
+    if (!isLoggedIn) {
+      // Chưa đăng nhập → yêu cầu đăng nhập
+      onRequireLogin();
+      return;
+    }
+    // Đã đăng nhập → mở link bài thi (nếu có)
+    if (test.link) {
+      window.open(test.link, '_blank', 'noopener,noreferrer');
+    } else {
+      alert('Bài thi này đang được cập nhật. Vui lòng quay lại sau!');
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <div className="relative w-full min-h-screen bg-[#f9fafb] text-black font-sans">
@@ -32,10 +53,25 @@ export default function SubjectPage({ onNavigate, subjectKey }) {
           <button onClick={() => onNavigate('mock_exams')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'mock_exams' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Thi thử TNTHPT</button>
         </div>
 
-        <div className="hidden lg:flex flex-row gap-6 items-center">
-          <button onClick={() => onNavigate('login')} className="text-[20px] text-black hover:opacity-60 transition-opacity">
-            Đăng nhập
-          </button>
+        <div className="hidden lg:flex flex-row gap-4 items-center">
+          {isLoggedIn ? (
+            <>
+              <span className="text-[15px] text-black/60 flex items-center gap-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                {user?.displayName || user?.username}
+              </span>
+              <button 
+                onClick={handleLogout}
+                className="text-[15px] text-red-500 hover:text-red-700 transition-colors font-medium px-3 py-1.5 rounded-lg hover:bg-red-50"
+              >
+                Đăng xuất
+              </button>
+            </>
+          ) : (
+            <button onClick={() => onNavigate('login')} className="text-[20px] text-black hover:opacity-60 transition-opacity">
+              Đăng nhập
+            </button>
+          )}
         </div>
 
         {/* Mobile Hamburger */}
@@ -62,7 +98,22 @@ export default function SubjectPage({ onNavigate, subjectKey }) {
         <button onClick={() => { setIsMenuOpen(false); onNavigate('hsa'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'hsa' ? 'underline underline-offset-2' : ''}`}>Đề thi HSA/TSA</button>
         <button onClick={() => { setIsMenuOpen(false); onNavigate('mock_exams'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'mock_exams' ? 'underline underline-offset-2' : ''}`}>Thi thử TNTHPT</button>
         <div className="w-full h-[1px] bg-black/10 my-2"></div>
-        <button onClick={() => { setIsMenuOpen(false); onNavigate('login'); }} className="text-[24px] font-medium text-black text-left">Đăng nhập</button>
+        {isLoggedIn ? (
+          <>
+            <div className="text-[18px] font-medium text-black/60 flex items-center gap-2">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+              {user?.displayName || user?.username}
+            </div>
+            <button 
+              onClick={() => { setIsMenuOpen(false); handleLogout(); }}
+              className="text-[18px] font-medium text-red-500 text-left"
+            >
+              Đăng xuất
+            </button>
+          </>
+        ) : (
+          <button onClick={() => { setIsMenuOpen(false); onNavigate('login'); }} className="text-[24px] font-medium text-black text-left">Đăng nhập</button>
+        )}
       </div>
 
       {/* Main Content */}
@@ -72,6 +123,18 @@ export default function SubjectPage({ onNavigate, subjectKey }) {
           <h1 className="text-3xl sm:text-4xl font-bold">{data.title}</h1>
           <p className="text-gray-500 mt-1 text-lg">{data.description}</p>
         </div>
+
+        {/* Thông báo chưa đăng nhập */}
+        {!isLoggedIn && (
+          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-3">
+            <svg className="w-5 h-5 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p className="text-sm text-amber-700">
+              Bạn cần <button onClick={onRequireLogin} className="font-semibold underline hover:no-underline">đăng nhập</button> để làm bài thi.
+            </p>
+          </div>
+        )}
           
         <div className="flex flex-col lg:flex-row gap-8 mt-4">
           {/* Sidebar */}
@@ -126,13 +189,10 @@ export default function SubjectPage({ onNavigate, subjectKey }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {mockTests.map((test) => {
-                const CardWrapper = test.link ? 'a' : 'div';
-                const wrapperProps = test.link ? { href: test.link, target: "_blank", rel: "noopener noreferrer" } : {};
-                
                 return (
-                  <CardWrapper 
+                  <div 
                     key={test.id} 
-                    {...wrapperProps}
+                    onClick={() => handleTestClick(test)}
                     className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md border border-black/5 transition-all duration-300 flex flex-col cursor-pointer"
                   >
                     {/* Thumbnail */}
@@ -145,6 +205,17 @@ export default function SubjectPage({ onNavigate, subjectKey }) {
                       <div className="absolute top-3 left-3 bg-black text-white text-xs font-semibold px-3 py-1 rounded-full">
                         {test.tag}
                       </div>
+                      {/* Lock icon nếu chưa đăng nhập */}
+                      {!isLoggedIn && (
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-3 shadow-lg">
+                            <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" strokeWidth="2"></rect>
+                              <path d="M7 11V7a5 5 0 0110 0v4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                            </svg>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Card Body */}
@@ -180,7 +251,7 @@ export default function SubjectPage({ onNavigate, subjectKey }) {
                         </div>
                       </div>
                     </div>
-                  </CardWrapper>
+                  </div>
                 );
               })}
             </div>
