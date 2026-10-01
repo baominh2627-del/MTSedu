@@ -1,0 +1,165 @@
+export const subjectsData = {
+  physics: {
+    title: "Vật Lý",
+    description: "Tổng hợp các bài kiểm tra, đề thi môn Vật Lý",
+    categories: ["Thi thử TNTHPT", "Đề thi HSA/TSA", "Lớp 12", "Lớp 11", "Lớp 10"],
+    tests: [
+      {
+        id: "phys_0",
+        title: "Bài Kiểm Tra Vật Lý Nhiệt - 12 - Lần 1 - Đề A50",
+        tag: "Lớp 12",
+        questions: 40,
+        time: 45,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng",
+        link: "https://baominh2627-del.github.io/bai-ktra-vat-ly-nhiet-ly-12/"
+      },
+      {
+        id: "phys_1",
+        title: "Đề thi thử THPT Quốc Gia môn Lý - Sở GD Hà Nội 2024",
+        tag: "Thi thử TNTHPT",
+        questions: 40,
+        time: 50,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng"
+      },
+      {
+        id: "phys_2",
+        title: "Đề ôn tập Đánh Giá Năng Lực (HSA) - Vật Lý Cấu Trúc Mới",
+        tag: "Đề thi HSA/TSA",
+        questions: 50,
+        time: 60,
+        price: "49.000₫",
+        thumbnail: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Cô Mai"
+      },
+      {
+        id: "phys_3",
+        title: "Bài kiểm tra Dao Động Cơ - Vật Lý 12 Giữa Kì 1",
+        tag: "Lớp 12",
+        questions: 30,
+        time: 45,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1610428584852-5a98bf49b015?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng"
+      },
+      {
+        id: "phys_4",
+        title: "Trắc nghiệm Dòng Điện Xoay Chiều Nâng Cao",
+        tag: "Lớp 12",
+        questions: 40,
+        time: 50,
+        price: "29.000₫",
+        thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Bình"
+      },
+      {
+        id: "phys_5",
+        title: "Tổng ôn Quang Hình Học - Lớp 11",
+        tag: "Lớp 11",
+        questions: 40,
+        time: 45,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Cô Mai"
+      },
+      {
+        id: "phys_6",
+        title: "Đề thi VACT Vật Lý Cao Cấp",
+        tag: "Đề thi VACT",
+        questions: 50,
+        time: 90,
+        price: "99.000₫",
+        thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng"
+      }
+    ]
+  },
+  math: {
+    title: "Toán Học",
+    description: "Tổng hợp các bài kiểm tra, đề thi môn Toán Học",
+    categories: ["Thi thử TNTHPT", "Đề thi HSA/TSA", "Lớp 12", "Lớp 11", "Lớp 10"],
+    tests: [
+      {
+        id: "math_1",
+        title: "Bài kiểm tra Hàm số và Đồ thị - Toán 12",
+        tag: "Lớp 12",
+        questions: 50,
+        time: 90,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1509228468518-180dd4864904?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Minh"
+      }
+    ]
+  },
+  chemistry: {
+    title: "Hóa Học",
+    description: "Tổng hợp các bài kiểm tra, đề thi môn Hóa Học",
+    categories: ["Thi thử TNTHPT", "Đề thi HSA/TSA", "Lớp 12", "Lớp 11", "Lớp 10"],
+    tests: [
+      {
+        id: "chem_1",
+        title: "Kiểm tra Este - Lipit - Hóa 12",
+        tag: "Lớp 12",
+        questions: 40,
+        time: 50,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Cô Lan"
+      }
+    ]
+  },
+  informatics: {
+    title: "Tin Học",
+    description: "Tổng hợp các bài kiểm tra, đề thi môn Tin Học",
+    categories: ["Thi thử TNTHPT", "Lớp 12", "Lớp 11", "Lớp 10", "Lập trình căn bản"],
+    tests: [
+      {
+        id: "info_1",
+        title: "Bài kiểm tra Python cơ bản",
+        tag: "Lập trình căn bản",
+        questions: 30,
+        time: 45,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Bình"
+      }
+    ]
+  },
+  hsa: {
+    title: "Đề thi HSA/TSA",
+    description: "Tổng hợp các đề Đánh Giá Năng Lực (HSA) và Đánh Giá Tư Duy (TSA)",
+    categories: ["Đề thi HSA", "Đề thi TSA", "Toán", "Ngữ Văn", "Khoa học"],
+    tests: [
+      {
+        id: "hsa_1",
+        title: "Đề thi thử HSA - ĐHQGHN Lần 1 - 2024",
+        tag: "Đề thi HSA",
+        questions: 150,
+        time: 195,
+        price: "99.000₫",
+        thumbnail: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "MTS Education"
+      }
+    ]
+  },
+  mock_exams: {
+    title: "Thi thử TNTHPT",
+    description: "Tổng hợp các đề thi thử Tốt nghiệp THPT Quốc Gia từ các trường và Sở GD&ĐT",
+    categories: ["Toán Học", "Vật Lý", "Hóa Học", "Tiếng Anh", "Ngữ Văn"],
+    tests: [
+      {
+        id: "mock_1",
+        title: "Đề thi thử TNTHPT môn Toán - Sở GD Hà Nội",
+        tag: "Toán Học",
+        questions: 50,
+        time: 90,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Minh"
+      }
+    ]
+  }
+};

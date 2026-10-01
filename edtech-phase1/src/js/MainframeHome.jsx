@@ -145,27 +145,27 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex flex-row gap-6 items-center">
-          <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("math")} className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Toán Học
-          </a>
+          </button>
           <button
             onClick={() => onNavigate("physics")}
             className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap"
           >
             Vật Lý
           </button>
-          <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("chemistry")} className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Hóa Học
-          </a>
-          <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+          </button>
+          <button onClick={() => onNavigate("informatics")} className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Tin Học
-          </a>
-          <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+          </button>
+          <button onClick={() => onNavigate("hsa")} className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Đề thi HSA/TSA
-          </a>
-          <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+          </button>
+          <button onClick={() => onNavigate("mock_exams")} className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Thi thử TNTHPT
-          </a>
+          </button>
         </div>
 
         {/* Desktop CTA / Login */}
@@ -209,9 +209,15 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
             : "opacity-0 pointer-events-none"
         } lg:hidden`}
       >
-        <a href="#" className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-colors text-center">
+        <button
+          onClick={() => {
+            setIsMenuOpen(false);
+            onNavigate("math");
+          }}
+          className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-colors text-center"
+        >
           Toán Học
-        </a>
+        </button>
         <button
           onClick={() => {
             setIsMenuOpen(false);
@@ -221,18 +227,42 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
         >
           Vật Lý
         </button>
-        <a href="#" className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-colors text-center">
+        <button
+          onClick={() => {
+            setIsMenuOpen(false);
+            onNavigate("chemistry");
+          }}
+          className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-colors text-center"
+        >
           Hóa Học
-        </a>
-        <a href="#" className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-colors text-center">
+        </button>
+        <button
+          onClick={() => {
+            setIsMenuOpen(false);
+            onNavigate("informatics");
+          }}
+          className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-colors text-center"
+        >
           Tin Học
-        </a>
-        <a href="#" className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-colors text-center">
+        </button>
+        <button
+          onClick={() => {
+            setIsMenuOpen(false);
+            onNavigate("hsa");
+          }}
+          className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-colors text-center"
+        >
           Đề thi HSA/TSA
-        </a>
-        <a href="#" className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-colors text-center">
+        </button>
+        <button
+          onClick={() => {
+            setIsMenuOpen(false);
+            onNavigate("mock_exams");
+          }}
+          className="text-[18px] font-medium text-black border border-black/10 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-colors text-center"
+        >
           Thi thử TNTHPT
-        </a>
+        </button>
         <div className="w-full h-[1px] bg-black/10 my-2"></div>
         <button
           onClick={onNavigateToLogin}

@@ -1,82 +1,11 @@
 import React, { useState } from 'react';
+import { subjectsData } from '../data/subjectsData.js';
 
-export default function PhysicsPage({ onNavigate }) {
+export default function SubjectPage({ onNavigate, subjectKey }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Dữ liệu mẫu (mock data) cho các bài kiểm tra Vật Lý
-  const mockTests = [
-    {
-      id: 0,
-      title: "Bài Kiểm Tra Vật Lý Nhiệt - 12 - Lần 1 - Đề A50",
-      tag: "Lớp 12",
-      questions: 40,
-      time: 45,
-      price: "Miễn phí",
-      thumbnail: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      instructor: "Thầy Hùng",
-      link: "https://baominh2627-del.github.io/bai-ktra-vat-ly-nhiet-ly-12/"
-    },
-    {
-      id: 1,
-      title: "Đề thi thử THPT Quốc Gia môn Lý - Sở GD Hà Nội 2024",
-      tag: "Thi thử TNTHPT",
-      questions: 40,
-      time: 50,
-      price: "Miễn phí",
-      thumbnail: "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      instructor: "Thầy Hùng"
-    },
-    {
-      id: 2,
-      title: "Đề ôn tập Đánh Giá Năng Lực (HSA) - Vật Lý Cấu Trúc Mới",
-      tag: "Đề thi HSA/TSA",
-      questions: 50,
-      time: 60,
-      price: "49.000₫",
-      thumbnail: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      instructor: "Cô Mai"
-    },
-    {
-      id: 3,
-      title: "Bài kiểm tra Dao Động Cơ - Vật Lý 12 Giữa Kì 1",
-      tag: "Lớp 12",
-      questions: 30,
-      time: 45,
-      price: "Miễn phí",
-      thumbnail: "https://images.unsplash.com/photo-1610428584852-5a98bf49b015?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      instructor: "Thầy Hùng"
-    },
-    {
-      id: 4,
-      title: "Trắc nghiệm Dòng Điện Xoay Chiều Nâng Cao",
-      tag: "Lớp 12",
-      questions: 40,
-      time: 50,
-      price: "29.000₫",
-      thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      instructor: "Thầy Bình"
-    },
-    {
-      id: 5,
-      title: "Tổng ôn Quang Hình Học - Lớp 11",
-      tag: "Lớp 11",
-      questions: 40,
-      time: 45,
-      price: "Miễn phí",
-      thumbnail: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      instructor: "Cô Mai"
-    },
-    {
-      id: 6,
-      title: "Đề thi VACT Vật Lý Cao Cấp",
-      tag: "Đề thi VACT",
-      questions: 50,
-      time: 90,
-      price: "99.000₫",
-      thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      instructor: "Thầy Hùng"
-    }
-  ];
+  
+  const data = subjectsData[subjectKey] || subjectsData['physics'];
+  const mockTests = data.tests;
 
   return (
     <div className="relative w-full min-h-screen bg-[#f9fafb] text-black font-sans">
@@ -96,7 +25,7 @@ export default function PhysicsPage({ onNavigate }) {
 
         <div className="hidden lg:flex flex-row gap-6 text-[20px] text-black">
           <button onClick={() => onNavigate('home')} className="hover:opacity-60 transition-opacity">Trang chủ</button>
-          <button className="font-semibold border-b-2 border-black pb-1">Vật Lý</button>
+          <button className="font-semibold border-b-2 border-black pb-1">{data.title}</button>
         </div>
 
         <div className="hidden lg:flex flex-row gap-6 items-center">
@@ -122,18 +51,18 @@ export default function PhysicsPage({ onNavigate }) {
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         } lg:hidden`}
       >
-        <button onClick={() => onNavigate('home')} className="text-[24px] font-medium text-black text-left">Trang chủ</button>
-        <button className="text-[24px] font-medium text-black text-left underline underline-offset-2">Vật Lý</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('home'); }} className="text-[24px] font-medium text-black text-left">Trang chủ</button>
+        <button className="text-[24px] font-medium text-black text-left underline underline-offset-2">{data.title}</button>
         <div className="w-full h-[1px] bg-black/10 my-2"></div>
-        <button onClick={() => onNavigate('login')} className="text-[24px] font-medium text-black text-left">Đăng nhập</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('login'); }} className="text-[24px] font-medium text-black text-left">Đăng nhập</button>
       </div>
 
       {/* Main Content */}
       <main className="pt-[88px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
         {/* Page Header */}
         <div className="py-6 border-b border-black/5 mb-6">
-          <h1 className="text-3xl sm:text-4xl font-bold">Vật Lý</h1>
-          <p className="text-gray-500 mt-1 text-lg">Tổng hợp các bài kiểm tra, đề thi môn Vật Lý</p>
+          <h1 className="text-3xl sm:text-4xl font-bold">{data.title}</h1>
+          <p className="text-gray-500 mt-1 text-lg">{data.description}</p>
         </div>
           
         <div className="flex flex-col lg:flex-row gap-8 mt-4">
@@ -156,11 +85,13 @@ export default function PhysicsPage({ onNavigate }) {
             <div className="p-5 bg-white border border-black/10 rounded-lg shadow-sm">
               <h4 className="text-xl font-bold mb-4">Danh mục</h4>
               <ul className="flex flex-col gap-3 text-[16px]">
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="checkbox" className="w-4 h-4 accent-black" /> Thi thử TNTHPT</label></li>
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="checkbox" className="w-4 h-4 accent-black" /> Đề thi HSA/TSA</label></li>
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="checkbox" className="w-4 h-4 accent-black" /> Lớp 12</label></li>
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="checkbox" className="w-4 h-4 accent-black" /> Lớp 11</label></li>
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="checkbox" className="w-4 h-4 accent-black" /> Lớp 10</label></li>
+                {data.categories && data.categories.map((cat, idx) => (
+                  <li key={idx}>
+                    <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600">
+                      <input type="checkbox" className="w-4 h-4 accent-black" /> {cat}
+                    </label>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -247,19 +178,24 @@ export default function PhysicsPage({ onNavigate }) {
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-center items-center gap-2 mt-10">
-              <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-50" disabled>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
-              </button>
-              <button className="w-10 h-10 rounded-md bg-black text-white flex items-center justify-center font-medium">1</button>
-              <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium">2</button>
-              <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium">3</button>
-              <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
-              </button>
-            </div>
+            {mockTests.length > 0 ? (
+              <div className="flex justify-center items-center gap-2 mt-10">
+                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-50" disabled>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <button className="w-10 h-10 rounded-md bg-black text-white flex items-center justify-center font-medium">1</button>
+                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium">2</button>
+                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium">3</button>
+                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+              </div>
+            ) : (
+              <div className="mt-10 text-center text-gray-500 py-10 border border-dashed border-gray-300 rounded-xl">
+                Chưa có bài kiểm tra nào trong danh mục này.
+              </div>
+            )}
           </div>
-
         </div>
       </main>
     </div>

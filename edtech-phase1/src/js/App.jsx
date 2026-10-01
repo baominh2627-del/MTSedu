@@ -19,7 +19,7 @@
 import { useState } from "react";
 import LoginPage from "./LoginPage.jsx";
 import MainframeHome from "./MainframeHome.jsx";
-import PhysicsPage from "./PhysicsPage.jsx";
+import SubjectPage from "./SubjectPage.jsx";
 import "../css/App.css";
 
 function App() {
@@ -33,10 +33,13 @@ function App() {
     );
   }
 
-  if (currentPage === "physics") {
+  // Handle all subjects dynamically
+  const subjects = ["physics", "math", "chemistry", "informatics", "hsa", "mock_exams"];
+  if (subjects.includes(currentPage)) {
     return (
-      <PhysicsPage 
+      <SubjectPage 
         onNavigate={(page) => setCurrentPage(page)} 
+        subjectKey={currentPage}
       />
     );
   }
