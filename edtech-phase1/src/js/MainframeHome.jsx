@@ -280,12 +280,12 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
 
       {/* Hero Section */}
       <main className="h-screen w-full flex flex-col justify-end pb-12 md:justify-center md:pb-0 px-5 sm:px-8 md:px-10 overflow-hidden">
-        <div className="max-w-5xl relative z-10">
+        <div className="w-full max-w-xl md:max-w-[55%] lg:max-w-[50%] relative z-10">
           {/* Blurred Intro Label */}
           <div
             className="pointer-events-none select-none mb-5 sm:mb-6 font-bold"
             style={{
-              fontSize: "clamp(20px, 4.5vw, 30px)",
+              fontSize: "clamp(18px, 3.5vw, 26px)",
               lineHeight: 1.3,
               filter: "blur(4px)",
               color: "rgba(0,0,0,0.4)",
@@ -298,7 +298,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
           <p
             className="mb-6 sm:mb-8 font-bold text-black min-h-[54px]"
             style={{
-              fontSize: "clamp(22px, 4.5vw, 34px)",
+              fontSize: "clamp(18px, 3vw, 26px)",
               lineHeight: 1.45,
               fontFamily: "'Lora', serif",
               fontStyle: "italic",

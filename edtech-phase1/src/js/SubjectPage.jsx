@@ -23,9 +23,13 @@ export default function SubjectPage({ onNavigate, subjectKey }) {
           </span>
         </div>
 
-        <div className="hidden lg:flex flex-row gap-6 text-[20px] text-black">
-          <button onClick={() => onNavigate('home')} className="hover:opacity-60 transition-opacity">Trang chủ</button>
-          <button className="font-semibold border-b-2 border-black pb-1">{data.title}</button>
+        <div className="hidden lg:flex flex-row gap-6 text-[18px] text-black">
+          <button onClick={() => onNavigate('math')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'math' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Toán Học</button>
+          <button onClick={() => onNavigate('physics')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'physics' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Vật Lý</button>
+          <button onClick={() => onNavigate('chemistry')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'chemistry' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Hóa Học</button>
+          <button onClick={() => onNavigate('informatics')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'informatics' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Tin Học</button>
+          <button onClick={() => onNavigate('hsa')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'hsa' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Đề thi HSA/TSA</button>
+          <button onClick={() => onNavigate('mock_exams')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'mock_exams' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Thi thử TNTHPT</button>
         </div>
 
         <div className="hidden lg:flex flex-row gap-6 items-center">
@@ -51,8 +55,12 @@ export default function SubjectPage({ onNavigate, subjectKey }) {
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         } lg:hidden`}
       >
-        <button onClick={() => { setIsMenuOpen(false); onNavigate('home'); }} className="text-[24px] font-medium text-black text-left">Trang chủ</button>
-        <button className="text-[24px] font-medium text-black text-left underline underline-offset-2">{data.title}</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('math'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'math' ? 'underline underline-offset-2' : ''}`}>Toán Học</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('physics'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'physics' ? 'underline underline-offset-2' : ''}`}>Vật Lý</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('chemistry'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'chemistry' ? 'underline underline-offset-2' : ''}`}>Hóa Học</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('informatics'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'informatics' ? 'underline underline-offset-2' : ''}`}>Tin Học</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('hsa'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'hsa' ? 'underline underline-offset-2' : ''}`}>Đề thi HSA/TSA</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('mock_exams'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'mock_exams' ? 'underline underline-offset-2' : ''}`}>Thi thử TNTHPT</button>
         <div className="w-full h-[1px] bg-black/10 my-2"></div>
         <button onClick={() => { setIsMenuOpen(false); onNavigate('login'); }} className="text-[24px] font-medium text-black text-left">Đăng nhập</button>
       </div>
