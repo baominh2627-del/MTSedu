@@ -40,11 +40,6 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
   const targetTimeRef = useRef(0);
   const isSeekingRef = useRef(false);
 
-  // Typewriter
-  const { displayed, done } = useTypewriter(
-    "Bạn không bắt buộc phải thành công ngay từ đầu. Mà là bắt đầu để sau đó thành công. Nhưng muốn thành công thì học tập và rèn luyện mỗi ngày là một việc không thể thiếu.",
-  );
-
   // Show pill buttons after 400ms
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -250,42 +245,21 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
 
       {/* Hero Section */}
       <main className="h-screen w-full flex flex-col justify-end pb-12 md:justify-center md:pb-0 px-5 sm:px-8 md:px-10 overflow-hidden">
-        <div className="max-w-xl relative z-10">
-          {/* Blurred Intro Label */}
-          <div
-            className="pointer-events-none select-none mb-5 sm:mb-6 text-black font-normal"
-            style={{
-              fontSize: "clamp(18px, 4vw, 26px)",
-              lineHeight: 1.3,
-              filter: "blur(4px)",
-            }}
-          >
-            Hey there, meet A.R.I.A,
-            <br />
-            Mainframe's Adaptive Response Interface Agent
+        <div className="max-w-5xl relative z-10">
+          {/* Main Hero Typography */}
+          <div className="mb-8 sm:mb-10 font-sans tracking-tight">
+            <h1 className="text-[32px] sm:text-[48px] lg:text-[60px] font-black uppercase leading-[1.05] mb-4">
+              <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent block">
+                Không bắt buộc phải thành công ngay từ đầu.
+              </span>
+              <span className="text-black block mt-2">
+                Mà là bắt đầu để sau đó thành công.
+              </span>
+            </h1>
+            <p className="text-[16px] sm:text-[20px] lg:text-[22px] text-gray-700 font-medium normal-case tracking-normal mt-4 sm:mt-6 leading-[1.5] max-w-2xl">
+              Nhưng muốn thành công thì học tập và rèn luyện mỗi ngày là một việc không thể thiếu.
+            </p>
           </div>
-
-          {/* Typewriter Text */}
-          <p
-            className="text-black mb-5 sm:mb-6 font-normal min-h-[54px]"
-            style={{
-              fontSize: "clamp(18px, 4vw, 26px)",
-              lineHeight: 1.35,
-              fontFamily: "'Lora', serif",
-              fontStyle: "italic",
-            }}
-          >
-            {displayed}
-            {!done && (
-              <span
-                className="inline-block w-[2px] bg-black align-middle ml-[2px]"
-                style={{
-                  height: "1.1em",
-                  animation: "blink 1s step-end infinite",
-                }}
-              ></span>
-            )}
-          </p>
 
           {/* Contact Pills */}
           <div
