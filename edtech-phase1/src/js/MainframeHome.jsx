@@ -144,7 +144,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex flex-row gap-2 items-center">
+        <div className="hidden lg:flex flex-row gap-6 items-center">
           <a href="#" className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
             Toán Học
           </a>
