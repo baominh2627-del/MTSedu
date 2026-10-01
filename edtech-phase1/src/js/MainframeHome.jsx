@@ -40,6 +40,11 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
   const targetTimeRef = useRef(0);
   const isSeekingRef = useRef(false);
 
+  // Typewriter
+  const { displayed, done } = useTypewriter(
+    "Bạn không bắt buộc phải thành công ngay từ đầu. Mà là bắt đầu để sau đó thành công. Nhưng muốn thành công thì học tập và rèn luyện mỗi ngày là một việc không thể thiếu.",
+  );
+
   // Show pill buttons after 400ms
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -140,25 +145,25 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex flex-row gap-2 items-center">
-          <a href="#" className="text-[14px] sm:text-[15px] font-medium text-black border border-black/10 px-4 py-2 rounded-xl hover:bg-black hover:text-white transition-colors">
+          <a href="#" className="text-[15px] font-semibold text-blue-700 border border-blue-200 bg-blue-50 px-4 py-2 rounded-xl hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all">
             Toán Học
           </a>
           <button
             onClick={() => onNavigate("physics")}
-            className="text-[14px] sm:text-[15px] font-medium text-black border border-black/10 px-4 py-2 rounded-xl hover:bg-black hover:text-white transition-colors"
+            className="text-[15px] font-semibold text-green-700 border border-green-200 bg-green-50 px-4 py-2 rounded-xl hover:bg-green-600 hover:text-white hover:border-green-600 transition-all"
           >
             Vật Lý
           </button>
-          <a href="#" className="text-[14px] sm:text-[15px] font-medium text-black border border-black/10 px-4 py-2 rounded-xl hover:bg-black hover:text-white transition-colors">
+          <a href="#" className="text-[15px] font-semibold text-orange-700 border border-orange-200 bg-orange-50 px-4 py-2 rounded-xl hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-all">
             Hóa Học
           </a>
-          <a href="#" className="text-[14px] sm:text-[15px] font-medium text-black border border-black/10 px-4 py-2 rounded-xl hover:bg-black hover:text-white transition-colors">
+          <a href="#" className="text-[15px] font-semibold text-purple-700 border border-purple-200 bg-purple-50 px-4 py-2 rounded-xl hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all">
             Tin Học
           </a>
-          <a href="#" className="text-[14px] sm:text-[15px] font-medium text-black border border-black/10 px-4 py-2 rounded-xl hover:bg-black hover:text-white transition-colors">
+          <a href="#" className="text-[15px] font-semibold text-rose-700 border border-rose-200 bg-rose-50 px-4 py-2 rounded-xl hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-all">
             Đề thi HSA/TSA
           </a>
-          <a href="#" className="text-[14px] sm:text-[15px] font-medium text-black border border-black/10 px-4 py-2 rounded-xl hover:bg-black hover:text-white transition-colors">
+          <a href="#" className="text-[15px] font-semibold text-gray-700 border border-gray-200 bg-gray-50 px-4 py-2 rounded-xl hover:bg-gray-700 hover:text-white hover:border-gray-700 transition-all">
             Thi thử TNTHPT
           </a>
         </div>
@@ -167,13 +172,13 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
         <div className="hidden lg:flex flex-row gap-3 items-center ml-4">
           <button
             onClick={onNavigateToLogin}
-            className="text-[14px] sm:text-[15px] font-medium text-black border border-black/10 px-5 py-2 rounded-xl hover:bg-gray-100 transition-colors"
+            className="text-[15px] font-semibold text-gray-700 border border-gray-200 px-5 py-2 rounded-xl hover:bg-gray-100 transition-colors"
           >
             Đăng nhập
           </button>
           <a
             href="#"
-            className="text-[14px] sm:text-[15px] font-medium text-white bg-blue-600 px-5 py-2 rounded-xl shadow-sm hover:bg-blue-700 transition-colors"
+            className="text-[15px] font-bold text-white bg-blue-600 px-5 py-2 rounded-xl shadow-md hover:bg-blue-700 transition-colors"
           >
             Vào học ngay
           </a>
@@ -246,20 +251,41 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
       {/* Hero Section */}
       <main className="h-screen w-full flex flex-col justify-end pb-12 md:justify-center md:pb-0 px-5 sm:px-8 md:px-10 overflow-hidden">
         <div className="max-w-5xl relative z-10">
-          {/* Main Hero Typography */}
-          <div className="mb-8 sm:mb-10 font-sans tracking-tight">
-            <h1 className="text-[32px] sm:text-[48px] lg:text-[60px] font-black uppercase leading-[1.05] mb-4">
-              <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent block">
-                Không bắt buộc phải thành công ngay từ đầu.
-              </span>
-              <span className="text-black block mt-2">
-                Mà là bắt đầu để sau đó thành công.
-              </span>
-            </h1>
-            <p className="text-[16px] sm:text-[20px] lg:text-[22px] text-gray-700 font-medium normal-case tracking-normal mt-4 sm:mt-6 leading-[1.5] max-w-2xl">
-              Nhưng muốn thành công thì học tập và rèn luyện mỗi ngày là một việc không thể thiếu.
-            </p>
+          {/* Blurred Intro Label */}
+          <div
+            className="pointer-events-none select-none mb-5 sm:mb-6 font-bold"
+            style={{
+              fontSize: "clamp(20px, 4.5vw, 30px)",
+              lineHeight: 1.3,
+              filter: "blur(4px)",
+              color: "rgba(0,0,0,0.4)",
+            }}
+          >
+            MTS Education
           </div>
+
+          {/* Typewriter Text */}
+          <p
+            className="mb-6 sm:mb-8 font-bold text-black min-h-[54px]"
+            style={{
+              fontSize: "clamp(22px, 4.5vw, 34px)",
+              lineHeight: 1.45,
+              fontFamily: "'Lora', serif",
+              fontStyle: "italic",
+              textShadow: "0 2px 12px rgba(0,0,0,0.08)",
+            }}
+          >
+            {displayed}
+            {!done && (
+              <span
+                className="inline-block w-[3px] bg-blue-600 align-middle ml-[3px] rounded"
+                style={{
+                  height: "1.1em",
+                  animation: "blink 1s step-end infinite",
+                }}
+              ></span>
+            )}
+          </p>
 
           {/* Contact Pills */}
           <div
