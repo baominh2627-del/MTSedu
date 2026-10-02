@@ -11,8 +11,18 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-const app = initializeApp(firebaseConfig);
-export const database = getDatabase(app);
+let app = null;
+let database = null;
+
+try {
+  app = initializeApp(firebaseConfig);
+  database = getDatabase(app);
+} catch (error) {
+  console.error('Firebase initialization failed. Check environment variables:', error);
+}
+
+export { database };
+
 
 // Helper for SHA-256 hashing using Web Crypto API
 async function hashPassword(password) {
@@ -25,10 +35,14 @@ async function hashPassword(password) {
 }
 
 export async function loginUser(username, password) {
+  if (!database) {
+    throw new Error('Dịch vụ xác thực chưa sẵn sàng. Vui lòng kiểm tra cấu hình.');
+  }
   try {
     const usersRef = ref(database, 'users');
     const q = query(usersRef, orderByChild('username'), equalTo(username));
     const snapshot = await get(q);
+
 
     if (snapshot.exists()) {
       const users = snapshot.val();

@@ -12,15 +12,17 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkSession = () => {
+    // Luôn đảm bảo loading kết thúc dù có lỗi hay không
+    try {
       const sessionUser = getCurrentUser();
       if (sessionUser) {
         setUser(sessionUser);
       }
+    } catch (error) {
+      console.error('Session check error:', error);
+    } finally {
       setLoading(false);
-    };
-
-    checkSession();
+    }
   }, []);
 
   const login = async (username, password) => {
@@ -37,7 +39,11 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    firebaseLogoutUser();
+    try {
+      firebaseLogoutUser();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
     setUser(null);
   };
 
@@ -51,7 +57,8 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {/* Render ngay lập tức, không chờ loading để tránh trang trắng */}
+      {children}
     </AuthContext.Provider>
   );
 }
