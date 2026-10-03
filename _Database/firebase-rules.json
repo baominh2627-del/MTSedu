@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "users": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["username"]
+    },
+    "testResults": {
+      ".read": true,
+      ".write": true
+    },
+    "examLogs": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
