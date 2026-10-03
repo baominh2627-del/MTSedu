@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mã QR - Trang Chủ MTSedu</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: #f4f7f6; margin: 0; padding: 20px; box-sizing: border-box; }
+        .card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; max-width: 400px; width: 100%; }
+        h2 { color: #000; margin-top: 0; font-size: 24px; }
+        .btn { display: inline-block; background-color: #000; color: white; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; font-size: 16px; margin: 20px 0; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); }
+        .btn:hover { background-color: #333; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); transform: translateY(-2px); }
+        .qr-container { margin-top: 25px; border-top: 1px dashed #ccc; padding-top: 25px; }
+        img { border: 1px solid #eee; border-radius: 12px; padding: 15px; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        p { color: #5f6368; line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>🌐 Trang Chủ MTSedu</h2>
+        <p>Hệ thống ôn luyện và thi trắc nghiệm trực tuyến</p>
+        
+        <a href="https://mtsedu.vercel.app" target="_blank" class="btn">
+            Mở Trang Web
+        </a>
+        
+        <div class="qr-container">
+            <p style="font-weight: bold; color: #333; margin-bottom: 15px;">Mã QR để gửi cho học sinh quét:</p>
+            <!-- QR code tự động tạo từ link trang chủ MTSedu -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://mtsedu.vercel.app" alt="QR Code Trang chủ MTSedu">
+            <p style="font-size: 13px; margin-top: 15px;">Có thể chụp màn hình ảnh này để gửi qua Zalo/Messenger</p>
+        </div>
+    </div>
+</body>
+</html>

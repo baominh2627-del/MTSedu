@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truy Cập Database MTSedu</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: #f4f7f6; margin: 0; padding: 20px; box-sizing: border-box; }
+        .card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; max-width: 400px; width: 100%; }
+        h2 { color: #f58220; margin-top: 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn { display: inline-block; background-color: #1a73e8; color: white; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; font-size: 16px; margin: 20px 0; transition: all 0.3s; box-shadow: 0 4px 6px rgba(26, 115, 232, 0.2); }
+        .btn:hover { background-color: #1557b0; box-shadow: 0 6px 12px rgba(26, 115, 232, 0.3); transform: translateY(-2px); }
+        .qr-container { margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 30px; }
+        img { border: 1px solid #eee; border-radius: 12px; padding: 15px; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        p { color: #5f6368; line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>🔥 Firebase Database</h2>
+        <p>Quản lý dữ liệu điểm thi và tài khoản của hệ thống MTSedu.</p>
+        
+        <a href="https://console.firebase.google.com/u/0/project/mtsedu-85ea3/database/mtsedu-85ea3-default-rtdb/data" target="_blank" class="btn">
+            Mở trên Máy Tính
+        </a>
+        
+        <div class="qr-container">
+            <p style="font-weight: bold; color: #333; margin-bottom: 15px;">Hoặc quét mã QR bằng điện thoại:</p>
+            <!-- Sử dụng API miễn phí để tạo QR code tự động từ link Firebase -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://console.firebase.google.com/u/0/project/mtsedu-85ea3/database/mtsedu-85ea3-default-rtdb/data" alt="QR Code Database">
+        </div>
+    </div>
+</body>
+</html>
