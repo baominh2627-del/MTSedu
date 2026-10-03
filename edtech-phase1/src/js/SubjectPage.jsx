@@ -16,9 +16,16 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
       onRequireLogin();
       return;
     }
-    // Đã đăng nhập → mở link bài thi (nếu có)
+    // Đã đăng nhập → chuyển sang bài thi TRONG CÙNG TAB (không mở tab mới)
     if (test.link) {
-      window.open(test.link, '_blank', 'noopener,noreferrer');
+      // Truyền thông tin user qua URL params (vì localStorage bị cô lập theo domain)
+      const url = new URL(test.link);
+      url.searchParams.set('mtsedu_user', user.username || '');
+      url.searchParams.set('mtsedu_name', user.displayName || user.username || '');
+      url.searchParams.set('mtsedu_id', user.id || ('user_' + user.username));
+      // Lưu URL trang chủ để quiz có thể quay lại
+      url.searchParams.set('mtsedu_return', window.location.origin + window.location.pathname + '#' + subjectKey);
+      window.location.href = url.toString();
     } else {
       alert('Bài thi này đang được cập nhật. Vui lòng quay lại sau!');
     }
