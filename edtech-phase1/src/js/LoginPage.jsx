@@ -313,7 +313,7 @@ function LoginPage({ onBack, onLoginSuccess }) {
         {/* --- Thông tin liên hệ --- */}
         <p className="login-signup-link">
           Tài khoản được cung cấp bởi giáo viên.{" "}
-          <a href="https://zalo.me/0372336302" target="_blank" rel="noopener noreferrer">Liên hệ</a>
+          <a href="https://zalo.me/0865039195" target="_blank" rel="noopener noreferrer">Liên hệ</a>
         </p>
       </div>
     </div>
