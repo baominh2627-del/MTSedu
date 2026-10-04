@@ -148,10 +148,23 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
       </div>
 
       {/* Main Content */}
-      <main className="pt-[88px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
-        {/* Page Header */}
-        <div className="py-6 border-b border-black/5 mb-6">
-          <h1 className="text-3xl sm:text-4xl font-bold">{data.title}</h1>
+      <main className="pt-[100px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
+        {/* Search bar - centered, full width, above everything */}
+        <div className="flex justify-center mb-10 mt-2">
+          <div className="flex items-center bg-white rounded-full w-full max-w-2xl px-7 py-5 gap-5"
+            style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
+            <span className="text-black/35 text-[32px] font-light leading-none select-none">+</span>
+            <input
+              type="text"
+              placeholder="Tìm kiếm"
+              className="flex-1 bg-transparent outline-none border-none text-[20px] text-black placeholder-black/35 font-medium"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <svg className="w-7 h-7 text-black/45 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
         </div>
 
         {/* Thông báo chưa đăng nhập */}
@@ -166,7 +179,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
           </div>
         )}
           
-        <div className="flex flex-col lg:flex-row gap-8 mt-4">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar - only filters now */}
           <aside className="w-full lg:w-[240px] shrink-0 flex flex-col gap-6">
 
@@ -200,23 +213,6 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
           {/* Grid Content */}
           <div className="flex-1">
-            {/* Search bar - centered, full width */}
-            <div className="flex justify-center mb-8">
-              <div className="flex items-center bg-white rounded-full w-full max-w-2xl px-7 py-5 gap-5"
-                style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.10)' }}>
-                <span className="text-black/35 text-[32px] font-light leading-none select-none">+</span>
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm"
-                  className="flex-1 bg-transparent outline-none border-none text-[20px] text-black placeholder-black/35 font-medium"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <svg className="w-7 h-7 text-black/45 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-              </div>
-            </div>
 
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
               <p className="text-gray-600">Hiển thị {displayedTests.length} bài kiểm tra</p>
