@@ -149,8 +149,14 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
       {/* Main Content */}
       <main className="pt-[100px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
+        
+        {/* Page Header (Title) */}
+        <div className="mb-10 pb-6 border-b border-black/5">
+          <h1 className="text-4xl sm:text-5xl font-bold text-black tracking-tight">{data.title}</h1>
+        </div>
+
         {/* Search bar - centered, full width, above everything */}
-        <div className="flex justify-center mb-10 mt-2">
+        <div className="flex justify-center mb-10">
           <div className="flex items-center bg-white rounded-full w-full max-w-2xl px-7 py-5 gap-5"
             style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
             <span className="text-black/35 text-[32px] font-light leading-none select-none">+</span>
