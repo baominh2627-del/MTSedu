@@ -380,30 +380,6 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
         }
       `,
         }}
-      {/* Blinking Cursor Keyframes */}
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-        @keyframes colorShift {
-          0%   { filter: hue-rotate(0deg)   saturate(1.2) brightness(1); }
-          25%  { filter: hue-rotate(60deg)  saturate(1.4) brightness(1.05); }
-          50%  { filter: hue-rotate(180deg) saturate(1.3) brightness(1); }
-          75%  { filter: hue-rotate(270deg) saturate(1.5) brightness(1.05); }
-          100% { filter: hue-rotate(360deg) saturate(1.2) brightness(1); }
-        }
-        @keyframes floatUp {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50%       { transform: translateY(-18px) rotate(2deg); }
-        }
-        .net-ve-img {
-          animation: colorShift 8s ease-in-out infinite, floatUp 6s ease-in-out infinite;
-        }
-      `,
-        }}
       />
     </div>
   );
