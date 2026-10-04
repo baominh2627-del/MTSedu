@@ -61,45 +61,45 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
   return (
     <div className="relative w-full min-h-screen mts-bg text-black font-sans">
-      {/* Navbar (Same minimal style as MainframeHome) */}
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 py-4 sm:py-5 flex flex-row justify-between items-center bg-white/90 backdrop-blur-md border-b border-black/5">
+      {/* Navbar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 py-4 flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8">
         <div 
           className="flex flex-row gap-3 items-center cursor-pointer hover:opacity-70 transition-opacity"
           onClick={() => onNavigate('home')}
         >
-          <span className="text-[21px] sm:text-[26px] tracking-tight text-black" style={{ fontFamily: 'var(--font-heading)' }}>
+          <span className="text-[22px] sm:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
             MTS Education
           </span>
-          <span className="text-[25px] sm:text-[30px] text-black select-none tracking-[-0.02em]">
+          <span className="text-[26px] sm:text-[30px] text-black/40 select-none">
             &#10033;
           </span>
         </div>
 
-        <div className="hidden lg:flex flex-row gap-6 text-[18px] text-black">
-          <button onClick={() => onNavigate('math')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'math' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Toán Học</button>
-          <button onClick={() => onNavigate('physics')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'physics' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Vật Lý</button>
-          <button onClick={() => onNavigate('chemistry')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'chemistry' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Hóa Học</button>
-          <button onClick={() => onNavigate('informatics')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'informatics' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Tin Học</button>
-          <button onClick={() => onNavigate('hsa')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'hsa' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Đề thi HSA/TSA</button>
-          <button onClick={() => onNavigate('mock_exams')} className={`hover:opacity-60 transition-opacity ${subjectKey === 'mock_exams' ? 'font-semibold border-b-2 border-black pb-1' : ''}`}>Thi thử TNTHPT</button>
+        <div className="hidden lg:flex flex-row gap-6 items-center">
+          <button onClick={() => onNavigate('math')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'math' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Toán Học</button>
+          <button onClick={() => onNavigate('physics')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'physics' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Vật Lý</button>
+          <button onClick={() => onNavigate('chemistry')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'chemistry' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Hóa Học</button>
+          <button onClick={() => onNavigate('informatics')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'informatics' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Tin Học</button>
+          <button onClick={() => onNavigate('hsa')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'hsa' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi HSA/TSA</button>
+          <button onClick={() => onNavigate('mock_exams')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'mock_exams' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Thi thử TNTHPT</button>
         </div>
 
         <div className="hidden lg:flex flex-row gap-4 items-center">
           {isLoggedIn ? (
             <>
-              <span className="text-[15px] text-black/60 flex items-center gap-2">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+              <span className="text-[17px] text-black/60 flex items-center gap-2">
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                 {user?.displayName || user?.username}
               </span>
               <button 
                 onClick={handleLogout}
-                className="text-[15px] text-red-500 hover:text-red-700 transition-colors font-medium px-3 py-1.5 rounded-lg hover:bg-red-50"
+                className="text-[17px] font-bold text-red-500 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-red-700 hover:bg-red-50 transition-all whitespace-nowrap"
               >
                 Đăng xuất
               </button>
             </>
           ) : (
-            <button onClick={() => onNavigate('login')} className="text-[20px] text-black hover:opacity-60 transition-opacity">
+            <button onClick={() => onNavigate('login')} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
               Đăng nhập
             </button>
           )}
