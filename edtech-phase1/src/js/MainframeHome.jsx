@@ -118,7 +118,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
   };
 
   return (
-    <div className="relative w-full min-h-screen text-black bg-white overflow-hidden">
+    <div className="relative w-full min-h-screen text-black mts-bg overflow-hidden">
       {/* Background Video */}
       <video
         ref={videoRef}

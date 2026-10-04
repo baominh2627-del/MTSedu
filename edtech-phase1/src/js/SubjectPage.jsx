@@ -60,7 +60,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#f9fafb] text-black font-sans">
+    <div className="relative w-full min-h-screen mts-bg text-black font-sans">
       {/* Navbar (Same minimal style as MainframeHome) */}
       <nav className="fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 py-4 sm:py-5 flex flex-row justify-between items-center bg-white/90 backdrop-blur-md border-b border-black/5">
         <div 

@@ -19,4 +19,33 @@ body {
   width: 100%;
   height: 100vh;
 }
+
+/* ===== MTS Custom Background: Soft Blue Cloud ===== */
+.mts-bg {
+  position: relative;
+  background-color: #f5f7fa;
+}
+
+/* Vệt mây xanh nhạt – blob chính ở giữa lệch trái */
+.mts-bg::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 55% 45% at 42% 38%, rgba(173, 216, 238, 0.52) 0%, transparent 70%),
+    radial-gradient(ellipse 38% 30% at 60% 50%, rgba(190, 225, 245, 0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 28% 22% at 28% 55%, rgba(200, 230, 248, 0.28) 0%, transparent 60%);
+  filter: blur(28px);
+}
+
+/* Tất cả nội dung bên trong phải nằm trên z-index 1 */
+.mts-bg > * {
+  position: relative;
+  z-index: 1;
+}
 
