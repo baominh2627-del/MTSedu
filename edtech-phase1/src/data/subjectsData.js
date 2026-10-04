@@ -16,6 +16,17 @@ export const subjectsData = {
         link: "https://baominh2627-del.github.io/bai-ktra-vat-ly-nhiet-ly-12/"
       },
       {
+        id: "phys_de2_chuong1",
+        title: "Đề 2 - Kiểm Tra Vật Lý 12 - Chương 1",
+        tag: "Lớp 12",
+        questions: 28,
+        time: 50,
+        price: "Miễn phí",
+        thumbnail: "/thumb_vatly12_chuong1_de2.jpg",
+        instructor: "Thầy Hùng",
+        link: "https://baominh2627-del.github.io/de-2-kiem-tra-vat-ly-12-chuong-1/"
+      },
+      {
         id: "phys_1",
         title: "Đề thi thử THPT Quốc Gia môn Lý - Sở GD Hà Nội 2024",
         tag: "Thi thử TNTHPT",
