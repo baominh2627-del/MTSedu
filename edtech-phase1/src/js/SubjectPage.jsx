@@ -171,20 +171,20 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
           {/* Sidebar */}
           <aside className="w-full lg:w-[280px] shrink-0 flex flex-col gap-6">
             {/* Search pill */}
-            <div className="relative flex items-center bg-white rounded-full shadow-sm px-4 py-3 gap-3"
-              style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+            <div className="relative flex items-center bg-white rounded-full px-6 py-4 gap-4"
+              style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
               {/* Plus icon left */}
-              <span className="text-black/40 text-[22px] font-light leading-none select-none">+</span>
+              <span className="text-black/40 text-[26px] font-light leading-none select-none">+</span>
               {/* Input */}
               <input
                 type="text"
                 placeholder="Tìm kiếm"
-                className="flex-1 bg-transparent outline-none border-none text-[16px] text-black placeholder-black/40"
+                className="flex-1 bg-transparent outline-none border-none text-[18px] text-black placeholder-black/40"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               {/* Search icon right */}
-              <svg className="w-5 h-5 text-black/50 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-black/50 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
             </div>
