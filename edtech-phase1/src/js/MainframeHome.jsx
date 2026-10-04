@@ -60,41 +60,41 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
     <div className="relative w-full min-h-screen text-black mts-bg overflow-hidden">
 
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8 px-5 sm:px-8 py-3">
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8 px-5 sm:px-8 py-4">
         {/* Logo */}
         <div className="flex flex-row gap-3 items-center">
           <span
-            className="text-[18px] sm:text-[22px] tracking-tight text-black font-bold"
+            className="text-[22px] sm:text-[26px] tracking-tight text-black font-bold"
             style={{ fontFamily: "var(--font-heading)" }}
           >
             MTS Education
           </span>
-          <span className="text-[22px] sm:text-[26px] text-black/40 select-none">
+          <span className="text-[26px] sm:text-[30px] text-black/40 select-none">
             &#10033;
           </span>
         </div>
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex flex-row gap-6 items-center">
-          <button onClick={() => onNavigate("math")} className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("math")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Toán Học
           </button>
           <button
             onClick={() => onNavigate("physics")}
-            className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap"
+            className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap"
           >
             Vật Lý
           </button>
-          <button onClick={() => onNavigate("chemistry")} className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("chemistry")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Hóa Học
           </button>
-          <button onClick={() => onNavigate("informatics")} className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("informatics")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Tin Học
           </button>
-          <button onClick={() => onNavigate("hsa")} className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("hsa")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Đề thi HSA/TSA
           </button>
-          <button onClick={() => onNavigate("mock_exams")} className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("mock_exams")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Thi thử TNTHPT
           </button>
         </div>
@@ -103,13 +103,13 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
         <div className="hidden lg:flex flex-row gap-4 items-center">
           {isLoggedIn ? (
             <>
-              <span className="text-[15px] text-black/60 flex items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+              <span className="text-[17px] text-black/60 flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                 {user?.displayName || user?.username}
               </span>
               <button
                 onClick={logout}
-                className="text-[15px] font-bold text-red-500 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-red-700 hover:bg-red-50 transition-all whitespace-nowrap"
+                className="text-[17px] font-bold text-red-500 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-red-700 hover:bg-red-50 transition-all whitespace-nowrap"
               >
                 Đăng xuất
               </button>
@@ -118,13 +118,13 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
             <>
               <button
                 onClick={onNavigateToLogin}
-                className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap"
+                className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap"
               >
                 Đăng nhập
               </button>
               <a
                 href="#"
-                className="text-[15px] font-bold text-white bg-black px-6 py-2.5 rounded-lg hover:bg-black/80 transition-colors shadow whitespace-nowrap"
+                className="text-[17px] font-bold text-white bg-black px-6 py-3 rounded-lg hover:bg-black/80 transition-colors shadow whitespace-nowrap"
               >
                 Vào học ngay
               </a>
