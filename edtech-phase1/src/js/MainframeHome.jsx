@@ -62,12 +62,16 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8 px-5 sm:px-8 py-4">
         {/* Logo */}
-        <div className="flex flex-row items-center">
-          <img
-            src="/logo_MTS.svg"
-            alt="MTS Education"
-            className="h-10 sm:h-12 w-auto object-contain"
-          />
+        <div className="flex flex-row gap-3 items-center">
+          <span
+            className="text-[22px] sm:text-[26px] tracking-tight text-black font-bold"
+            style={{ fontFamily: "var(--font-heading)" }}
+          >
+            MTS Education
+          </span>
+          <span className="text-[26px] sm:text-[30px] text-black/40 select-none">
+            &#10033;
+          </span>
         </div>
 
         {/* Desktop Nav */}
