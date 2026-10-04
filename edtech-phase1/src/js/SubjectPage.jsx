@@ -170,20 +170,23 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
         <div className="flex flex-col lg:flex-row gap-8 mt-4">
           {/* Sidebar */}
           <aside className="w-full lg:w-[280px] shrink-0 flex flex-col gap-6">
-            <div className="p-5 bg-white border border-black/10 rounded-lg shadow-sm">
-              <h4 className="text-xl font-bold mb-4">Tìm kiếm</h4>
-              <div className="relative">
-                <input 
-                  type="text" 
-                  placeholder="Tìm bài kiểm tra..." 
-                  className="w-full px-4 py-3 bg-gray-50 border border-black/10 rounded-md focus:outline-none focus:border-black/30 transition-colors"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <svg className="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-              </div>
+            {/* Search pill */}
+            <div className="relative flex items-center bg-white rounded-full shadow-sm px-4 py-3 gap-3"
+              style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+              {/* Plus icon left */}
+              <span className="text-black/40 text-[22px] font-light leading-none select-none">+</span>
+              {/* Input */}
+              <input
+                type="text"
+                placeholder="Tìm kiếm"
+                className="flex-1 bg-transparent outline-none border-none text-[16px] text-black placeholder-black/40"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {/* Search icon right */}
+              <svg className="w-5 h-5 text-black/50 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
             </div>
 
             <div className="p-5 bg-white border border-black/10 rounded-lg shadow-sm">
