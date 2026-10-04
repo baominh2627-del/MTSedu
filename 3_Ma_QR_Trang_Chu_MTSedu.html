@@ -31,5 +31,19 @@
             <p style="font-size: 13px; margin-top: 15px;">Có thể chụp màn hình ảnh này để gửi qua Zalo/Messenger</p>
         </div>
     </div>
+    <script>
+        // Chặn click chuột phải
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Chặn các phím tắt (F12, Ctrl+U, Ctrl+Shift+I/J/C, Ctrl+S)
+        document.onkeydown = function(e) {
+            if (e.keyCode === 123) return false;
+            if (e.ctrlKey && e.keyCode === 85) return false;
+            if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false;
+            if (e.ctrlKey && e.keyCode === 83) return false;
+        };
+    </script>
 </body>
 </html>
