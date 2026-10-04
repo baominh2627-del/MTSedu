@@ -6,8 +6,32 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isLoggedIn, logout } = useAuth();
   
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedPrice, setSelectedPrice] = useState('Tất cả');
+
   const data = subjectsData[subjectKey] || subjectsData['physics'];
   const mockTests = data.tests;
+
+  const handleCategoryChange = (cat) => {
+    setSelectedCategories(prev => 
+      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+    );
+  };
+
+  const displayedTests = mockTests.filter(test => {
+    const matchesSearch = test.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(test.tag);
+    
+    let matchesPrice = true;
+    if (selectedPrice === 'Miễn phí') {
+      matchesPrice = test.price.toLowerCase() === 'miễn phí';
+    } else if (selectedPrice === 'Có phí') {
+      matchesPrice = test.price.toLowerCase() !== 'miễn phí';
+    }
+
+    return matchesSearch && matchesCategory && matchesPrice;
+  });
 
   // Xử lý khi click vào bài thi: kiểm tra đăng nhập trước
   const handleTestClick = (test) => {
@@ -153,6 +177,8 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
                   type="text" 
                   placeholder="Tìm bài kiểm tra..." 
                   className="w-full px-4 py-3 bg-gray-50 border border-black/10 rounded-md focus:outline-none focus:border-black/30 transition-colors"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <svg className="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -166,7 +192,12 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
                 {data.categories && data.categories.map((cat, idx) => (
                   <li key={idx}>
                     <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600">
-                      <input type="checkbox" className="w-4 h-4 accent-black" /> {cat}
+                      <input 
+                        type="checkbox" 
+                        className="w-4 h-4 accent-black" 
+                        checked={selectedCategories.includes(cat)}
+                        onChange={() => handleCategoryChange(cat)}
+                      /> {cat}
                     </label>
                   </li>
                 ))}
@@ -176,9 +207,9 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
             <div className="p-5 bg-white border border-black/10 rounded-lg shadow-sm">
               <h4 className="text-xl font-bold mb-4">Mức phí</h4>
               <ul className="flex flex-col gap-3 text-[16px]">
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" defaultChecked /> Tất cả</label></li>
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" /> Miễn phí</label></li>
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" /> Có phí</label></li>
+                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" checked={selectedPrice === 'Tất cả'} onChange={() => setSelectedPrice('Tất cả')} /> Tất cả</label></li>
+                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" checked={selectedPrice === 'Miễn phí'} onChange={() => setSelectedPrice('Miễn phí')} /> Miễn phí</label></li>
+                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" checked={selectedPrice === 'Có phí'} onChange={() => setSelectedPrice('Có phí')} /> Có phí</label></li>
               </ul>
             </div>
           </aside>
@@ -186,7 +217,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
           {/* Grid Content */}
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-              <p className="text-gray-600">Hiển thị {mockTests.length} bài kiểm tra</p>
+              <p className="text-gray-600">Hiển thị {displayedTests.length} bài kiểm tra</p>
               <select className="px-4 py-2 bg-white border border-black/10 rounded-md focus:outline-none focus:border-black/30 cursor-pointer">
                 <option>Mới nhất</option>
                 <option>Phổ biến nhất</option>
@@ -195,7 +226,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {mockTests.map((test) => {
+              {displayedTests.map((test) => {
                 return (
                   <div 
                     key={test.id} 
@@ -264,7 +295,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
             </div>
 
             {/* Pagination */}
-            {mockTests.length > 0 ? (
+            {displayedTests.length > 0 ? (
               <div className="flex justify-center items-center gap-2 mt-10">
                 <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-50" disabled>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>

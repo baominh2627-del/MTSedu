@@ -1,158 +1,62 @@
 # 📋 PROMPT TẠO ĐỀ THI MỚI — HỆ THỐNG MTS EDUCATION
 
-Quy trình tạo bài thi mới được chia thành **2 Giai Đoạn**:
-- **Giai Đoạn 1 — dùng Gemini Pro** (có thể đọc file PDF): Trích xuất nội dung đề, tạo file `data.js`.
-- **Giai Đoạn 2 — dùng Claude** (viết code nhanh hơn): Nhận file `data.js` đã có, tạo 4 file còn lại.
+Dùng prompt này mỗi khi muốn tạo một bài thi mới tương tự `de-1-ktra-luong-giac-toan-11`.
 
 ---
 
-## ⚡ GIAI ĐOẠN 1 — GEMINI PRO (ĐỌC PDF → TẠO `data.js`)
+## CÁCH DÙNG
 
-> **Dùng khi:** Bạn có file đề thi dạng PDF. Upload file PDF lên Gemini Pro rồi gửi kèm prompt dưới đây.
-
-### CÁCH DÙNG
-
-1. Mở **Gemini Pro** (hoặc Gemini Advanced).
-2. **Upload file PDF** đề thi lên.
-3. **Copy toàn bộ prompt bên dưới**, điền thông tin vào các ô `[...]`, rồi gửi.
-4. Gemini sẽ đọc đề và **chỉ tạo duy nhất file `data.js`**, sau đó **dừng lại và chờ**.
-5. Khi bạn đã kiểm tra `data.js` xong, hãy sang **Giai Đoạn 2**.
+Copy toàn bộ phần **PROMPT** bên dưới, điền vào các ô `[...]`, rồi gửi cho AI.
 
 ---
 
-### PROMPT GIAI ĐOẠN 1 (GỬI CHO GEMINI PRO)
+## PROMPT
 
 ````
-Tôi vừa upload một file PDF đề thi lên. Hãy đọc toàn bộ nội dung đề trong file đó.
+Tạo cho tôi một bài thi trắc nghiệm HTML/JS theo đúng chuẩn hệ thống MTS Education với các thông tin sau:
 
 ## THÔNG TIN BÀI THI
-- Tên đề: [VD: ĐỀ 2 - LƯỢNG GIÁC - TOÁN 11]
-- Môn học: [VD: Toán 11]
-- Mã đề (không dấu, không cách, dùng cho Firebase): [VD: TOAN11_DE2]
+- Tên đề: [ĐỀ 2 - KIỂM TRA CHƯƠNG 1: VẬT LÝ NHIỆT (3/10)]
+- Môn học: [VẬT LÝ 12]
+- Mô tả ngắn trên header: [ĐỀ 2 - KIỂM TRA CHƯƠNG 1: VẬT LÝ NHIỆT · NĂM HỌC 2026-2027]
+- Thời gian làm bài: [VD: 50] phút 
+- Mã đề (dùng cho Firebase, không dấu, không cách): [VD: VATLY-12-DE-2-CHUONG-1]
+- Trang MTSedu quay về khi bấm "← Trang chủ": [VD: https://mtsedu.vercel.app/#math]
 
-## CẤU TRÚC ĐỀ THI (điền để AI biết cách phân loại)
-- Phần I — Trắc nghiệm khách quan: [VD: 12] câu × 0.25đ
-- Phần II — Trắc nghiệm đúng sai: [VD: 4] câu × 4 ý (a, b, c, d)
-- Phần III — Trả lời ngắn: [VD: 6] câu × 0.5đ
-
----
-
-## YÊU CẦU
-
-Hãy đọc đề trong file PDF và tạo CHỈ MỘT file duy nhất là `data.js` theo đúng cấu trúc mẫu dưới đây.
-
-**Lưu ý quan trọng khi trích xuất:**
-- Mọi công thức Toán/Lý/Hóa phải được chuyển sang chuẩn LaTeX, bọc trong `$...$` (inline) hoặc `$$...$$` (block). Ví dụ: `$\sin^2 x + \cos^2 x = 1$`.
-- Phần `explanation` (lời giải) phải viết đầy đủ, rõ ràng, kể cả công thức LaTeX, những chỗ nào có hình ảnh như câu [.....] thì chú thích chèn hình ảnh vào đó để lát tôi chèn
-- Với Phần I: `correctAnswer` là số nguyên 0=A, 1=B, 2=C, 3=D.
-- Với Phần II: `correct` trong mỗi statement phải là `true` hoặc `false` (boolean, không phải string).
-- Với Phần III: `correctAnswer` là chuỗi số, VD: `"0.5"` (hệ thống chấm sẽ chấp nhận cả "0,5"); có những phần có 2 câu cùng 1 đáp án thì viết đề bài chung giống như trong đề và viết các đề riêng của từng câu như trong đề 
-- Nếu câu có hình ảnh/đồ thị, để `image: "cau_X.png"` và nhắc tôi cần cắt ảnh đó từ PDF.
-
-## CẤU TRÚC FILE `data.js` CẦN TẠO
-
-```js
-export const examData = [
-
-  // ======== PHẦN 1: TRẮC NGHIỆM KHÁCH QUAN ========
-  {
-    id: "p1_1",
-    part: 1,
-    question: "[ĐỀ BÀI — dùng LaTeX $...$ cho công thức]",
-    options: ["[A]", "[B]", "[C]", "[D]"],
-    correctAnswer: 0, // 0=A | 1=B | 2=C | 3=D
-    explanation: "[HƯỚNG DẪN GIẢI ĐẦY ĐỦ]",
-    image: null // hoặc "cau_1.png" nếu câu có hình
-  },
-  // ... tất cả câu Phần I
-
-  // ======== PHẦN 2: TRẮC NGHIỆM ĐÚNG/SAI ========
-  {
-    id: "p2_1",
-    part: 2,
-    question: "[ĐỀ BÀI]",
-    statements: [
-      { text: "[Mệnh đề a)]", correct: true },
-      { text: "[Mệnh đề b)]", correct: false },
-      { text: "[Mệnh đề c)]", correct: true },
-      { text: "[Mệnh đề d)]", correct: false }
-    ],
-    explanation: "[HƯỚNG DẪN GIẢI ĐẦY ĐỦ]"
-  },
-  // ... tất cả câu Phần II
-
-  // ======== PHẦN 3: TRẢ LỜI NGẮN ========
-  {
-    id: "p3_1",
-    part: 3,
-    question: "[ĐỀ BÀI]",
-    correctAnswer: "0.5", // chuỗi số, VD: "2" hoặc "1.5"
-    explanation: "[HƯỚNG DẪN GIẢI ĐẦY ĐỦ]",
-    image: null
-  },
-  // ... tất cả câu Phần III
-
-];
-```
-
----
-
-## ⛔ SAU KHI VIẾT XONG `data.js`, HÃY DỪNG LẠI
-
-Đừng tạo thêm bất kỳ file nào khác (index.html, script.js, ...).
-Hãy kết thúc bằng dòng thông báo sau:
-
-> ✅ **Đã hoàn thành `data.js`!** Hãy kiểm tra lại nội dung câu hỏi, đáp án và lời giải. Khi nào bạn xác nhận xong, hãy chuyển sang bước tiếp theo để tạo các file còn lại.
-````
-
----
----
-
-## ⚡ GIAI ĐOẠN 2 — CLAUDE (NHẬN `data.js` → TẠO 4 FILE CÒN LẠI)
-
-> **Dùng khi:** Bạn đã có file `data.js` hoàn chỉnh từ Giai Đoạn 1 (hoặc tự viết tay). Mở Claude và gửi prompt dưới đây.
-
-### CÁCH DÙNG
-
-1. Mở **Claude**.
-2. **Paste toàn bộ nội dung file `data.js`** vào (hoặc upload file lên).
-3. **Copy toàn bộ prompt bên dưới**, điền thông tin vào các ô `[...]`, rồi gửi.
-4. Claude sẽ tạo đầy đủ 4 file còn lại: `index.html`, `firebase-config.js`, `mtsedu-auth.js`, `script.js`.
-
----
-
-### PROMPT GIAI ĐOẠN 2 (GỬI CHO CLAUDE)
-
-````
-Tôi đang xây dựng hệ thống bài thi online cho MTS Education. Tôi đã có sẵn file `data.js` (dán bên dưới / đính kèm). Bây giờ hãy tạo cho tôi 4 file còn lại để hoàn thiện bài thi.
-
-## THÔNG TIN BÀI THI
-- Tên đề: [VD: ĐỀ 2 - LƯỢNG GIÁC - TOÁN 11]
-- Môn học: [VD: Toán 11]
-- Mô tả ngắn trên header: [VD: ĐỀ ÔN TẬP CHƯƠNG LƯỢNG GIÁC · NĂM HỌC 2024-2025]
-- Thời gian làm bài: [VD: 90] phút
-- Mã đề (dùng cho Firebase, không dấu, không cách): [VD: TOAN11_DE2]
-- Hash trang MTSedu để quay về: [VD: #math hoặc #physics]
-
-## CẤU TRÚC ĐỀ THI (để điền vào header và tính điểm đúng)
-- Phần I: [VD: 12] câu × 0.25đ = [VD: 3.0đ]
-- Phần II: [VD: 4] câu (thang: 4 đúng=1đ | 3 đúng=0.5đ | 2 đúng=0.25đ | ≤1=0đ) = [VD: 4.0đ]
-- Phần III: [VD: 6] câu × 0.5đ = [VD: 3.0đ]
+## CẤU TRÚC ĐỀ THI
+- Phần I — Trắc nghiệm khách quan: [VD: 12] câu × 0.25đ = [VD: 3.0đ]
+- Phần II — Trắc nghiệm đúng sai: [VD: 4] câu × (4 ý a,b,c,d) = [VD: 4.0đ]
+  - Thang điểm Phần II: 4 đúng = 1đ | 3 đúng = 0.5đ | 2 đúng = 0.25đ | ≤1 = 0đ
+- Phần III — Trả lời ngắn: [VD: 6] câu × 0.5đ = [VD: 3.0đ]
 - Tổng: 10 điểm
 
+## NỘI DUNG CÂU HỎI
+[Paste toàn bộ câu hỏi tại đây. Với mỗi câu ghi rõ:
+- Có những câu có hình ảnh thì chú thích để tôi chèn hình ảnh sau còn lại những phần text của câu thì vẫn viết như bình thường 
+PHẦN I (trắc nghiệm 4 đáp án):
+Câu 1: [đề bài, hỗ trợ LaTeX $...$]
+A. [đáp án A]  B. [đáp án B]  C. [đáp án C]  D. [đáp án D]
+Đáp án đúng: [A/B/C/D]
+Giải: [hướng dẫn giải ngắn]
+
+PHẦN II (đúng/sai 4 ý):
+Câu 1: [đề bài]
+a) [mệnh đề] → [Đúng/Sai]
+b) [mệnh đề] → [Đúng/Sai]
+c) [mệnh đề] → [Đúng/Sai]
+d) [mệnh đề] → [Đúng/Sai]
+Giải: [hướng dẫn]
+
+PHẦN III (trả lời ngắn):
+- 1 số câu dùng chung đề và có hình ảnh thì hãy chú thích phần chèn hình ảnh vào cho tôi còn những phần còn lại của các câu vẫn viết text theo latex
+Câu 1: [đề bài]
+Đáp án: [số hoặc biểu thức đơn giản, VD: 1/2 hoặc 0.5]
+Giải: [hướng dẫn]
+]
+
 ---
 
-## FILE `data.js` (đã có sẵn — KHÔNG tạo lại file này)
-
-[PASTE NỘI DUNG data.js Ở ĐÂY]
-
----
-
-## YÊU CẦU
-
-Hãy tạo đầy đủ 4 file sau, viết code hoàn chỉnh, không bỏ sót:
-
----
+Yêu cầu tạo ra 5 file sau đây, viết đầy đủ code hoàn chỉnh:
 
 ## FILE 1: index.html
 
@@ -175,7 +79,7 @@ Hãy tạo đầy đủ 4 file sau, viết code hoàn chỉnh, không bỏ sót:
     </script>
   </head>
   <body>
-    <!-- Màn hình chờ đăng nhập -->
+    <!-- Màn hình chờ đăng nhập (sẽ bị thay bởi JS nếu đã login) -->
     <div id="login-screen" class="container">
       <div class="exam-header-block" style="margin-bottom: 20px">
         <div class="exam-header-top" style="border-radius: 8px; border-bottom: 1px solid var(--border-color);">
@@ -374,7 +278,58 @@ export function insertBackButton() {
 
 ---
 
-## FILE 4: script.js
+## FILE 4: data.js
+Tạo với ĐÚNG cấu trúc dưới đây, điền toàn bộ câu hỏi vào:
+
+```js
+export const examData = [
+
+  // ======== PHẦN 1: TRẮC NGHIỆM ========
+  // id: string duy nhất | part: 1 | correctAnswer: 0=A,1=B,2=C,3=D
+  {
+    id: "p1_1",
+    part: 1,
+    question: "[ĐỀ BÀI — LaTeX dùng $...$ hoặc \\\\( \\\\)]",
+    options: ["[A]", "[B]", "[C]", "[D]"],
+    correctAnswer: 0,
+    explanation: "[GIẢI THÍCH]",
+    image: null  // hoặc "ten-anh.png" nếu có hình
+  },
+  // ... câu 2 → hết Phần I
+
+  // ======== PHẦN 2: ĐÚNG/SAI ========
+  // statements[i].correct: true hoặc false (boolean, không phải string)
+  {
+    id: "p2_1",
+    part: 2,
+    question: "[ĐỀ BÀI]",
+    statements: [
+      { text: "[Mệnh đề a)]", correct: true },
+      { text: "[Mệnh đề b)]", correct: false },
+      { text: "[Mệnh đề c)]", correct: true },
+      { text: "[Mệnh đề d)]", correct: false }
+    ],
+    explanation: "[GIẢI THÍCH]"
+  },
+  // ... câu 2 → hết Phần II
+
+  // ======== PHẦN 3: TRẢ LỜI NGẮN ========
+  // correctAnswer: string số, chấp nhận cả dấu chấm và dấu phẩy
+  {
+    id: "p3_1",
+    part: 3,
+    question: "[ĐỀ BÀI]",
+    correctAnswer: "0.5",  // script tự so sánh với cả "0,5"
+    explanation: "[GIẢI THÍCH]",
+    image: null
+  },
+  // ... câu 2 → hết Phần III
+];
+```
+
+---
+
+## FILE 5: script.js
 Dùng ĐÚNG template này, chỉ thay 4 hằng số ở đầu file:
 
 ```js
@@ -710,27 +665,28 @@ document.getElementById("review-btn").addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 ```
+
+---
+
+⚠️ SAU KHI TẠO XONG:
+1. Copy file style.css từ thư mục de-1-ktra-luong-giac-toan-11 vào (không thay đổi)
+2. Tạo GitHub repo mới, push code lên
+3. Bật GitHub Pages (Settings → Pages → branch main)
+4. Thêm link GitHub Pages vào subjectsData.js trong MTSedu (field `link`)
+5. Commit & push MTSedu → Vercel tự deploy
 ````
 
 ---
 
-## ⚠️ SAU KHI TẠO XONG (cả 2 giai đoạn):
-1. Copy file `style.css` từ thư mục `de-1-ktra-luong-giac-toan-11` vào (không thay đổi).
-2. Tạo GitHub repo mới, push code lên.
-3. Bật GitHub Pages (Settings → Pages → branch main).
-4. Thêm link GitHub Pages vào `subjectsData.js` trong MTSedu (field `link`).
-5. Commit & push MTSedu → Vercel tự deploy.
-
----
-
-## 📝 GHI CHÚ TUỲ CHỈNH
+## GHI CHÚ TUỲ CHỈNH
+- Có file đáp án tôi gửi kèo để từ đó làm phần đáp án và hướng dẫn sau khi xem đáp án của học sinh 
 
 | Muốn thay đổi | Sửa ở đâu |
 |---|---|
-| Điểm mỗi câu Phần I (VD: 0.2 thay 0.25) | `script.js` → `submitExam()`: sửa `+= 0.25` |
-| Số ý Phần II (VD: 3 ý thay 4 ý) | `script.js` → `updateBoard()`: sửa `=== 4`, `submitExam()`: sửa block `cCount` |
-| Thang điểm Phần II | `script.js` → `submitExam()`: sửa block `if (cCount === 4)...` |
-| Điểm mỗi câu Phần III | `script.js` → `submitExam()`: sửa `+= 0.5` |
+| Điểm mỗi câu Phần I (VD: 0.2 thay 0.25) | `submitExam()`: sửa `+= 0.25` |
+| Số ý Phần II (VD: 3 ý thay 4 ý) | `updateBoard()`: sửa `=== 4`, `submitExam()`: sửa `cCount === 4,3,2` |
+| Thang điểm Phần II | `submitExam()`: sửa block `if (cCount === 4)...` |
+| Điểm mỗi câu Phần III | `submitExam()`: sửa `+= 0.5` |
 | Thêm hình vào câu hỏi | `data.js`: `image: "anh.png"` (đặt ảnh cùng thư mục) |
 | Đề chỉ có Phần I + III | Bỏ data Phần II trong `data.js`, bỏ `partTitles[2]` trong `renderExam()` |
-| Cảnh báo còn X giây | `script.js` → `startTimer()`: sửa `timeRemaining === 30` |
+| Cảnh báo còn X giây | `startTimer()`: sửa `timeRemaining === 30` |
