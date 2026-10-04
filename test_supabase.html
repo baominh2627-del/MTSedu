@@ -91,65 +91,38 @@
         };
     </script>
 
-    <!-- ANTI-SCREENSHOT PROTECTION WITH PERSISTENT PENALTY -->
+    <!-- ANTI-SCREENSHOT PROTECTION -->
     <style>
-      #mts-anti-screenshot { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 1); color: #fff; z-index: 9999999; justify-content: center; align-items: center; flex-direction: column; font-family: sans-serif; text-align: center; }
+      #mts-anti-screenshot { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.95); color: #fff; z-index: 9999999; justify-content: center; align-items: center; flex-direction: column; font-family: sans-serif; text-align: center; }
     </style>
     <div id="mts-anti-screenshot">
         <span style="font-size: 50px; margin-bottom: 20px;">⚠️</span>
-        <b style="font-size: 24px; color: #ff4d4f;">PHÁT HIỆN HÀNH VI ĐÁNG NGỜ</b>
-        <p style="font-size: 16px; color: #ccc; margin-top: 10px;">Cảnh báo: Bạn đã cố tình chụp màn hình hoặc rời khỏi trang khi chưa đăng nhập.<br>Hệ thống tạm thời khóa quyền truy cập để bảo vệ bản quyền.</p>
-        <p style="font-size: 18px; color: #fff; margin-top: 25px;">Thời gian khóa còn lại: <span id="mts-countdown" style="color: #ff4d4f; font-weight: bold; font-size: 30px;">05:00</span></p>
+        <b style="font-size: 24px;">NỘI DUNG TẠM ẨN</b>
+        <p style="font-size: 16px; color: #ccc; margin-top: 10px;">Màn hình bị che vì bạn đang mở công cụ chụp ảnh hoặc click ra ngoài trang web.<br>Vui lòng <b>Click chuột lại vào màn hình này</b> để học tiếp.</p>
     </div>
     <script>
-        // KIỂM TRA NGAY LẬP TỨC ĐỂ CHỐNG F5 (Tránh chớp màn hình lộ nội dung)
-        if (localStorage.getItem('mts_penalty_until') && parseInt(localStorage.getItem('mts_penalty_until')) > Date.now()) {
-            document.getElementById('mts-anti-screenshot').style.display = 'flex';
-        }
-    </script>
-    <script>
-        const daDangNhap = false; // Tạm giả lập chưa đăng nhập
+        // Xóa hình phạt cũ nếu người dùng vẫn còn lưu trong máy
+        localStorage.removeItem('mts_penalty_until');
+        
+        const daDangNhap = false; 
         if (!daDangNhap) {
             const protectionOverlay = document.getElementById('mts-anti-screenshot');
-            const countdownSpan = document.getElementById('mts-countdown');
-            let countdownInterval;
-
-            function startCountdown(penaltyUntil) {
-                protectionOverlay.style.display = 'flex';
-                clearInterval(countdownInterval);
-                
-                countdownInterval = setInterval(function() {
-                    let now = Date.now();
-                    let timeLeft = Math.ceil((penaltyUntil - now) / 1000);
-
-                    if (timeLeft <= 0) {
-                        clearInterval(countdownInterval);
-                        protectionOverlay.style.display = 'none';
-                        localStorage.removeItem('mts_penalty_until');
-                    } else {
-                        let m = Math.floor(timeLeft / 60);
-                        let s = timeLeft % 60;
-                        countdownSpan.innerText = (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
-                    }
-                }, 1000);
-            }
-
-            // Kích hoạt timer nếu đang bị phạt (từ lần tải trước / F5)
-            let existingPenalty = localStorage.getItem('mts_penalty_until');
-            if (existingPenalty && parseInt(existingPenalty) > Date.now()) {
-                startCountdown(parseInt(existingPenalty));
-            } else {
-                localStorage.removeItem('mts_penalty_until');
-            }
-
-            // Khi người dùng bấm chụp ảnh hoặc chuyển tab
-            window.addEventListener('blur', function() {
-                let currentPenalty = localStorage.getItem('mts_penalty_until');
-                if (!currentPenalty || parseInt(currentPenalty) <= Date.now()) {
-                    let penaltyUntil = Date.now() + 300000; // 5 phút = 300,000 ms
-                    localStorage.setItem('mts_penalty_until', penaltyUntil);
-                    startCountdown(penaltyUntil);
+            
+            // Lắng nghe phím PrintScreen để chặn
+            document.addEventListener('keyup', function(e) {
+                if (e.key === 'PrintScreen' || e.keyCode === 44) {
+                    try { navigator.clipboard.writeText('Nội dung đã được bảo vệ bản quyền.'); } catch(e) {}
                 }
+            });
+
+            // Khi mất focus (mở Snipping tool hoặc chuyển tab) -> Chỉ che tạm thời, KHÔNG phạt thời gian
+            window.addEventListener('blur', function() {
+                protectionOverlay.style.display = 'flex';
+            });
+
+            // Khi click quay lại web -> Tắt che ngay lập tức
+            window.addEventListener('focus', function() {
+                protectionOverlay.style.display = 'none';
             });
         }
     </script>
