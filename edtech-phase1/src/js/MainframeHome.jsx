@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext.jsx";
 
 // --- Custom Hook ---
@@ -37,10 +37,6 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showPills, setShowPills] = useState(false);
   const { user, isLoggedIn, logout } = useAuth();
-  const videoRef = useRef(null);
-  const prevXRef = useRef(0);
-  const targetTimeRef = useRef(0);
-  const isSeekingRef = useRef(false);
 
   // Typewriter
   const { displayed, done } = useTypewriter(
@@ -55,63 +51,6 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
     return () => clearTimeout(timer);
   }, []);
 
-  // Video mouse scrubbing
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (!videoRef.current || isNaN(videoRef.current.duration)) return;
-
-      const currentX = e.clientX;
-      if (prevXRef.current === 0) {
-        prevXRef.current = currentX;
-        return;
-      }
-
-      const delta = currentX - prevXRef.current;
-      prevXRef.current = currentX;
-
-      const sensitivity = 0.8;
-      const duration = videoRef.current.duration;
-
-      let newTarget =
-        targetTimeRef.current +
-        (delta / window.innerWidth) * sensitivity * duration;
-      // Clamp between 0 and duration
-      newTarget = Math.max(0, Math.min(newTarget, duration));
-      targetTimeRef.current = newTarget;
-
-      seekVideo();
-    };
-
-    const seekVideo = () => {
-      if (!videoRef.current || isSeekingRef.current) return;
-      isSeekingRef.current = true;
-      videoRef.current.currentTime = targetTimeRef.current;
-    };
-
-    const handleSeeked = () => {
-      isSeekingRef.current = false;
-      if (
-        videoRef.current &&
-        Math.abs(videoRef.current.currentTime - targetTimeRef.current) > 0.05
-      ) {
-        seekVideo();
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    const vRef = videoRef.current;
-    if (vRef) {
-      vRef.addEventListener("seeked", handleSeeked);
-    }
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      if (vRef) {
-        vRef.removeEventListener("seeked", handleSeeked);
-      }
-    };
-  }, []);
-
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("hello@mainframe.co");
     alert("Email copied to clipboard!");
@@ -119,53 +58,43 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
 
   return (
     <div className="relative w-full min-h-screen text-black mts-bg overflow-hidden">
-      {/* Background Video */}
-      <video
-        ref={videoRef}
-        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260530_042513_df96a13b-6155-4f6e-8b93-c9dee66fba08.mp4"
-        className="fixed inset-0 z-0 object-cover w-full h-full"
-        style={{ objectPosition: "70% center" }}
-        muted
-        playsInline
-        preload="auto"
-      />
 
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row justify-between items-center bg-black/90 backdrop-blur-sm px-5 sm:px-8 py-3">
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8 px-5 sm:px-8 py-3">
         {/* Logo */}
         <div className="flex flex-row gap-3 items-center">
           <span
-            className="text-[18px] sm:text-[22px] tracking-tight text-white font-bold"
+            className="text-[18px] sm:text-[22px] tracking-tight text-black font-bold"
             style={{ fontFamily: "var(--font-heading)" }}
           >
             MTS Education
           </span>
-          <span className="text-[22px] sm:text-[26px] text-white/60 select-none">
+          <span className="text-[22px] sm:text-[26px] text-black/40 select-none">
             &#10033;
           </span>
         </div>
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex flex-row gap-6 items-center">
-          <button onClick={() => onNavigate("math")} className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("math")} className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Toán Học
           </button>
           <button
             onClick={() => onNavigate("physics")}
-            className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap"
+            className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap"
           >
             Vật Lý
           </button>
-          <button onClick={() => onNavigate("chemistry")} className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("chemistry")} className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Hóa Học
           </button>
-          <button onClick={() => onNavigate("informatics")} className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("informatics")} className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Tin Học
           </button>
-          <button onClick={() => onNavigate("hsa")} className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("hsa")} className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Đề thi HSA/TSA
           </button>
-          <button onClick={() => onNavigate("mock_exams")} className="text-[16px] font-bold text-white/80 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("mock_exams")} className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Thi thử TNTHPT
           </button>
         </div>
@@ -174,13 +103,13 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
         <div className="hidden lg:flex flex-row gap-4 items-center">
           {isLoggedIn ? (
             <>
-              <span className="text-[15px] text-white/70 flex items-center gap-2">
+              <span className="text-[15px] text-black/60 flex items-center gap-2">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                 {user?.displayName || user?.username}
               </span>
               <button
                 onClick={logout}
-                className="text-[15px] font-bold text-red-400 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-red-500/20 transition-all whitespace-nowrap"
+                className="text-[15px] font-bold text-red-500 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-red-700 hover:bg-red-50 transition-all whitespace-nowrap"
               >
                 Đăng xuất
               </button>
@@ -189,13 +118,13 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
             <>
               <button
                 onClick={onNavigateToLogin}
-                className="text-[16px] font-bold text-white/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-white hover:bg-white/10 transition-all whitespace-nowrap"
+                className="text-[16px] font-bold text-black/70 uppercase tracking-wider px-5 py-2.5 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap"
               >
                 Đăng nhập
               </button>
               <a
                 href="#"
-                className="text-[15px] font-bold text-black bg-white px-6 py-2.5 rounded-lg hover:bg-white/90 transition-colors shadow whitespace-nowrap"
+                className="text-[15px] font-bold text-white bg-black px-6 py-2.5 rounded-lg hover:bg-black/80 transition-colors shadow whitespace-nowrap"
               >
                 Vào học ngay
               </a>
@@ -209,13 +138,13 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <div
-            className={`w-6 h-[2px] bg-white transition-all duration-300 ${isMenuOpen ? "rotate-45 translate-y-[7px]" : ""}`}
+            className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "rotate-45 translate-y-[7px]" : ""}`}
           />
           <div
-            className={`w-6 h-[2px] bg-white transition-all duration-300 ${isMenuOpen ? "opacity-0" : "opacity-100"}`}
+            className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "opacity-0" : "opacity-100"}`}
           />
           <div
-            className={`w-6 h-[2px] bg-white transition-all duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}
+            className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}
           />
         </button>
       </nav>
