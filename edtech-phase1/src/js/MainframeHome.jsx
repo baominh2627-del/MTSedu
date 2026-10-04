@@ -244,8 +244,9 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
       </div>
 
       {/* Hero Section */}
-      <main className="h-screen w-full flex flex-col justify-end pb-12 md:justify-center md:pb-0 px-5 sm:px-8 md:px-10 overflow-hidden">
-        <div className="w-full max-w-xl md:max-w-[55%] lg:max-w-[50%] relative z-10">
+      <main className="h-screen w-full flex items-end pb-12 md:items-center md:pb-0 px-5 sm:px-8 md:px-10 overflow-hidden">
+        {/* Left: Text content */}
+        <div className="w-full md:w-1/2 relative z-10">
           {/* Blurred Intro Label */}
           <div
             className="pointer-events-none select-none mb-5 sm:mb-6 font-bold"
@@ -333,7 +334,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
             {/* Điện thoại */}
             <a
               href="tel:0372336302"
-              className="inline-flex items-center gap-2 bg-transparent text-white border border-white rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.4em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-white hover:text-black transition-colors duration-200"
+              className="inline-flex items-center gap-2 bg-transparent text-black border border-black/20 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.4em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82 19.79 19.79 0 01.09 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/>
@@ -342,15 +343,64 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
             </a>
           </div>
         </div>
+
+        {/* Right: Decorative SVG with color animation */}
+        <div className="hidden md:flex w-1/2 items-center justify-center relative z-10">
+          <div className="net-ve-wrapper" style={{ width: "min(480px, 45vw)", height: "min(480px, 45vw)" }}>
+            <img
+              src="/net_ve.svg"
+              alt="Decorative illustration"
+              className="net-ve-img w-full h-full object-contain"
+            />
+          </div>
+        </div>
       </main>
 
-      {/* Blinking Cursor Keyframes (Tailwind doesn't have it by default, inline style animation is easier to add in CSS) */}
+      {/* Animations */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
         @keyframes blink {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
+        }
+        @keyframes colorShift {
+          0%   { filter: hue-rotate(0deg)   saturate(1.2) brightness(1); }
+          25%  { filter: hue-rotate(60deg)  saturate(1.4) brightness(1.05); }
+          50%  { filter: hue-rotate(180deg) saturate(1.3) brightness(1); }
+          75%  { filter: hue-rotate(270deg) saturate(1.5) brightness(1.05); }
+          100% { filter: hue-rotate(360deg) saturate(1.2) brightness(1); }
+        }
+        @keyframes floatUp {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50%       { transform: translateY(-18px) rotate(2deg); }
+        }
+        .net-ve-img {
+          animation: colorShift 8s ease-in-out infinite, floatUp 6s ease-in-out infinite;
+        }
+      `,
+        }}
+      {/* Blinking Cursor Keyframes */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+        @keyframes colorShift {
+          0%   { filter: hue-rotate(0deg)   saturate(1.2) brightness(1); }
+          25%  { filter: hue-rotate(60deg)  saturate(1.4) brightness(1.05); }
+          50%  { filter: hue-rotate(180deg) saturate(1.3) brightness(1); }
+          75%  { filter: hue-rotate(270deg) saturate(1.5) brightness(1.05); }
+          100% { filter: hue-rotate(360deg) saturate(1.2) brightness(1); }
+        }
+        @keyframes floatUp {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50%       { transform: translateY(-18px) rotate(2deg); }
+        }
+        .net-ve-img {
+          animation: colorShift 8s ease-in-out infinite, floatUp 6s ease-in-out infinite;
         }
       `,
         }}
