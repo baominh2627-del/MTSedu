@@ -16,8 +16,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/5ac3fe7c6abd2f62067f266d89671492?family=HelveticaNowDisplay-Medium" />
     <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/1aa3377e489837a26d019bba501e779d?family=HelveticaNowDisplayW01-Rg" />
-    <script type="module" crossorigin src="/MTSedu/assets/index-7ubSEKcW.js"></script>
-    <link rel="stylesheet" crossorigin href="/MTSedu/assets/index-B8gcKM-C.css">
+    <script type="module" crossorigin src="/MTSedu/assets/index-CS9WXj-b.js"></script>
+    <link rel="stylesheet" crossorigin href="/MTSedu/assets/index-DLC9ZRqF.css">
   </head>
   <body>
     <!-- Nơi React sẽ kết nối và vẽ giao diện vào -->
@@ -35,6 +35,24 @@
         if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false;
         if (e.ctrlKey && e.keyCode === 83) return false;
       };
+    </script>
+    
+    <!-- ANTI-SCREENSHOT PROTECTION -->
+    <style>
+      #mts-anti-screenshot { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.98); color: #fff; z-index: 9999999; justify-content: center; align-items: center; flex-direction: column; font-family: sans-serif; text-align: center; }
+    </style>
+    <div id="mts-anti-screenshot">
+        <span style="font-size: 50px; margin-bottom: 20px;">⚠️</span>
+        <b style="font-size: 24px;">MÀN HÌNH ĐÃ BỊ CHE</b>
+        <p style="font-size: 16px; color: #ccc; margin-top: 10px;">Bạn phải Đăng Nhập để được phép xem nội dung này.<br>Hành động chụp màn hình / chuyển ứng dụng bị khóa.</p>
+    </div>
+    <script>
+        const daDangNhap = false; // Tạm giả lập chưa đăng nhập
+        if (!daDangNhap) {
+            const protectionOverlay = document.getElementById('mts-anti-screenshot');
+            window.addEventListener('blur', function() { protectionOverlay.style.display = 'flex'; });
+            window.addEventListener('focus', function() { protectionOverlay.style.display = 'none'; });
+        }
     </script>
   </body>
 </html>
