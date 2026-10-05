@@ -226,7 +226,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
       </div>
 
       {/* Hero Section */}
-      <main className="h-screen w-full flex items-center pt-24 md:pt-0 md:pb-0 px-5 sm:px-8 md:px-10 overflow-hidden">
+      <main className="min-h-screen w-full flex flex-col md:flex-row items-center justify-center pt-20 md:pt-0 px-5 sm:px-8 md:px-10 overflow-hidden gap-6 md:gap-0 pb-10 md:pb-0">
         {/* Left: Text content */}
         <div className="w-full md:w-1/2 relative z-10">
           {/* Blurred Intro Label */}
@@ -326,9 +326,9 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
           </div>
         </div>
 
-        {/* Right: Decorative SVG with color animation */}
-        <div className="hidden md:flex w-1/2 items-center justify-center relative z-10">
-          <div className="net-ve-wrapper" style={{ width: "min(480px, 45vw)", height: "min(480px, 45vw)" }}>
+        {/* Right: Decorative SVG with color animation — shown on all screens */}
+        <div className="flex w-full md:w-1/2 items-center justify-center relative z-10">
+          <div className="net-ve-wrapper" style={{ width: "min(280px, 70vw)", height: "min(280px, 70vw)" }}>
             <img
               src="/net_ve.svg"
               alt="Decorative illustration"
