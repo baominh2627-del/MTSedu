@@ -49,6 +49,29 @@ Hãy đọc đề trong file PDF và tạo CHỈ MỘT file duy nhất là `data
 - Với Phần III: `correctAnswer` là chuỗi số, VD: `"0.5"` (hệ thống chấm sẽ chấp nhận cả "0,5"); có những phần có 2 câu cùng 1 đáp án thì viết đề bài chung giống như trong đề và viết các đề riêng của từng câu như trong đề 
 - Nếu câu có hình ảnh/đồ thị, để `image: "cau_X.png"` và nhắc tôi cần cắt ảnh đó từ PDF.
 
+**⚠️ QUY TẮC LATEX BẮT BUỘC — tránh lỗi render MathJax:**
+- **KHÔNG** dùng ký tự Unicode trong công thức — phải dùng LaTeX:
+  | Sai ❌ | Đúng ✅ |
+  |---|---|
+  | `×` | `\times` |
+  | `²`, `³` | `^2`, `^3` |
+  | `μ`, `Ω`, `π` | `\mu`, `\Omega`, `\pi` |
+  | `→` | `\rightarrow` hoặc `\to` |
+  | `≤`, `≥`, `≠` | `\leq`, `\geq`, `\neq` |
+- **Không bỏ backslash**: viết `\frac{}{}`, `\sqrt{}`, `\vec{}`, `\overrightarrow{}` — không viết tắt.
+- **Dấu nhân**: dùng `\cdot` hoặc `\times`, không dùng `*` hay ký tự unicode `×`.
+- **Phân số phức tạp**: dùng `\frac{tử}{mẫu}`, không viết `a/b` bên trong `$...$` cho biểu thức dài.
+- **Chỉ số nhiều ký tự**: phải có ngoặc nhọn — `v_{max}` ✅, `v_max` ❌; `\omega^2` ✅.
+- **Đơn vị trong công thức**: đặt trong `\text{}`, VD: `$v = 5\ \text{m/s}$`.
+- **Ví dụ LaTeX đúng chuẩn cho Vật lý 12:**
+  - Phương trình dao động: `$x = A\cos(\omega t + \varphi)$`
+  - Tần số góc: `$\omega = 2\pi f$`
+  - Vận tốc cực đại: `$v_{max} = A\omega$`
+  - Gia tốc: `$a = -\omega^2 x$`
+  - Năng lượng: `$W = \frac{1}{2}kA^2$`
+  - Li độ có đơn vị: `$x = 5\cos\!\left(10\pi t + \frac{\pi}{3}\right)\ \text{cm}$`
+  - Chu kỳ con lắc lò xo: `$T = 2\pi\sqrt{\frac{m}{k}}$`
+
 ## CẤU TRÚC FILE `data.js` CẦN TẠO
 
 ```js
@@ -186,31 +209,34 @@ Hãy tạo đầy đủ 4 file sau, viết code hoàn chỉnh, không bỏ sót:
         </div>
       </div>
       <div class="card form-card">
-        <form id="login-form">
-          <div class="form-group">
-            <label for="student-name">Họ và tên: </label>
-            <input type="text" id="student-name" placeholder="Nguyễn Văn A" required />
+        <div class="exam-instructions" style="text-align: left;">
+          <h3 style="margin-top: 0; color: var(--navy); font-size: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; font-weight: bold;">📋 HƯỚNG DẪN &amp; QUY CHẾ THI</h3>
+          <ul style="font-size: 14px; color: #334155; line-height: 1.8; padding-left: 20px; margin-bottom: 16px;">
+            <li><strong>Phần I ([ĐIỂM P1]):</strong> [SỐ CÂU P1] câu trắc nghiệm 4 đáp án. Đúng mỗi câu được <strong>[ĐIỂM/CÂU P1]đ</strong>.</li>
+            <li><strong>Phần II ([ĐIỂM P2]):</strong> [SỐ CÂU P2] câu đúng/sai. Điểm mỗi câu:<br/>
+              Đúng 1 ý: <strong>0.1đ</strong> | Đúng 2 ý: <strong>0.25đ</strong> | Đúng 3 ý: <strong>0.5đ</strong> | Đúng 4 ý: <strong>1.0đ</strong>
+            </li>
+            <li><strong>Phần III ([ĐIỂM P3]):</strong> [SỐ CÂU P3] câu trả lời ngắn. Đúng mỗi câu <strong>[ĐIỂM/CÂU P3]đ</strong>.<br/>
+              <span style="color: #d97706; font-weight: bold;">⚠️ Lưu ý:</span> Dùng dấu chấm (<code>.</code>) thay vì dấu phẩy (<code>,</code>). VD: <code>1.25</code>
+            </li>
+          </ul>
+          <div style="background: #fef9c3; border: 1px solid #fde047; border-radius: 6px; padding: 10px 14px; font-size: 13px; color: #854d0e; margin-bottom: 16px;">
+            ⚠️ <strong>Quy chế:</strong> Nếu bạn chuyển sang tab hoặc ứng dụng khác trong khi thi, hệ thống sẽ ghi nhận số lần vi phạm và báo cáo về giáo viên.
           </div>
-          <div class="form-group">
-            <label for="student-class">Lớp/Nhóm: </label>
-            <input type="text" id="student-class" placeholder="11A1" required />
-          </div>
-          <div class="form-group">
-            <label for="exam-time">Thời gian làm bài (phút)</label>
-            <input type="number" id="exam-time" value="[THỜI GIAN PHÚT]" />
-          </div>
-          <button type="submit" class="btn-primary" style="margin-top: 10px">Bắt đầu làm bài</button>
-          <p class="form-note">Khi hết giờ, bài làm sẽ tự động được nộp. Kết quả và đáp án sẽ hiển thị ngay sau khi nộp bài.</p>
-        </form>
+          <button id="btn-start-exam" class="btn-primary" style="width: 100%; padding: 12px; font-size: 16px; font-weight: bold;">
+            ✅ Tôi đã đọc hướng dẫn — Bắt đầu thi
+          </button>
+        </div>
       </div>
-      <div class="page-footer">[TÊN MÔN] · tự động chấm điểm theo đúng barem & lưu kết quả</div>
+      <div class="page-footer">[TÊN MÔN] · tự động chấm điểm theo đúng barem &amp; lưu kết quả</div>
     </div>
 
     <!-- Màn hình làm bài thi -->
     <div id="exam-screen" class="hidden container">
       <div id="board-container" class="board-card">
         <h3>Bảng Điều Hướng</h3>
-        <div id="question-board" class="q-grid"></div>
+        <!-- board-wrapper chứa legend + q-grid riêng biệt (legend không làm lệch các ô số) -->
+        <div id="question-board" class="board-wrapper"></div>
       </div>
       <div class="exam-header-block">
         <div class="exam-header-top">
@@ -407,21 +433,33 @@ let studentClass = "";
 
 window.addEventListener("DOMContentLoaded", () => {
   const session = getMTSeduSession();
+
+  // Luôn gắn listener trước — đảm bảo btn-start-exam tồn tại
+  const btnStart = document.getElementById("btn-start-exam");
+  if (btnStart) {
+    btnStart.addEventListener("click", () => {
+      if (!session) {
+        // Nếu chưa đăng nhập, hiện yêu cầu login thay vì vào bài
+        const loginCard = loginScreen.querySelector(".form-card") || loginScreen.querySelector(".card");
+        if (loginCard) showLoginRequired(loginCard, RETURN_HASH);
+        return;
+      }
+      const draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
+      if (draft && !draft.isFinished && draft.studentName === studentName) {
+        loadDraftAndContinue(draft);
+      } else {
+        startExamDirectly();
+      }
+    });
+  }
+
   if (!session) {
-    const loginCard = loginScreen.querySelector(".form-card") || loginScreen.querySelector(".card");
-    if (loginCard) showLoginRequired(loginCard, RETURN_HASH);
+    // Chưa đăng nhập: giữ trang hướng dẫn, không redirect
     return;
   }
   studentName = session.displayName || session.username;
   studentClass = session.username;
   insertBackButton();
-
-  const draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
-  if (draft && !draft.isFinished && draft.studentName === studentName) {
-    loadDraftAndContinue(draft);
-  } else {
-    startExamDirectly();
-  }
 });
 
 function startExamDirectly() {
@@ -529,7 +567,9 @@ function renderExam() {
         e.target.closest(".option-label").classList.add("selected");
         userAnswers[qid] = parseInt(e.target.value);
       } else if (name.startsWith("tf-")) {
-        const [, qid, idx] = name.split("-");
+        const parts = name.split("-");
+        const qid = parts[1];
+        const idx = parts[2];
         if (!userAnswers[qid]) userAnswers[qid] = {};
         userAnswers[qid][idx] = e.target.value;
       } else if (e.target.type === "text") {
@@ -544,10 +584,21 @@ function renderExam() {
 
 function renderBoard() {
   if (!questionBoard) return;
-  questionBoard.innerHTML = `<div class="board-legend">
+  // Legend riêng — không nằm trong q-grid để không làm lệch các ô số
+  const legend = document.createElement("div");
+  legend.className = "board-legend";
+  legend.innerHTML = `
     <span class="box"></span><span class="box-label">Chưa làm</span>
     <span class="box done"></span><span class="box-label">Đã làm</span>
-    <span class="box flagged"></span><span class="box-label">Đánh dấu</span></div>`;
+    <span class="box flagged"></span><span class="box-label">Đánh dấu</span>`;
+  questionBoard.appendChild(legend);
+
+  // Grid chứa các ô số câu
+  const grid = document.createElement("div");
+  grid.className = "q-grid";
+  grid.id = "q-grid-inner";
+  questionBoard.appendChild(grid);
+
   examData.forEach((q, index) => {
     const box = document.createElement("button");
     box.className = "q-box"; box.id = `box-${q.id}`; box.innerText = index + 1; box.type = "button";
@@ -555,7 +606,7 @@ function renderBoard() {
       e.preventDefault();
       document.getElementById(`q-card-${q.id}`).scrollIntoView({ behavior: "smooth", block: "center" });
     });
-    questionBoard.appendChild(box);
+    grid.appendChild(box);
   });
   updateBoard();
 }
@@ -592,13 +643,20 @@ function saveDraft() {
 function restoreDOMState() {
   document.querySelectorAll("input").forEach((input) => {
     const name = input.name;
-    const qid = name.split("-")[1];
+    if (!name) return;
     if (input.type === "radio" && name.startsWith("ans-")) {
-      if (userAnswers[qid] == input.value) { input.checked = true; input.closest(".option-label").classList.add("selected"); }
+      const qid = name.replace("ans-", "");
+      if (userAnswers[qid] == input.value) {
+        input.checked = true;
+        input.closest(".option-label").classList.add("selected");
+      }
     } else if (input.type === "radio" && name.startsWith("tf-")) {
-      const idx = name.split("-")[2];
+      const parts = name.split("-");
+      const qid = parts[1];
+      const idx = parts[2];
       if (userAnswers[qid] && userAnswers[qid][idx] === input.value) input.checked = true;
     } else if (input.type === "text") {
+      const qid = name.replace("ans-", "");
       input.value = userAnswers[qid] || "";
     }
   });
@@ -659,6 +717,7 @@ function submitExam() {
       if (cCount === 4) { totalScore += 1.0; diemPhan2 += 1.0; }
       else if (cCount === 3) { totalScore += 0.5; diemPhan2 += 0.5; }
       else if (cCount === 2) { totalScore += 0.25; diemPhan2 += 0.25; }
+      else if (cCount === 1) { totalScore += 0.1; diemPhan2 += 0.1; }
     } else if (q.part === 3) {
       const input = document.querySelector(`input[name="ans-${q.id}"]`);
       const userVal = (userAnswers[q.id] || "").trim().toLowerCase();
@@ -729,8 +788,10 @@ document.getElementById("review-btn").addEventListener("click", () => {
 |---|---|
 | Điểm mỗi câu Phần I (VD: 0.2 thay 0.25) | `script.js` → `submitExam()`: sửa `+= 0.25` |
 | Số ý Phần II (VD: 3 ý thay 4 ý) | `script.js` → `updateBoard()`: sửa `=== 4`, `submitExam()`: sửa block `cCount` |
-| Thang điểm Phần II | `script.js` → `submitExam()`: sửa block `if (cCount === 4)...` |
-| Điểm mỗi câu Phần III | `script.js` → `submitExam()`: sửa `+= 0.5` |
+| Thang điểm Phần II (mặc định: 1ý=0.1đ, 2ý=0.25đ, 3ý=0.5đ, 4ý=1.0đ) | `script.js` → `submitExam()`: sửa block `if (cCount === 4)...` |
+| Điểm mỗi câu Phần III | `script.js` → `submitExam()`: sửa `+= 0.5` hoặc `+= 0.25` |
 | Thêm hình vào câu hỏi | `data.js`: `image: "anh.png"` (đặt ảnh cùng thư mục) |
 | Đề chỉ có Phần I + III | Bỏ data Phần II trong `data.js`, bỏ `partTitles[2]` trong `renderExam()` |
 | Cảnh báo còn X giây | `script.js` → `startTimer()`: sửa `timeRemaining === 30` |
+| Sửa nội dung hướng dẫn & quy chế thi | `index.html` → phần `exam-instructions` trong `#login-screen` |
+| Bỏ mức điểm 0.1 khi đúng 1 ý Phần II | `script.js` → `submitExam()`: xóa dòng `else if (cCount === 1)...` |
