@@ -130,7 +130,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
       {/* Mobile Dropdown Menu (compact, not fullscreen) - FIXED: Adjusted for larger navbar */}
       <div 
-        className={`fixed top-[68px] sm:top-[75px] left-3 right-3 bg-white/97 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 transition-all duration-300 ${
+        className={`fixed top-[68px] sm:top-[75px] left-3 right-3 bg-white/97 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 max-h-[calc(100vh-90px)] overflow-y-auto overscroll-contain transition-all duration-300 ${
           isMenuOpen ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-3'
         } lg:hidden`}
       >
@@ -149,7 +149,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
       </div>
 
       {/* Main Content - FIXED: Increased padding-top for mobile + extra margin for title */}
-      <main className="pt-[130px] sm:pt-[140px] lg:pt-[100px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
+      <main className="pt-[88px] sm:pt-[100px] lg:pt-[104px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
         
         {/* Page Header (Title) */}
         <div className="mb-8 sm:mb-10 pb-4 sm:pb-6 border-b border-black/5 mt-2 sm:mt-4">

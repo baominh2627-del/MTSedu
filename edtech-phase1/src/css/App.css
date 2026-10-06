@@ -5,11 +5,15 @@
   --font-body: 'HelveticaNowDisplayW01-Rg', 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Đặt lại lề mặc định */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* Đặt lại lề mặc định.
+   QUAN TRỌNG: phải nằm trong @layer base. Nếu để ngoài layer, Tailwind v4 sẽ bị
+   ghi đè toàn bộ class p-*, px-*, m-*, mb-*... (padding/margin về 0 hết). */
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 body {
@@ -17,7 +21,7 @@ body {
   background-color: #fff;
   color: #000;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* ===== MTS Custom Background: Soft Blue Cloud ===== */
@@ -44,60 +48,13 @@ body {
   filter: blur(28px);
 }
 
-/* Tất cả nội dung bên trong phải nằm trên z-index 1 */
-.mts-bg > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* ===== Mobile Responsive Fixes ===== */
-
-/* Ensure proper scrolling behavior */
-html, body {
-  height: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#root {
-  height: 100%;
-  width: 100%;
-}
-
-/* Prevent layout shifts on mobile */
-@media (max-width: 640px) {
-  body {
-    height: auto;
-    min-height: 100vh;
-  }
-  
-  /* Ensure sidebar doesn't overlap with title */
-  aside {
-    clear: both;
-  }
-  
-  /* Better mobile heading sizing */
-  h1 {
-    word-break: break-word;
-  }
-  
-  /* Improve touch targets on mobile */
-  input, button, label {
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  /* Fix checkbox/radio on mobile */
-  input[type="checkbox"],
-  input[type="radio"] {
-    cursor: pointer;
-    accent-color: black;
-  }
-}
-
-/* ===== Print Styles ===== */
-@media print {
-  .mts-bg::before {
-    display: none;
+/* Nội dung nằm trên nền (z-index 1).
+   QUAN TRỌNG: nằm trong @layer base để class `fixed` và `z-50` của navbar/menu
+   vẫn thắng. Trước đây rule này ép navbar và menu thành position: relative,
+   nên chúng bị đẩy lệch và đè lên nội dung. */
+@layer base {
+  .mts-bg > * {
+    position: relative;
+    z-index: 1;
   }
 }
