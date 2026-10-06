@@ -27,6 +27,17 @@ export const subjectsData = {
         link: "https://baominh2627-del.github.io/de-2-kiem-tra-vat-ly-12-chuong-1/"
       },
       {
+        id: "phys_de1_hsa_dinhluong",
+        title: "Đề 1 - HSA Định Lượng VNES",
+        tag: "Đề thi HSA/TSA",
+        questions: 50,
+        time: 75,
+        price: "Miễn phí",
+        thumbnail: "/thumb_hsa_dinh_luong.jpg",
+        instructor: "MTS Education",
+        link: "https://baominh2627-del.github.io/de-1-hsa-dinh-luong-vnes/"
+      },
+      {
         id: "phys_1",
         title: "Đề thi thử THPT Quốc Gia môn Lý - Sở GD Hà Nội 2024",
         tag: "Thi thử TNTHPT",
