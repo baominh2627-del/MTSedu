@@ -39,6 +39,10 @@ Tôi vừa upload một file PDF đề thi lên. Hãy đọc toàn bộ nội du
 
 ## YÊU CẦU
 
+**🚨 YÊU CẦU TỐI QUAN TRỌNG VỀ NỘI DUNG:**
+- Phải trích xuất **ĐẦY ĐỦ, NGUYÊN VĂN TẤT CẢ CÁC CHỮ** xuất hiện trong đề bài (PDF), tuyệt đối **KHÔNG ĐƯỢC THIẾU CHỮ NÀO**, không được tóm tắt hay tự ý cắt xén đề.
+- Với các câu có chứa hình ảnh/đồ thị (VD: "Câu ..."): Phải ghi lại **ĐẦY ĐỦ TẤT CẢ PHẦN CHỮ** (phần văn bản không thuộc ảnh) của câu hỏi đó, không được bỏ sót. Chỉ thay thế vị trí hình ảnh bằng thuộc tính `image: "cau_X.png"`.
+
 Hãy đọc đề trong file PDF và tạo CHỈ MỘT file duy nhất là `data.js` theo đúng cấu trúc mẫu dưới đây.
 
 **Lưu ý quan trọng khi trích xuất:**
