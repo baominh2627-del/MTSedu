@@ -24,6 +24,7 @@ body {
 .mts-bg {
   position: relative;
   background-color: #f5f7fa;
+  overflow-x: hidden;
 }
 
 /* Vệt mây xanh nhạt – blob chính ở giữa lệch trái */
@@ -48,4 +49,55 @@ body {
   position: relative;
   z-index: 1;
 }
-
+
+/* ===== Mobile Responsive Fixes ===== */
+
+/* Ensure proper scrolling behavior */
+html, body {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Prevent layout shifts on mobile */
+@media (max-width: 640px) {
+  body {
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  /* Ensure sidebar doesn't overlap with title */
+  aside {
+    clear: both;
+  }
+  
+  /* Better mobile heading sizing */
+  h1 {
+    word-break: break-word;
+  }
+  
+  /* Improve touch targets on mobile */
+  input, button, label {
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Fix checkbox/radio on mobile */
+  input[type="checkbox"],
+  input[type="radio"] {
+    cursor: pointer;
+    accent-color: black;
+  }
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  .mts-bg::before {
+    display: none;
+  }
+}

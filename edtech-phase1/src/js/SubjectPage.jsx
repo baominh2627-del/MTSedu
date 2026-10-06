@@ -148,27 +148,27 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
         )}
       </div>
 
-      {/* Main Content */}
-      <main className="pt-[72px] sm:pt-[80px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
+      {/* Main Content - FIXED: Increased padding-top for mobile */}
+      <main className="pt-[100px] sm:pt-[110px] lg:pt-[90px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
         
         {/* Page Header (Title) */}
-        <div className="mb-10 pb-6 border-b border-black/5">
-          <h1 className="text-4xl sm:text-5xl font-bold text-black tracking-tight">{data.title}</h1>
+        <div className="mb-8 sm:mb-10 pb-4 sm:pb-6 border-b border-black/5">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black tracking-tight">{data.title}</h1>
         </div>
 
         {/* Search bar - centered, full width, above everything */}
-        <div className="flex justify-center mb-10">
-          <div className="flex items-center bg-white rounded-full w-full max-w-2xl px-7 py-5 gap-5"
+        <div className="flex justify-center mb-8 sm:mb-10">
+          <div className="flex items-center bg-white rounded-full w-full max-w-2xl px-5 sm:px-7 py-4 sm:py-5 gap-5"
             style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
-            <span className="text-black/35 text-[32px] font-light leading-none select-none">+</span>
+            <span className="text-black/35 text-[28px] sm:text-[32px] font-light leading-none select-none">+</span>
             <input
               type="text"
               placeholder="Tìm kiếm"
-              className="flex-1 bg-transparent outline-none border-none text-[20px] text-black placeholder-black/35 font-medium"
+              className="flex-1 bg-transparent outline-none border-none text-[16px] sm:text-[20px] text-black placeholder-black/35 font-medium"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <svg className="w-7 h-7 text-black/45 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 sm:w-7 h-6 sm:h-7 text-black/45 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </div>
@@ -186,22 +186,24 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
           </div>
         )}
           
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar - only filters now */}
-          <aside className="w-full lg:w-[240px] shrink-0 flex flex-col gap-6">
+        {/* Main layout: Sidebar + Content Grid - FIXED: Proper flex layout */}
+        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-8">
+          {/* Sidebar - FIXED: Added proper top margin for mobile spacing */}
+          <aside className="w-full lg:w-[260px] shrink-0 flex flex-col gap-4 sm:gap-6 order-2 lg:order-1">
 
             <div className="p-5 bg-white border border-black/10 rounded-lg shadow-sm">
-              <h4 className="text-xl font-bold mb-4">Danh mục</h4>
-              <ul className="flex flex-col gap-3 text-[16px]">
+              <h4 className="text-lg sm:text-xl font-bold mb-4">Danh mục</h4>
+              <ul className="flex flex-col gap-3 text-[15px] sm:text-[16px]">
                 {data.categories && data.categories.map((cat, idx) => (
                   <li key={idx}>
-                    <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600">
+                    <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600 transition-colors">
                       <input 
                         type="checkbox" 
-                        className="w-4 h-4 accent-black" 
+                        className="w-4 h-4 accent-black cursor-pointer" 
                         checked={selectedCategories.includes(cat)}
                         onChange={() => handleCategoryChange(cat)}
-                      /> {cat}
+                      /> 
+                      <span>{cat}</span>
                     </label>
                   </li>
                 ))}
@@ -209,28 +211,61 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
             </div>
 
             <div className="p-5 bg-white border border-black/10 rounded-lg shadow-sm">
-              <h4 className="text-xl font-bold mb-4">Mức phí</h4>
-              <ul className="flex flex-col gap-3 text-[16px]">
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" checked={selectedPrice === 'Tất cả'} onChange={() => setSelectedPrice('Tất cả')} /> Tất cả</label></li>
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" checked={selectedPrice === 'Miễn phí'} onChange={() => setSelectedPrice('Miễn phí')} /> Miễn phí</label></li>
-                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" checked={selectedPrice === 'Có phí'} onChange={() => setSelectedPrice('Có phí')} /> Có phí</label></li>
+              <h4 className="text-lg sm:text-xl font-bold mb-4">Mức phí</h4>
+              <ul className="flex flex-col gap-3 text-[15px] sm:text-[16px]">
+                <li>
+                  <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600 transition-colors">
+                    <input 
+                      type="radio" 
+                      name="price" 
+                      className="w-4 h-4 accent-black cursor-pointer" 
+                      checked={selectedPrice === 'Tất cả'} 
+                      onChange={() => setSelectedPrice('Tất cả')} 
+                    /> 
+                    <span>Tất cả</span>
+                  </label>
+                </li>
+                <li>
+                  <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600 transition-colors">
+                    <input 
+                      type="radio" 
+                      name="price" 
+                      className="w-4 h-4 accent-black cursor-pointer" 
+                      checked={selectedPrice === 'Miễn phí'} 
+                      onChange={() => setSelectedPrice('Miễn phí')} 
+                    /> 
+                    <span>Miễn phí</span>
+                  </label>
+                </li>
+                <li>
+                  <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600 transition-colors">
+                    <input 
+                      type="radio" 
+                      name="price" 
+                      className="w-4 h-4 accent-black cursor-pointer" 
+                      checked={selectedPrice === 'Có phí'} 
+                      onChange={() => setSelectedPrice('Có phí')} 
+                    /> 
+                    <span>Có phí</span>
+                  </label>
+                </li>
               </ul>
             </div>
           </aside>
 
-          {/* Grid Content */}
-          <div className="flex-1">
+          {/* Grid Content - FIXED: order-1 for proper mobile layout */}
+          <div className="flex-1 w-full order-1 lg:order-2">
 
-            <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-              <p className="text-gray-600">Hiển thị {displayedTests.length} bài kiểm tra</p>
-              <select className="px-4 py-2 bg-white border border-black/10 rounded-md focus:outline-none focus:border-black/30 cursor-pointer">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <p className="text-gray-600 text-sm sm:text-base">Hiển thị {displayedTests.length} bài kiểm tra</p>
+              <select className="w-full sm:w-auto px-4 py-2 bg-white border border-black/10 rounded-md focus:outline-none focus:border-black/30 cursor-pointer text-sm sm:text-base">
                 <option>Mới nhất</option>
                 <option>Phổ biến nhất</option>
                 <option>Được làm nhiều nhất</option>
               </select>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {displayedTests.map((test) => {
                 return (
                   <div 
@@ -263,7 +298,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
                     {/* Card Body */}
                     <div className="p-5 flex flex-col flex-1">
-                      <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                      <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 mb-3">
                         <span className="flex items-center gap-1">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                           {test.questions} Câu
@@ -274,23 +309,23 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
                         </span>
                       </div>
                       
-                      <h5 className="font-bold text-[18px] leading-snug mb-4 line-clamp-2 hover:text-gray-600 transition-colors">
+                      <h5 className="font-bold text-base sm:text-lg leading-snug mb-4 line-clamp-2 hover:text-gray-600 transition-colors">
                         {test.title}
                       </h5>
 
-                      <div className="mt-auto pt-4 border-t border-black/5 flex items-center justify-between">
-                        <div className="font-semibold text-black">
+                      <div className="mt-auto pt-4 border-t border-black/5 flex items-center justify-between gap-2 flex-wrap">
+                        <div className="font-semibold text-black text-sm sm:text-base">
                           {test.price === "Miễn phí" ? (
-                            <span className="text-green-600 bg-green-50 px-2 py-1 rounded-md text-sm">{test.price}</span>
+                            <span className="text-green-600 bg-green-50 px-2 py-1 rounded-md text-xs sm:text-sm">{test.price}</span>
                           ) : (
                             <span>{test.price}</span>
                           )}
                         </div>
-                        <div className="text-sm font-medium text-gray-600 flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
+                        <div className="text-xs sm:text-sm font-medium text-gray-600 flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
                             <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                           </div>
-                          {test.instructor}
+                          <span className="truncate">{test.instructor}</span>
                         </div>
                       </div>
                     </div>
@@ -301,19 +336,19 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
             {/* Pagination */}
             {displayedTests.length > 0 ? (
-              <div className="flex justify-center items-center gap-2 mt-10">
+              <div className="flex justify-center items-center gap-2 mt-8 sm:mt-10">
                 <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-50" disabled>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
-                <button className="w-10 h-10 rounded-md bg-black text-white flex items-center justify-center font-medium">1</button>
-                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium">2</button>
-                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium">3</button>
+                <button className="w-10 h-10 rounded-md bg-black text-white flex items-center justify-center font-medium text-sm">1</button>
+                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium text-sm">2</button>
+                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium text-sm">3</button>
                 <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
                 </button>
               </div>
             ) : (
-              <div className="mt-10 text-center text-gray-500 py-10 border border-dashed border-gray-300 rounded-xl">
+              <div className="mt-8 sm:mt-10 text-center text-gray-500 py-10 border border-dashed border-gray-300 rounded-xl">
                 Chưa có bài kiểm tra nào trong danh mục này.
               </div>
             )}
