@@ -21,6 +21,7 @@ import { AuthProvider } from "./AuthContext.jsx";
 import LoginPage from "./LoginPage.jsx";
 import MainframeHome from "./MainframeHome.jsx";
 import SubjectPage from "./SubjectPage.jsx";
+import ProfilePage from "./ProfilePage.jsx";
 import "../css/App.css";
 
 // Đọc trang hiện tại từ URL hash (ví dụ: #math -> "math")
@@ -96,6 +97,10 @@ function AppContent() {
         onRequireLogin={() => navigateToLoginWithReturn(currentPage)}
       />
     );
+  }
+
+  if (currentPage === "profile") {
+    return <ProfilePage onNavigate={navigateTo} />;
   }
 
   return (

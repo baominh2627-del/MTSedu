@@ -1,3 +1,8 @@
+﻿# Tổng hợp Code: Subject Module
+
+
+## 1. edtech-phase1/src/js/SubjectPage.jsx
+``jsx
 import React, { useState } from 'react';
 import { subjectsData } from '../data/subjectsData.js';
 import { useAuth } from './AuthContext.jsx';
@@ -61,16 +66,16 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
   return (
     <div className="relative w-full min-h-screen mts-bg text-black font-sans">
-      {/* Navbar - FIXED: Increased padding for better visual balance */}
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-4 sm:py-5 lg:py-4 flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8">
+      {/* Navbar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-3 sm:py-4 flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8">
         <div 
           className="flex flex-row gap-2 items-center cursor-pointer hover:opacity-70 transition-opacity"
           onClick={() => onNavigate('home')}
         >
-          <span className="text-[20px] sm:text-[24px] lg:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+          <span className="text-[18px] sm:text-[22px] lg:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
             MTS Education
           </span>
-          <span className="text-[24px] sm:text-[28px] lg:text-[30px] text-black/40 select-none">
+          <span className="text-[22px] sm:text-[26px] lg:text-[30px] text-black/40 select-none">
             &#10033;
           </span>
         </div>
@@ -87,10 +92,10 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
         <div className="hidden lg:flex flex-row gap-4 items-center">
           {isLoggedIn ? (
             <>
-              <button onClick={() => onNavigate('profile')} title="Trang cá nhân" className="text-[17px] text-black/60 hover:text-black flex items-center gap-2 transition-colors cursor-pointer">
+              <span className="text-[17px] text-black/60 flex items-center gap-2">
                 <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                 {user?.displayName || user?.username}
-              </button>
+              </span>
               <button 
                 onClick={handleLogout}
                 className="text-[17px] font-bold text-red-500 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-red-700 hover:bg-red-50 transition-all whitespace-nowrap"
@@ -113,9 +118,9 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
             </button>
           )}
           {isLoggedIn && (
-            <button onClick={() => onNavigate('profile')} title="Trang cá nhân" className="text-[13px] text-black/60 hover:text-black font-medium truncate max-w-[80px] cursor-pointer">
+            <span className="text-[13px] text-black/60 font-medium truncate max-w-[80px]">
               {user?.displayName || user?.username}
-            </button>
+            </span>
           )}
           <button 
             className="flex flex-col gap-[5px] z-50 relative p-1"
@@ -128,9 +133,9 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
         </div>
       </nav>
 
-      {/* Mobile Dropdown Menu (compact, not fullscreen) - FIXED: Adjusted for larger navbar */}
+      {/* Mobile Dropdown Menu (compact, not fullscreen) */}
       <div 
-        className={`fixed top-[68px] sm:top-[75px] left-3 right-3 bg-white/97 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 max-h-[calc(100vh-90px)] overflow-y-auto overscroll-contain transition-all duration-300 ${
+        className={`fixed top-[58px] left-3 right-3 bg-white/97 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 transition-all duration-300 ${
           isMenuOpen ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-3'
         } lg:hidden`}
       >
@@ -148,27 +153,27 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
         )}
       </div>
 
-      {/* Main Content - FIXED: Increased padding-top for mobile + extra margin for title */}
-      <main className="pt-[88px] sm:pt-[100px] lg:pt-[104px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
+      {/* Main Content */}
+      <main className="pt-[72px] sm:pt-[80px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
         
         {/* Page Header (Title) */}
-        <div className="mb-8 sm:mb-10 pb-4 sm:pb-6 border-b border-black/5 mt-2 sm:mt-4">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black tracking-tight leading-tight">{data.title}</h1>
+        <div className="mb-10 pb-6 border-b border-black/5">
+          <h1 className="text-4xl sm:text-5xl font-bold text-black tracking-tight">{data.title}</h1>
         </div>
 
         {/* Search bar - centered, full width, above everything */}
-        <div className="flex justify-center mb-8 sm:mb-10">
-          <div className="flex items-center bg-white rounded-full w-full max-w-2xl px-5 sm:px-7 py-4 sm:py-5 gap-5"
+        <div className="flex justify-center mb-10">
+          <div className="flex items-center bg-white rounded-full w-full max-w-2xl px-7 py-5 gap-5"
             style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
-            <span className="text-black/35 text-[28px] sm:text-[32px] font-light leading-none select-none">+</span>
+            <span className="text-black/35 text-[32px] font-light leading-none select-none">+</span>
             <input
               type="text"
               placeholder="Tìm kiếm"
-              className="flex-1 bg-transparent outline-none border-none text-[16px] sm:text-[20px] text-black placeholder-black/35 font-medium"
+              className="flex-1 bg-transparent outline-none border-none text-[20px] text-black placeholder-black/35 font-medium"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <svg className="w-6 sm:w-7 h-6 sm:h-7 text-black/45 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-7 h-7 text-black/45 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </div>
@@ -186,24 +191,22 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
           </div>
         )}
           
-        {/* Main layout: Sidebar + Content Grid - FIXED: Proper flex layout */}
-        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-8">
-          {/* Sidebar - FIXED: Added proper top margin for mobile spacing */}
-          <aside className="w-full lg:w-[260px] shrink-0 flex flex-col gap-4 sm:gap-6 order-2 lg:order-1">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar - only filters now */}
+          <aside className="w-full lg:w-[240px] shrink-0 flex flex-col gap-6">
 
             <div className="p-5 bg-white border border-black/10 rounded-lg shadow-sm">
-              <h4 className="text-lg sm:text-xl font-bold mb-4">Danh mục</h4>
-              <ul className="flex flex-col gap-3 text-[15px] sm:text-[16px]">
+              <h4 className="text-xl font-bold mb-4">Danh mục</h4>
+              <ul className="flex flex-col gap-3 text-[16px]">
                 {data.categories && data.categories.map((cat, idx) => (
                   <li key={idx}>
-                    <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600 transition-colors">
+                    <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600">
                       <input 
                         type="checkbox" 
-                        className="w-4 h-4 accent-black cursor-pointer" 
+                        className="w-4 h-4 accent-black" 
                         checked={selectedCategories.includes(cat)}
                         onChange={() => handleCategoryChange(cat)}
-                      /> 
-                      <span>{cat}</span>
+                      /> {cat}
                     </label>
                   </li>
                 ))}
@@ -211,61 +214,28 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
             </div>
 
             <div className="p-5 bg-white border border-black/10 rounded-lg shadow-sm">
-              <h4 className="text-lg sm:text-xl font-bold mb-4">Mức phí</h4>
-              <ul className="flex flex-col gap-3 text-[15px] sm:text-[16px]">
-                <li>
-                  <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600 transition-colors">
-                    <input 
-                      type="radio" 
-                      name="price" 
-                      className="w-4 h-4 accent-black cursor-pointer" 
-                      checked={selectedPrice === 'Tất cả'} 
-                      onChange={() => setSelectedPrice('Tất cả')} 
-                    /> 
-                    <span>Tất cả</span>
-                  </label>
-                </li>
-                <li>
-                  <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600 transition-colors">
-                    <input 
-                      type="radio" 
-                      name="price" 
-                      className="w-4 h-4 accent-black cursor-pointer" 
-                      checked={selectedPrice === 'Miễn phí'} 
-                      onChange={() => setSelectedPrice('Miễn phí')} 
-                    /> 
-                    <span>Miễn phí</span>
-                  </label>
-                </li>
-                <li>
-                  <label className="flex items-center gap-3 cursor-pointer hover:text-gray-600 transition-colors">
-                    <input 
-                      type="radio" 
-                      name="price" 
-                      className="w-4 h-4 accent-black cursor-pointer" 
-                      checked={selectedPrice === 'Có phí'} 
-                      onChange={() => setSelectedPrice('Có phí')} 
-                    /> 
-                    <span>Có phí</span>
-                  </label>
-                </li>
+              <h4 className="text-xl font-bold mb-4">Mức phí</h4>
+              <ul className="flex flex-col gap-3 text-[16px]">
+                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" checked={selectedPrice === 'Tất cả'} onChange={() => setSelectedPrice('Tất cả')} /> Tất cả</label></li>
+                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" checked={selectedPrice === 'Miễn phí'} onChange={() => setSelectedPrice('Miễn phí')} /> Miễn phí</label></li>
+                <li><label className="flex items-center gap-3 cursor-pointer hover:text-gray-600"><input type="radio" name="price" className="w-4 h-4 accent-black" checked={selectedPrice === 'Có phí'} onChange={() => setSelectedPrice('Có phí')} /> Có phí</label></li>
               </ul>
             </div>
           </aside>
 
-          {/* Grid Content - FIXED: order-1 for proper mobile layout */}
-          <div className="flex-1 w-full order-1 lg:order-2">
+          {/* Grid Content */}
+          <div className="flex-1">
 
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-              <p className="text-gray-600 text-sm sm:text-base">Hiển thị {displayedTests.length} bài kiểm tra</p>
-              <select className="w-full sm:w-auto px-4 py-2 bg-white border border-black/10 rounded-md focus:outline-none focus:border-black/30 cursor-pointer text-sm sm:text-base">
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+              <p className="text-gray-600">Hiển thị {displayedTests.length} bài kiểm tra</p>
+              <select className="px-4 py-2 bg-white border border-black/10 rounded-md focus:outline-none focus:border-black/30 cursor-pointer">
                 <option>Mới nhất</option>
                 <option>Phổ biến nhất</option>
                 <option>Được làm nhiều nhất</option>
               </select>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {displayedTests.map((test) => {
                 return (
                   <div 
@@ -298,7 +268,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
                     {/* Card Body */}
                     <div className="p-5 flex flex-col flex-1">
-                      <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 mb-3">
+                      <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
                         <span className="flex items-center gap-1">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                           {test.questions} Câu
@@ -309,23 +279,23 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
                         </span>
                       </div>
                       
-                      <h5 className="font-bold text-base sm:text-lg leading-snug mb-4 line-clamp-2 hover:text-gray-600 transition-colors">
+                      <h5 className="font-bold text-[18px] leading-snug mb-4 line-clamp-2 hover:text-gray-600 transition-colors">
                         {test.title}
                       </h5>
 
-                      <div className="mt-auto pt-4 border-t border-black/5 flex items-center justify-between gap-2 flex-wrap">
-                        <div className="font-semibold text-black text-sm sm:text-base">
+                      <div className="mt-auto pt-4 border-t border-black/5 flex items-center justify-between">
+                        <div className="font-semibold text-black">
                           {test.price === "Miễn phí" ? (
-                            <span className="text-green-600 bg-green-50 px-2 py-1 rounded-md text-xs sm:text-sm">{test.price}</span>
+                            <span className="text-green-600 bg-green-50 px-2 py-1 rounded-md text-sm">{test.price}</span>
                           ) : (
                             <span>{test.price}</span>
                           )}
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-600 flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
+                        <div className="text-sm font-medium text-gray-600 flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
                             <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                           </div>
-                          <span className="truncate">{test.instructor}</span>
+                          {test.instructor}
                         </div>
                       </div>
                     </div>
@@ -336,19 +306,19 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
             {/* Pagination */}
             {displayedTests.length > 0 ? (
-              <div className="flex justify-center items-center gap-2 mt-8 sm:mt-10">
+              <div className="flex justify-center items-center gap-2 mt-10">
                 <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-50" disabled>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
-                <button className="w-10 h-10 rounded-md bg-black text-white flex items-center justify-center font-medium text-sm">1</button>
-                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium text-sm">2</button>
-                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium text-sm">3</button>
+                <button className="w-10 h-10 rounded-md bg-black text-white flex items-center justify-center font-medium">1</button>
+                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium">2</button>
+                <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors font-medium">3</button>
                 <button className="w-10 h-10 rounded-md border border-black/10 flex items-center justify-center hover:bg-gray-50 transition-colors">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
                 </button>
               </div>
             ) : (
-              <div className="mt-8 sm:mt-10 text-center text-gray-500 py-10 border border-dashed border-gray-300 rounded-xl">
+              <div className="mt-10 text-center text-gray-500 py-10 border border-dashed border-gray-300 rounded-xl">
                 Chưa có bài kiểm tra nào trong danh mục này.
               </div>
             )}
@@ -358,3 +328,253 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
     </div>
   );
 }
+``
+
+
+## 2. edtech-phase1/src/css/App.css
+``css
+@import "tailwindcss";
+
+:root {
+  --font-heading: 'HelveticaNowDisplay-Medium', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'HelveticaNowDisplayW01-Rg', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Đặt lại lề mặc định */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: #fff;
+  color: #000;
+  width: 100%;
+  height: 100vh;
+}
+
+/* ===== MTS Custom Background: Soft Blue Cloud ===== */
+.mts-bg {
+  position: relative;
+  background-color: #f5f7fa;
+}
+
+/* Vệt mây xanh nhạt – blob chính ở giữa lệch trái */
+.mts-bg::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 55% 45% at 42% 38%, rgba(173, 216, 238, 0.52) 0%, transparent 70%),
+    radial-gradient(ellipse 38% 30% at 60% 50%, rgba(190, 225, 245, 0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 28% 22% at 28% 55%, rgba(200, 230, 248, 0.28) 0%, transparent 60%);
+  filter: blur(28px);
+}
+
+/* Tất cả nội dung bên trong phải nằm trên z-index 1 */
+.mts-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+``
+
+
+## 3. edtech-phase1/src/data/subjectsData.js
+``javascript
+export const subjectsData = {
+  physics: {
+    title: "Vật Lý",
+    description: "Tổng hợp các bài kiểm tra, đề thi môn Vật Lý",
+    categories: ["Thi thử TNTHPT", "Đề thi HSA/TSA", "Lớp 12", "Lớp 11", "Lớp 10"],
+    tests: [
+      {
+        id: "phys_0",
+        title: "Bài Kiểm Tra Vật Lý Nhiệt - 12 - Lần 1 - Đề A50",
+        tag: "Lớp 12",
+        questions: 40,
+        time: 45,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng",
+        link: "https://baominh2627-del.github.io/bai-ktra-vat-ly-nhiet-ly-12/"
+      },
+      {
+        id: "phys_de2_chuong1",
+        title: "Đề 2 - Kiểm Tra Vật Lý 12 - Chương 1",
+        tag: "Lớp 12",
+        questions: 28,
+        time: 50,
+        price: "Miễn phí",
+        thumbnail: "/thumb_vatly12_chuong1_de2.jpg",
+        instructor: "Thầy Hùng",
+        link: "https://baominh2627-del.github.io/de-2-kiem-tra-vat-ly-12-chuong-1/"
+      },
+      {
+        id: "phys_1",
+        title: "Đề thi thử THPT Quốc Gia môn Lý - Sở GD Hà Nội 2024",
+        tag: "Thi thử TNTHPT",
+        questions: 40,
+        time: 50,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng"
+      },
+      {
+        id: "phys_2",
+        title: "Đề ôn tập Đánh Giá Năng Lực (HSA) - Vật Lý Cấu Trúc Mới",
+        tag: "Đề thi HSA/TSA",
+        questions: 50,
+        time: 60,
+        price: "49.000₫",
+        thumbnail: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Cô Mai"
+      },
+      {
+        id: "phys_3",
+        title: "Bài kiểm tra Dao Động Cơ - Vật Lý 12 Giữa Kì 1",
+        tag: "Lớp 12",
+        questions: 30,
+        time: 45,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1610428584852-5a98bf49b015?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng"
+      },
+      {
+        id: "phys_4",
+        title: "Trắc nghiệm Dòng Điện Xoay Chiều Nâng Cao",
+        tag: "Lớp 12",
+        questions: 40,
+        time: 50,
+        price: "29.000₫",
+        thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Bình"
+      },
+      {
+        id: "phys_5",
+        title: "Tổng ôn Quang Hình Học - Lớp 11",
+        tag: "Lớp 11",
+        questions: 40,
+        time: 45,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Cô Mai"
+      },
+      {
+        id: "phys_6",
+        title: "Đề thi VACT Vật Lý Cao Cấp",
+        tag: "Đề thi VACT",
+        questions: 50,
+        time: 90,
+        price: "99.000₫",
+        thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng"
+      }
+    ]
+  },
+  math: {
+    title: "Toán Học",
+    description: "Tổng hợp các bài kiểm tra, đề thi môn Toán Học",
+    categories: ["Thi thử TNTHPT", "Đề thi HSA/TSA", "Lớp 12", "Lớp 11", "Lớp 10"],
+    tests: [
+      {
+        id: "math_1",
+        title: "Bài kiểm tra Hàm số và Đồ thị - Toán 12",
+        tag: "Lớp 12",
+        questions: 50,
+        time: 90,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1509228468518-180dd4864904?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Minh"
+      },
+      {
+        id: "math_2",
+        title: "Đề 1 Kiểm tra Lượng giác - Toán 11",
+        tag: "Lớp 11",
+        questions: 40,
+        time: 45,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Minh",
+        link: "https://baominh2627-del.github.io/de-1-ktra-luong-giac-toan-11/"
+      }
+    ]
+  },
+  chemistry: {
+    title: "Hóa Học",
+    description: "Tổng hợp các bài kiểm tra, đề thi môn Hóa Học",
+    categories: ["Thi thử TNTHPT", "Đề thi HSA/TSA", "Lớp 12", "Lớp 11", "Lớp 10"],
+    tests: [
+      {
+        id: "chem_1",
+        title: "Kiểm tra Este - Lipit - Hóa 12",
+        tag: "Lớp 12",
+        questions: 40,
+        time: 50,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Cô Lan"
+      }
+    ]
+  },
+  informatics: {
+    title: "Tin Học",
+    description: "Tổng hợp các bài kiểm tra, đề thi môn Tin Học",
+    categories: ["Thi thử TNTHPT", "Lớp 12", "Lớp 11", "Lớp 10", "Lập trình căn bản"],
+    tests: [
+      {
+        id: "info_1",
+        title: "Bài kiểm tra Python cơ bản",
+        tag: "Lập trình căn bản",
+        questions: 30,
+        time: 45,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Bình"
+      }
+    ]
+  },
+  hsa: {
+    title: "Đề thi HSA/TSA",
+    description: "Tổng hợp các đề Đánh Giá Năng Lực (HSA) và Đánh Giá Tư Duy (TSA)",
+    categories: ["Đề thi HSA", "Đề thi TSA", "Toán", "Ngữ Văn", "Khoa học"],
+    tests: [
+      {
+        id: "hsa_1",
+        title: "Đề thi thử HSA - ĐHQGHN Lần 1 - 2024",
+        tag: "Đề thi HSA",
+        questions: 150,
+        time: 195,
+        price: "99.000₫",
+        thumbnail: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "MTS Education"
+      }
+    ]
+  },
+  mock_exams: {
+    title: "Thi thử TNTHPT",
+    description: "Tổng hợp các đề thi thử Tốt nghiệp THPT Quốc Gia từ các trường và Sở GD&ĐT",
+    categories: ["Toán Học", "Vật Lý", "Hóa Học", "Tiếng Anh", "Ngữ Văn"],
+    tests: [
+      {
+        id: "mock_1",
+        title: "Đề thi thử TNTHPT môn Toán - Sở GD Hà Nội",
+        tag: "Toán Học",
+        questions: 50,
+        time: 90,
+        price: "Miễn phí",
+        thumbnail: "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Minh"
+      }
+    ]
+  }
+};
+``
+

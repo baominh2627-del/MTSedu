@@ -1,0 +1,78 @@
+[33m567c79f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m fix(mobile): fix blank space hero + unify menu dropdown across all pages
+[33m4e293ed[m fix(mobile): show mascot on mobile + stack hero vertically
+[33m62eb38c[m fix(mobile): redesign menu dropdown + fix hero center layout on mobile
+[33mcbab3dc[m fix: set fixed viewport to maintain desktop layout on mobile
+[33m27dd787[m Cập nhật prompt tạo bài thi: quy tắc LaTeX, màn hình hướng dẫn, UI và thang điểm mới
+[33me7e8eb0[m refactor: remove time penalty, revert to instant hide and show on focus
+[33maee42d5[m fix: make screenshot penalty persistent across reloads (F5 proof) and fix timer display
+[33mc2c3173[m feat: Add 5-minute penalty timeout for screenshot attempts
+[33m7f1b95f[m feat: Add blackout overlay to prevent screenshots for guests
+[33mfa9049c[m feat: Add anti-F12 and anti-right-click protection to all HTML files
+[33m8b10602[m Add Google site verification tag
+[33me204469[m Update favicon and og:image to net_ve.svg
+[33mf15aba0[m Change net_ve.svg lines from black to blue
+[33mfe6d72f[m Fix syntax error: remove duplicate style block
+[33mb8286b4[m Add net_ve.svg to hero right column with color-shift and float animation
+[33m6414c0f[m Change favicon to logo_MTS.svg
+[33mf99d9d8[m Revert SVG logo back to text logo
+[33mda7be20[m Replace text logo with logo_MTS.svg image
+[33m7a2b44a[m fix: restore subject title and increase spacing to prevent overlap
+[33m8c7f0a9[m fix: remove completely page header to avoid overlap and move search bar to top full width
+[33mde4104e[m style: remove description subtitle from all subject pages
+[33m103c252[m style: move search bar to center above content grid, larger pill size
+[33m542940d[m style: increase search pill size - larger padding, font and icons
+[33md48ab1f[m style: redesign search box to modern pill shape with + and search icons
+[33mb7b9b61[m style: sync SubjectPage navbar to match MainframeHome - no layout shift on navigation
+[33mb12a9e0[m style: increase navbar size - larger font and padding on all items
+[33mc9ada87[m fix: remove old video background, keep blue cloud gradient only
+[33m90f810b[m feat: apply soft blue cloud background to HomePage and SubjectPage
+[33m285e699[m chore: trigger deployment
+[33m9442749[m feat: Add filtering and search functionality to SubjectPage
+[33m0cb0267[m build: Update dist with new physics exam card
+[33m5905860[m feat: Add De2 Vat Ly 12 Chuong 1 to physics page with custom thumbnail
+[33m6e5d6f9[m docs: cập nhật prompt tạo bài thi - chia 2 giai đoạn (Gemini đọc PDF + Claude tạo code)
+[33m3760400[m docs: add firebase rules config file
+[33m62ca92e[m feat: upgrade admin tool - direct Firebase connection, no more manual JSON import
+[33m9cad4b9[m docs: thêm file QR trang chủ và tổ chức lại các thư mục tiện ích (_Database, _Tao_Taikhoan)
+[33m1d723ff[m docs: tổ chức lại các file hướng dẫn và prompt vào thư mục _TaiLieu_HuongDan
+[33mfdf85ed[m docs: add quiz creation prompt template
+[33m002e25a[m feat: open quiz in same tab with URL params for cross-domain auth
+[33m6debdd9[m chore: add .env to .gitignore to protect Firebase keys
+[33mde554c1[m Cập nhật lại số Zalo thành 0372336302
+[33m2d60fe0[m Cập nhật số điện thoại Zalo trong phần Liên hệ
+[33m8c3700e[m fix: blank page - render children immediately, wrap Firebase init in try-catch
+[33m9fe65c9[m feat: add Firebase auth system with login guard, test result storage, and admin account tool
+[33mdead3e5[m feat: add hash-based routing to persist current page on refresh (F5)
+[33m3c1bb78[m feat: Add Đề 1 Kiểm tra Lượng giác - Toán 11 to subjects data
+[33m85003f8[m Fix typewriter text overflow and add global navigation to SubjectPage
+[33m85d8162[m Refactor subject pages to use generic SubjectPage component and externalize data
+[33m6b3d6b1[m Increase nav spacing to gap-6 for more breathing room
+[33m32fb5ce[m Increase navbar font size to 16px with proper spacing
+[33m9b3c52e[m Redesign navbar: dark background, uppercase bold white text iDesign style
+[33m2703d75[m Restore typewriter, colorize nav buttons per subject
+[33m3cb4166[m Update hero typography to massive bold gradient style
+[33m378b18e[m Add borders and boxes to menu buttons
+[33m934ddc6[m Add contact buttons: Facebook, TikTok, Zalo, Phone
+[33mc438b3e[m Add GitHub Actions auto-deploy workflow
+[33ma8a0376[m thêm
+[33m98b00c2[m Update favicon with new logo
+[33mc157b4a[m Update title to MTS Education and add SEO tags
+[33m2c67ae6[m Update vite base url for Vercel deployment
+[33m8d18452[m Fix layout and add new physics test
+[33ma1fb84c[m Thêm trang Vật Lý (PhysicsPage) với giao diện danh sách bài kiểm tra
+[33mb67527e[m Increase font size of desktop navbar menu
+[33m95de3f1[m Fix UI mobile menu z-index and text size
+[33m8757889[m  Fix typewriter missing first char and update font to Lora
+[33md2cd53c[m  Cap nhat UI trang chu theo yeu cau
+[33mc238ae3[m them Favicon
+[33mc856257[m Add MTS favicon
+[33m892717d[m  thêm .vite vào gitignore
+[33m736ebeb[m sửa lại giao diện đăng nhập tương thích với giao diện trang chủ
+[33m438a349[m update config va them gitignore 2
+[33m86927c0[m update config va them gitignore
+[33med4f8f9[m sửa
+[33m2dff417[m xong giao diện - 2
+[33m8528d39[m xong giao diện đăng nhập và giao diện trang chủ
+[33m5ca7bb1[m Sửa đường dẫn file index.html
+[33m3a80546[m Hoàn thành cơ bản phần giao diện trang chủ
+[33md93686f[m Initial project structure

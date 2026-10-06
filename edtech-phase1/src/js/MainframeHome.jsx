@@ -103,10 +103,10 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
         <div className="hidden lg:flex flex-row gap-4 items-center">
           {isLoggedIn ? (
             <>
-              <span className="text-[17px] text-black/60 flex items-center gap-2">
+              <button onClick={() => onNavigate('profile')} title="Trang cá nhân" className="text-[17px] text-black/60 hover:text-black flex items-center gap-2 transition-colors cursor-pointer">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                 {user?.displayName || user?.username}
-              </span>
+              </button>
               <button
                 onClick={logout}
                 className="text-[17px] font-bold text-red-500 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-red-700 hover:bg-red-50 transition-all whitespace-nowrap"
@@ -143,9 +143,9 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
             </button>
           )}
           {isLoggedIn && (
-            <span className="text-[13px] text-black/60 font-medium truncate max-w-[80px]">
+            <button onClick={() => onNavigate('profile')} title="Trang cá nhân" className="text-[13px] text-black/60 hover:text-black font-medium truncate max-w-[80px] cursor-pointer">
               {user?.displayName || user?.username}
-            </span>
+            </button>
           )}
           <button
             className="flex flex-col gap-[5px] z-50 relative p-1"
