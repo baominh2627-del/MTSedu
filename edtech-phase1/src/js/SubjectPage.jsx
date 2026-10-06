@@ -61,16 +61,16 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
   return (
     <div className="relative w-full min-h-screen mts-bg text-black font-sans">
-      {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-3 sm:py-4 flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8">
+      {/* Navbar - FIXED: Increased padding for better visual balance */}
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-4 sm:py-5 lg:py-4 flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8">
         <div 
           className="flex flex-row gap-2 items-center cursor-pointer hover:opacity-70 transition-opacity"
           onClick={() => onNavigate('home')}
         >
-          <span className="text-[18px] sm:text-[22px] lg:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+          <span className="text-[20px] sm:text-[24px] lg:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
             MTS Education
           </span>
-          <span className="text-[22px] sm:text-[26px] lg:text-[30px] text-black/40 select-none">
+          <span className="text-[24px] sm:text-[28px] lg:text-[30px] text-black/40 select-none">
             &#10033;
           </span>
         </div>
@@ -128,9 +128,9 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
         </div>
       </nav>
 
-      {/* Mobile Dropdown Menu (compact, not fullscreen) */}
+      {/* Mobile Dropdown Menu (compact, not fullscreen) - FIXED: Adjusted for larger navbar */}
       <div 
-        className={`fixed top-[58px] left-3 right-3 bg-white/97 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 transition-all duration-300 ${
+        className={`fixed top-[68px] sm:top-[75px] left-3 right-3 bg-white/97 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 transition-all duration-300 ${
           isMenuOpen ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-3'
         } lg:hidden`}
       >
@@ -148,12 +148,12 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
         )}
       </div>
 
-      {/* Main Content - FIXED: Increased padding-top for mobile */}
-      <main className="pt-[100px] sm:pt-[110px] lg:pt-[90px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
+      {/* Main Content - FIXED: Increased padding-top for mobile + extra margin for title */}
+      <main className="pt-[130px] sm:pt-[140px] lg:pt-[100px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
         
         {/* Page Header (Title) */}
-        <div className="mb-8 sm:mb-10 pb-4 sm:pb-6 border-b border-black/5">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black tracking-tight">{data.title}</h1>
+        <div className="mb-8 sm:mb-10 pb-4 sm:pb-6 border-b border-black/5 mt-2 sm:mt-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black tracking-tight leading-tight">{data.title}</h1>
         </div>
 
         {/* Search bar - centered, full width, above everything */}

@@ -60,16 +60,16 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
     <div className="relative w-full min-h-screen text-black mts-bg overflow-hidden">
 
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8 px-4 sm:px-8 py-3 sm:py-4">
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8 px-4 sm:px-8 py-4 sm:py-5 lg:py-4">
         {/* Logo */}
         <div className="flex flex-row gap-2 items-center">
           <span
-            className="text-[18px] sm:text-[22px] lg:text-[26px] tracking-tight text-black font-bold"
+            className="text-[20px] sm:text-[24px] lg:text-[26px] tracking-tight text-black font-bold"
             style={{ fontFamily: "var(--font-heading)" }}
           >
             MTS Education
           </span>
-          <span className="text-[22px] sm:text-[26px] lg:text-[30px] text-black/40 select-none">
+          <span className="text-[24px] sm:text-[28px] lg:text-[30px] text-black/40 select-none">
             &#10033;
           </span>
         </div>
@@ -160,7 +160,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
 
       {/* Mobile Dropdown Menu */}
       <div
-        className={`fixed top-[58px] left-3 right-3 bg-white/97 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 transition-all duration-300 ${
+        className={`fixed top-[68px] sm:top-[75px] left-3 right-3 bg-white/97 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 transition-all duration-300 ${
           isMenuOpen
             ? "opacity-100 pointer-events-auto translate-y-0"
             : "opacity-0 pointer-events-none -translate-y-3"
@@ -189,7 +189,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
 
       {/* Hero Section */}
       <main className="min-h-screen w-full flex flex-col md:flex-row items-center justify-center px-5 sm:px-8 md:px-10 overflow-hidden gap-4 md:gap-0 pb-8 md:pb-0"
-        style={{ paddingTop: 'clamp(72px, 14vw, 120px)' }}>
+        style={{ paddingTop: 'clamp(85px, 15vw, 120px)' }}>
         {/* Left: Text content */}
         <div className="w-full md:w-1/2 relative z-10">
           {/* Blurred Intro Label */}
