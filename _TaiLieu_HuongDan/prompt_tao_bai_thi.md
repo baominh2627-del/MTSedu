@@ -416,10 +416,10 @@ const questionBoard = document.getElementById("question-board");
 const submitBtn = document.getElementById("submit-btn");
 
 // ===== CHỈ THAY 4 DÒNG NÀY =====
-const MA_DE       = "TOAN11_DE2";                    // mã đề Firebase (không dấu, không cách)
-const DRAFT_KEY   = "examDraft_TOAN11_DE2";          // key localStorage (thêm mã đề vào sau)
-const EXAM_MINUTES = 90;                              // thời gian làm bài (phút)
-const RETURN_HASH = "#math";                         // hash trang MTSedu (vd: #math, #physics)
+const MA_DE       = "[MÃ ĐỀ]";                       // mã đề Firebase (không dấu, không cách)
+const DRAFT_KEY   = "examDraft_[MÃ ĐỀ]";             // key localStorage (thêm mã đề vào sau)
+const EXAM_MINUTES = [THỜI GIAN PHÚT];                 // thời gian làm bài (phút)
+const RETURN_HASH = "[HASH VD: #physics]";           // hash trang MTSedu (vd: #math, #physics)
 // ================================
 
 let timeRemaining = EXAM_MINUTES * 60;
@@ -491,9 +491,9 @@ function renderExam() {
   questionsContainer.innerHTML = "";
   let currentPart = 0, qCounter = 1;
   const partTitles = {
-    1: { title: "Phần I — Trắc nghiệm khách quan", score: "3.0 điểm", sub: "Mỗi câu đúng được 0.25 điểm. Chọn một đáp án duy nhất." },
-    2: { title: "Phần II — Trắc nghiệm đúng sai", score: "4.0 điểm", sub: "Trong mỗi ý a, b, c, d, chọn đúng hoặc sai." },
-    3: { title: "Phần III — Trắc nghiệm trả lời ngắn", score: "3.0 điểm", sub: "Mỗi câu 0.5 điểm. Nhập đáp án (chỉ ghi số hoặc kết quả cuối cùng)." },
+    1: { title: "Phần I — Trắc nghiệm khách quan", score: "[ĐIỂM P1] điểm", sub: "Mỗi câu đúng được [ĐIỂM/CÂU P1] điểm. Chọn một đáp án duy nhất." },
+    2: { title: "Phần II — Trắc nghiệm đúng sai", score: "[ĐIỂM P2] điểm", sub: "Trong mỗi ý a, b, c, d, chọn đúng hoặc sai." },
+    3: { title: "Phần III — Trắc nghiệm trả lời ngắn", score: "[ĐIỂM P3] điểm", sub: "Mỗi câu [ĐIỂM/CÂU P3] điểm. Nhập đáp án (chỉ ghi số hoặc kết quả cuối cùng)." },
   };
 
   examData.forEach((q) => {
@@ -704,7 +704,7 @@ function submitExam() {
     if (q.part === 1) {
       const selected = userAnswers[q.id];
       document.getElementById(`lbl-${q.id}-${q.correctAnswer}`).classList.add("correct-ans");
-      if (selected === q.correctAnswer) { totalScore += 0.25; diemPhan1 += 0.25; }
+      if (selected === q.correctAnswer) { totalScore += [ĐIỂM/CÂU P1]; diemPhan1 += [ĐIỂM/CÂU P1]; }
       else if (selected !== undefined) document.getElementById(`lbl-${q.id}-${selected}`).classList.add("wrong-ans");
     } else if (q.part === 2) {
       let cCount = 0;
@@ -723,7 +723,7 @@ function submitExam() {
       const userVal = (userAnswers[q.id] || "").trim().toLowerCase();
       const correct = q.correctAnswer.toLowerCase();
       if (userVal === correct || userVal === correct.replace(".", ",")) {
-        totalScore += 0.5; diemPhan3 += 0.5; input.classList.add("correct-ans");
+        totalScore += [ĐIỂM/CÂU P3]; diemPhan3 += [ĐIỂM/CÂU P3]; input.classList.add("correct-ans");
       } else { input.classList.add("wrong-ans"); }
     }
   });
