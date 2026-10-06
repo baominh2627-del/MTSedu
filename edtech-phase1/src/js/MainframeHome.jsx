@@ -60,16 +60,16 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
     <div className="relative w-full min-h-screen text-black mts-bg overflow-hidden">
 
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8 px-5 sm:px-8 py-4">
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8 px-4 sm:px-8 py-3 sm:py-4">
         {/* Logo */}
-        <div className="flex flex-row gap-3 items-center">
+        <div className="flex flex-row gap-2 items-center">
           <span
-            className="text-[22px] sm:text-[26px] tracking-tight text-black font-bold"
+            className="text-[18px] sm:text-[22px] lg:text-[26px] tracking-tight text-black font-bold"
             style={{ fontFamily: "var(--font-heading)" }}
           >
             MTS Education
           </span>
-          <span className="text-[26px] sm:text-[30px] text-black/40 select-none">
+          <span className="text-[22px] sm:text-[26px] lg:text-[30px] text-black/40 select-none">
             &#10033;
           </span>
         </div>
@@ -132,101 +132,64 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
           )}
         </div>
 
-        {/* Mobile Hamburger */}
-        <button
-          className="lg:hidden flex flex-col gap-[5px] z-50 relative"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <div
-            className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "rotate-45 translate-y-[7px]" : ""}`}
-          />
-          <div
-            className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "opacity-0" : "opacity-100"}`}
-          />
-          <div
-            className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}
-          />
-        </button>
+        {/* Mobile right: login button + hamburger */}
+        <div className="lg:hidden flex flex-row items-center gap-2">
+          {!isLoggedIn && (
+            <button
+              onClick={onNavigateToLogin}
+              className="text-[13px] font-semibold text-black border border-black/15 px-3 py-1.5 rounded-full hover:bg-black/5 transition-colors whitespace-nowrap"
+            >
+              Đăng nhập
+            </button>
+          )}
+          {isLoggedIn && (
+            <span className="text-[13px] text-black/60 font-medium truncate max-w-[80px]">
+              {user?.displayName || user?.username}
+            </span>
+          )}
+          <button
+            className="flex flex-col gap-[5px] z-50 relative p-1"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <div className={`w-5 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "rotate-45 translate-y-[7px]" : ""}`} />
+            <div className={`w-5 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "opacity-0" : "opacity-100"}`} />
+            <div className={`w-5 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`} />
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Dropdown Menu */}
       <div
-        className={`fixed top-[69px] left-3 right-3 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 transition-all duration-300 ${
+        className={`fixed top-[58px] left-3 right-3 bg-white/97 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 transition-all duration-300 ${
           isMenuOpen
             ? "opacity-100 pointer-events-auto translate-y-0"
             : "opacity-0 pointer-events-none -translate-y-3"
         } lg:hidden`}
       >
-        <button
-          onClick={() => { setIsMenuOpen(false); onNavigate("math"); }}
-          className="text-[16px] font-semibold text-black/80 px-4 py-3 rounded-xl hover:bg-black/6 transition-colors text-left"
-        >
-          Toán Học
-        </button>
-        <button
-          onClick={() => { setIsMenuOpen(false); onNavigate("physics"); }}
-          className="text-[16px] font-semibold text-black/80 px-4 py-3 rounded-xl hover:bg-black/6 transition-colors text-left"
-        >
-          Vật Lý
-        </button>
-        <button
-          onClick={() => { setIsMenuOpen(false); onNavigate("chemistry"); }}
-          className="text-[16px] font-semibold text-black/80 px-4 py-3 rounded-xl hover:bg-black/6 transition-colors text-left"
-        >
-          Hóa Học
-        </button>
-        <button
-          onClick={() => { setIsMenuOpen(false); onNavigate("informatics"); }}
-          className="text-[16px] font-semibold text-black/80 px-4 py-3 rounded-xl hover:bg-black/6 transition-colors text-left"
-        >
-          Tin Học
-        </button>
-        <button
-          onClick={() => { setIsMenuOpen(false); onNavigate("hsa"); }}
-          className="text-[16px] font-semibold text-black/80 px-4 py-3 rounded-xl hover:bg-black/6 transition-colors text-left"
-        >
-          Đề thi HSA/TSA
-        </button>
-        <button
-          onClick={() => { setIsMenuOpen(false); onNavigate("mock_exams"); }}
-          className="text-[16px] font-semibold text-black/80 px-4 py-3 rounded-xl hover:bg-black/6 transition-colors text-left"
-        >
-          Thi thử TNTHPT
-        </button>
-        <div className="w-full h-[1px] bg-black/8 my-1 mx-2"></div>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate("math"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Toán Học</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate("physics"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Vật Lý</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate("chemistry"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Hóa Học</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate("informatics"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Tin Học</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate("hsa"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Đề thi HSA/TSA</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate("mock_exams"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Thi thử TNTHPT</button>
+        <div className="w-full h-[1px] bg-black/8 my-1"></div>
         {isLoggedIn ? (
-          <>
-            <div className="text-[15px] font-medium text-black/50 flex items-center gap-2 px-4 py-2">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-              {user?.displayName || user?.username}
-            </div>
-            <button
-              onClick={() => { setIsMenuOpen(false); logout(); }}
-              className="text-[16px] font-semibold text-red-500 px-4 py-3 rounded-xl hover:bg-red-50 transition-colors text-left"
-            >
-              Đăng xuất
-            </button>
-          </>
+          <button
+            onClick={() => { setIsMenuOpen(false); logout(); }}
+            className="text-[15px] font-semibold text-red-500 px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors text-left"
+          >
+            Đăng xuất
+          </button>
         ) : (
-          <div className="flex flex-row gap-2 pt-1 pb-1">
-            <button
-              onClick={() => { setIsMenuOpen(false); onNavigateToLogin(); }}
-              className="flex-1 text-[15px] font-semibold text-black border border-black/12 px-4 py-3 rounded-xl hover:bg-black/5 transition-colors text-center"
-            >
-              Đăng nhập
-            </button>
-            <a
-              href="#"
-              className="flex-1 text-[15px] font-semibold text-white bg-black px-4 py-3 rounded-xl hover:bg-black/80 transition-colors text-center"
-            >
-              Vào học ngay
-            </a>
-          </div>
+          <a href="#" className="text-[15px] font-semibold text-white bg-black px-4 py-2.5 rounded-xl hover:bg-black/80 transition-colors text-center">
+            Vào học ngay
+          </a>
         )}
       </div>
 
       {/* Hero Section */}
-      <main className="min-h-screen w-full flex flex-col md:flex-row items-center justify-center pt-20 md:pt-0 px-5 sm:px-8 md:px-10 overflow-hidden gap-6 md:gap-0 pb-10 md:pb-0">
+      <main className="min-h-screen w-full flex flex-col md:flex-row items-center justify-center px-5 sm:px-8 md:px-10 overflow-hidden gap-4 md:gap-0 pb-8 md:pb-0"
+        style={{ paddingTop: 'clamp(72px, 14vw, 120px)' }}>
         {/* Left: Text content */}
         <div className="w-full md:w-1/2 relative z-10">
           {/* Blurred Intro Label */}

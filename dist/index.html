@@ -3,23 +3,74 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/logo_MTS.svg" />
+    <meta name="google-site-verification" content="TnpzqJGWznKv7bsozY-Qe1III9h5xO2EfReMoGo-CKk" />
+    <link rel="icon" type="image/svg+xml" href="/net_ve.svg" />
     <title>MTS Education</title>
     <meta name="description" content="Nền tảng học tập và ôn thi trực tuyến các môn Toán, Lý, Hóa, Tin, HSA, VACT." />
     <meta property="og:title" content="MTS Education" />
     <meta property="og:description" content="Nền tảng học tập và ôn thi trực tuyến các môn Toán, Lý, Hóa, Tin, HSA, VACT." />
-    <meta property="og:image" content="https://mtsedu.vercel.app/logo_MTS.svg" />
+    <meta property="og:image" content="https://mtsedu.vercel.app/net_ve.svg" />
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/5ac3fe7c6abd2f62067f266d89671492?family=HelveticaNowDisplay-Medium" />
     <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/1aa3377e489837a26d019bba501e779d?family=HelveticaNowDisplayW01-Rg" />
-    <script type="module" crossorigin src="/assets/index-BQ5VXutG.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-B8gcKM-C.css">
+    <script type="module" crossorigin src="/assets/index-DY64W37S.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-hXDe5ZBB.css">
   </head>
   <body>
     <!-- Nơi React sẽ kết nối và vẽ giao diện vào -->
     <div id="root"></div>
+    <script>
+      // Chặn click chuột phải
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+
+      // Chặn các phím tắt (F12, Ctrl+U, Ctrl+Shift+I/J/C, Ctrl+S)
+      document.onkeydown = function(e) {
+        if (e.keyCode === 123) return false;
+        if (e.ctrlKey && e.keyCode === 85) return false;
+        if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false;
+        if (e.ctrlKey && e.keyCode === 83) return false;
+      };
+    </script>
+    
+    <!-- ANTI-SCREENSHOT PROTECTION -->
+    <style>
+      #mts-anti-screenshot { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.95); color: #fff; z-index: 9999999; justify-content: center; align-items: center; flex-direction: column; font-family: sans-serif; text-align: center; }
+    </style>
+    <div id="mts-anti-screenshot">
+        <span style="font-size: 50px; margin-bottom: 20px;">⚠️</span>
+        <b style="font-size: 24px;">NỘI DUNG TẠM ẨN</b>
+        <p style="font-size: 16px; color: #ccc; margin-top: 10px;">Màn hình bị che vì bạn đang mở công cụ chụp ảnh hoặc click ra ngoài trang web.<br>Vui lòng <b>Click chuột lại vào màn hình này</b> để học tiếp.</p>
+    </div>
+    <script>
+        // Xóa hình phạt cũ nếu người dùng vẫn còn lưu trong máy
+        localStorage.removeItem('mts_penalty_until');
+        
+        const daDangNhap = false; 
+        if (!daDangNhap) {
+            const protectionOverlay = document.getElementById('mts-anti-screenshot');
+            
+            // Lắng nghe phím PrintScreen để chặn
+            document.addEventListener('keyup', function(e) {
+                if (e.key === 'PrintScreen' || e.keyCode === 44) {
+                    try { navigator.clipboard.writeText('Nội dung đã được bảo vệ bản quyền.'); } catch(e) {}
+                }
+            });
+
+            // Khi mất focus (mở Snipping tool hoặc chuyển tab) -> Chỉ che tạm thời, KHÔNG phạt thời gian
+            window.addEventListener('blur', function() {
+                protectionOverlay.style.display = 'flex';
+            });
+
+            // Khi click quay lại web -> Tắt che ngay lập tức
+            window.addEventListener('focus', function() {
+                protectionOverlay.style.display = 'none';
+            });
+        }
+    </script>
   </body>
 </html>

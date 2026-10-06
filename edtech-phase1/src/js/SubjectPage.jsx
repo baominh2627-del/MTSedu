@@ -62,15 +62,15 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
   return (
     <div className="relative w-full min-h-screen mts-bg text-black font-sans">
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 py-4 flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8">
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-3 sm:py-4 flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8">
         <div 
-          className="flex flex-row gap-3 items-center cursor-pointer hover:opacity-70 transition-opacity"
+          className="flex flex-row gap-2 items-center cursor-pointer hover:opacity-70 transition-opacity"
           onClick={() => onNavigate('home')}
         >
-          <span className="text-[22px] sm:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+          <span className="text-[18px] sm:text-[22px] lg:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
             MTS Education
           </span>
-          <span className="text-[26px] sm:text-[30px] text-black/40 select-none">
+          <span className="text-[22px] sm:text-[26px] lg:text-[30px] text-black/40 select-none">
             &#10033;
           </span>
         </div>
@@ -105,50 +105,51 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
           )}
         </div>
 
-        {/* Mobile Hamburger */}
-        <button 
-          className="lg:hidden flex flex-col gap-[5px] z-50 relative"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <div className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
-          <div className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-          <div className={`w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`} />
-        </button>
+        {/* Mobile right: login + hamburger */}
+        <div className="lg:hidden flex flex-row items-center gap-2">
+          {!isLoggedIn && (
+            <button onClick={() => onNavigate('login')} className="text-[13px] font-semibold text-black border border-black/15 px-3 py-1.5 rounded-full hover:bg-black/5 transition-colors whitespace-nowrap">
+              Đăng nhập
+            </button>
+          )}
+          {isLoggedIn && (
+            <span className="text-[13px] text-black/60 font-medium truncate max-w-[80px]">
+              {user?.displayName || user?.username}
+            </span>
+          )}
+          <button 
+            className="flex flex-col gap-[5px] z-50 relative p-1"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <div className={`w-5 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
+            <div className={`w-5 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+            <div className={`w-5 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`} />
+          </button>
+        </div>
       </nav>
 
-      {/* Mobile Overlay */}
+      {/* Mobile Dropdown Menu (compact, not fullscreen) */}
       <div 
-        className={`fixed inset-0 bg-white/98 backdrop-blur-md z-40 flex flex-col justify-center px-8 gap-5 transition-opacity duration-300 overflow-y-auto pt-20 pb-10 ${
-          isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        className={`fixed top-[58px] left-3 right-3 bg-white/97 backdrop-blur-xl rounded-2xl shadow-2xl border border-black/8 z-40 flex flex-col gap-1 p-3 transition-all duration-300 ${
+          isMenuOpen ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-3'
         } lg:hidden`}
       >
-        <button onClick={() => { setIsMenuOpen(false); onNavigate('math'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'math' ? 'underline underline-offset-2' : ''}`}>Toán Học</button>
-        <button onClick={() => { setIsMenuOpen(false); onNavigate('physics'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'physics' ? 'underline underline-offset-2' : ''}`}>Vật Lý</button>
-        <button onClick={() => { setIsMenuOpen(false); onNavigate('chemistry'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'chemistry' ? 'underline underline-offset-2' : ''}`}>Hóa Học</button>
-        <button onClick={() => { setIsMenuOpen(false); onNavigate('informatics'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'informatics' ? 'underline underline-offset-2' : ''}`}>Tin Học</button>
-        <button onClick={() => { setIsMenuOpen(false); onNavigate('hsa'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'hsa' ? 'underline underline-offset-2' : ''}`}>Đề thi HSA/TSA</button>
-        <button onClick={() => { setIsMenuOpen(false); onNavigate('mock_exams'); }} className={`text-[24px] font-medium text-black text-left ${subjectKey === 'mock_exams' ? 'underline underline-offset-2' : ''}`}>Thi thử TNTHPT</button>
-        <div className="w-full h-[1px] bg-black/10 my-2"></div>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('math'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'math' ? 'text-black font-bold' : 'text-black/80'}`}>Toán Học</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('physics'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'physics' ? 'text-black font-bold' : 'text-black/80'}`}>Vật Lý</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('chemistry'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'chemistry' ? 'text-black font-bold' : 'text-black/80'}`}>Hóa Học</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('informatics'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'informatics' ? 'text-black font-bold' : 'text-black/80'}`}>Tin Học</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('hsa'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'hsa' ? 'text-black font-bold' : 'text-black/80'}`}>Đề thi HSA/TSA</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('mock_exams'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'mock_exams' ? 'text-black font-bold' : 'text-black/80'}`}>Thi thử TNTHPT</button>
+        <div className="w-full h-[1px] bg-black/8 my-1"></div>
         {isLoggedIn ? (
-          <>
-            <div className="text-[18px] font-medium text-black/60 flex items-center gap-2">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-              {user?.displayName || user?.username}
-            </div>
-            <button 
-              onClick={() => { setIsMenuOpen(false); handleLogout(); }}
-              className="text-[18px] font-medium text-red-500 text-left"
-            >
-              Đăng xuất
-            </button>
-          </>
+          <button onClick={() => { setIsMenuOpen(false); handleLogout(); }} className="text-[15px] font-semibold text-red-500 px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors text-left">Đăng xuất</button>
         ) : (
-          <button onClick={() => { setIsMenuOpen(false); onNavigate('login'); }} className="text-[24px] font-medium text-black text-left">Đăng nhập</button>
+          <button onClick={() => { setIsMenuOpen(false); onNavigate('login'); }} className="text-[15px] font-semibold text-white bg-black px-4 py-2.5 rounded-xl hover:bg-black/80 transition-colors text-center">Vào học ngay</button>
         )}
       </div>
 
       {/* Main Content */}
-      <main className="pt-[100px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
+      <main className="pt-[72px] sm:pt-[80px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
         
         {/* Page Header (Title) */}
         <div className="mb-10 pb-6 border-b border-black/5">
