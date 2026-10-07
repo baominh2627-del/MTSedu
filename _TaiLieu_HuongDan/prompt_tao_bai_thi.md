@@ -190,7 +190,7 @@ Hãy tạo đầy đủ 4 file sau, viết code hoàn chỉnh, không bỏ sót:
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>[TÊN ĐỀ]</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=3" />
     <script>
       MathJax = {
         tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] },
@@ -302,7 +302,7 @@ Hãy tạo đầy đủ 4 file sau, viết code hoàn chỉnh, không bỏ sót:
         }
       });
     </script>
-    <script type="module" src="script.js"></script>
+    <script type="module" src="script.js?v=3"></script>
   </body>
 </html>
 ```
