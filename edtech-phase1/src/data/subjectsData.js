@@ -2,7 +2,13 @@ export const subjectsData = {
   physics: {
     title: "Vật Lý",
     description: "Tổng hợp các bài kiểm tra, đề thi môn Vật Lý",
-    categories: ["Thi thử TNTHPT", "Đề thi HSA/TSA", "Lớp 12", "Lớp 11", "Lớp 10"],
+    categories: [
+      "Thi thử TNTHPT",
+      "Đề thi HSA/TSA",
+      "Lớp 12",
+      "Lớp 11",
+      "Lớp 10",
+    ],
     tests: [
       {
         id: "phys_0",
@@ -11,9 +17,10 @@ export const subjectsData = {
         questions: 40,
         time: 45,
         price: "Miễn phí",
-        thumbnail: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        thumbnail:
+          "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
         instructor: "Thầy Hùng",
-        link: "https://baominh2627-del.github.io/bai-ktra-vat-ly-nhiet-ly-12/"
+        link: "https://baominh2627-del.github.io/bai-ktra-vat-ly-nhiet-ly-12/",
       },
       {
         id: "phys_de2_chuong1",
@@ -24,7 +31,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail: "/thumb_vatly12_chuong1_de2.jpg",
         instructor: "Thầy Hùng",
-        link: "https://baominh2627-del.github.io/de-2-kiem-tra-vat-ly-12-chuong-1/"
+        link: "https://baominh2627-del.github.io/de-2-kiem-tra-vat-ly-12-chuong-1/",
       },
       {
         id: "phys_1",
@@ -33,8 +40,9 @@ export const subjectsData = {
         questions: 40,
         time: 50,
         price: "Miễn phí",
-        thumbnail: "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Hùng"
+        thumbnail:
+          "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng",
       },
       {
         id: "phys_2",
@@ -43,8 +51,9 @@ export const subjectsData = {
         questions: 50,
         time: 60,
         price: "49.000₫",
-        thumbnail: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Cô Mai"
+        thumbnail:
+          "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Cô Mai",
       },
       {
         id: "phys_3",
@@ -53,8 +62,9 @@ export const subjectsData = {
         questions: 30,
         time: 45,
         price: "Miễn phí",
-        thumbnail: "https://images.unsplash.com/photo-1610428584852-5a98bf49b015?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Hùng"
+        thumbnail:
+          "https://images.unsplash.com/photo-1610428584852-5a98bf49b015?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng",
       },
       {
         id: "phys_4",
@@ -63,8 +73,9 @@ export const subjectsData = {
         questions: 40,
         time: 50,
         price: "29.000₫",
-        thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Bình"
+        thumbnail:
+          "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Bình",
       },
       {
         id: "phys_5",
@@ -73,8 +84,9 @@ export const subjectsData = {
         questions: 40,
         time: 45,
         price: "Miễn phí",
-        thumbnail: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Cô Mai"
+        thumbnail:
+          "https://images.unsplash.com/photo-1507668077129-56e32842fceb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Cô Mai",
       },
       {
         id: "phys_6",
@@ -83,15 +95,22 @@ export const subjectsData = {
         questions: 50,
         time: 90,
         price: "99.000₫",
-        thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Hùng"
-      }
-    ]
+        thumbnail:
+          "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng",
+      },
+    ],
   },
   math: {
     title: "Toán Học",
     description: "Tổng hợp các bài kiểm tra, đề thi môn Toán Học",
-    categories: ["Thi thử TNTHPT", "Đề thi HSA/TSA", "Lớp 12", "Lớp 11", "Lớp 10"],
+    categories: [
+      "Thi thử TNTHPT",
+      "Đề thi HSA/TSA",
+      "Lớp 12",
+      "Lớp 11",
+      "Lớp 10",
+    ],
     tests: [
       {
         id: "math_1",
@@ -100,8 +119,9 @@ export const subjectsData = {
         questions: 50,
         time: 90,
         price: "Miễn phí",
-        thumbnail: "https://images.unsplash.com/photo-1509228468518-180dd4864904?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Minh"
+        thumbnail:
+          "https://images.unsplash.com/photo-1509228468518-180dd4864904?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Minh",
       },
       {
         id: "math_2",
@@ -110,16 +130,23 @@ export const subjectsData = {
         questions: 40,
         time: 45,
         price: "Miễn phí",
-        thumbnail: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        thumbnail:
+          "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
         instructor: "Thầy Minh",
-        link: "https://baominh2627-del.github.io/de-1-ktra-luong-giac-toan-11/"
-      }
-    ]
+        link: "https://baominh2627-del.github.io/de-1-ktra-luong-giac-toan-11/",
+      },
+    ],
   },
   chemistry: {
     title: "Hóa Học",
     description: "Tổng hợp các bài kiểm tra, đề thi môn Hóa Học",
-    categories: ["Thi thử TNTHPT", "Đề thi HSA/TSA", "Lớp 12", "Lớp 11", "Lớp 10"],
+    categories: [
+      "Thi thử TNTHPT",
+      "Đề thi HSA/TSA",
+      "Lớp 12",
+      "Lớp 11",
+      "Lớp 10",
+    ],
     tests: [
       {
         id: "chem_1",
@@ -128,15 +155,22 @@ export const subjectsData = {
         questions: 40,
         time: 50,
         price: "Miễn phí",
-        thumbnail: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Cô Lan"
-      }
-    ]
+        thumbnail:
+          "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Cô Lan",
+      },
+    ],
   },
   informatics: {
     title: "Tin Học",
     description: "Tổng hợp các bài kiểm tra, đề thi môn Tin Học",
-    categories: ["Thi thử TNTHPT", "Lớp 12", "Lớp 11", "Lớp 10", "Lập trình căn bản"],
+    categories: [
+      "Thi thử TNTHPT",
+      "Lớp 12",
+      "Lớp 11",
+      "Lớp 10",
+      "Lập trình căn bản",
+    ],
     tests: [
       {
         id: "info_1",
@@ -145,14 +179,16 @@ export const subjectsData = {
         questions: 30,
         time: 45,
         price: "Miễn phí",
-        thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Bình"
-      }
-    ]
+        thumbnail:
+          "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Bình",
+      },
+    ],
   },
   hsa: {
     title: "Đề thi HSA/TSA",
-    description: "Tổng hợp các đề Đánh Giá Năng Lực (HSA) và Đánh Giá Tư Duy (TSA)",
+    description:
+      "Tổng hợp các đề Đánh Giá Năng Lực (HSA) và Đánh Giá Tư Duy (TSA)",
     categories: ["Đề thi HSA", "Đề thi TSA", "Toán", "Ngữ Văn", "Khoa học"],
     tests: [
       {
@@ -162,8 +198,9 @@ export const subjectsData = {
         questions: 150,
         time: 195,
         price: "99.000₫",
-        thumbnail: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "MTS Education"
+        thumbnail:
+          "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "MTS Education",
       },
       {
         id: "hsa_dinhluong_de1",
@@ -174,7 +211,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong.jpg",
         instructor: "MTS Education",
-        link: "https://baominh2627-del.github.io/de-1-hsa-dinh-luong-vnes/"
+        link: "https://baominh2627-del.github.io/de-1-hsa-dinh-luong-vnes/",
       },
       {
         id: "hsa_dinhluong_de2",
@@ -185,8 +222,9 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de2.jpg",
         instructor: "MTS Education",
-        link: "https://baominh2627-del.github.io/de-2-hsa-dinh-luong-vnes/"
+        link: "https://baominh2627-del.github.io/de-2-hsa-dinh-luong-vnes/",
       },
+
       {
         id: "hsa_dinhluong_de3",
         title: "Đề 3 - HSA Định Lượng VNES",
@@ -196,7 +234,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de3.jpg",
         instructor: "MTS Education",
-        link: "https://baominh2627-del.github.io/de-3-hsa-dinh-luong-vnes/"
+        link: "https://baominh2627-del.github.io/de-3-hsa-dinh-luong-vnes/",
       },
       {
         id: "hsa_dinhluong_de4",
@@ -207,7 +245,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de4.jpg",
         instructor: "MTS Education",
-        link: "https://baominh2627-del.github.io/de-4-hsa-dinh-luong-vnes/"
+        link: "https://baominh2627-del.github.io/de-4-hsa-dinh-luong-vnes/",
       },
       {
         id: "hsa_dinhluong_de5",
@@ -218,13 +256,25 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de5.jpg",
         instructor: "MTS Education",
-        link: "https://baominh2627-del.github.io/de-5-hsa-dinh-luong-vnes/"
-      }
-    ]
+        link: "https://baominh2627-del.github.io/de-5-hsa-dinh-luong-vnes/",
+      },
+      {
+        id: "hsa_dinhluong_de6",
+        title: "Đề 6 - HSA Định Lượng VNES",
+        tag: "Đề thi HSA",
+        questions: 50,
+        time: 75,
+        price: "Miễn phí",
+        thumbnail: "/thumb_hsa_dinh_luong_de6.jpg",
+        instructor: "MTS Education",
+        link: "https://baominh2627-del.github.io/de-6-hsa-dinh-luong-vnes/",
+      },
+    ],
   },
   mock_exams: {
     title: "Thi thử TNTHPT",
-    description: "Tổng hợp các đề thi thử Tốt nghiệp THPT Quốc Gia từ các trường và Sở GD&ĐT",
+    description:
+      "Tổng hợp các đề thi thử Tốt nghiệp THPT Quốc Gia từ các trường và Sở GD&ĐT",
     categories: ["Toán Học", "Vật Lý", "Hóa Học", "Tiếng Anh", "Ngữ Văn"],
     tests: [
       {
@@ -234,9 +284,10 @@ export const subjectsData = {
         questions: 50,
         time: 90,
         price: "Miễn phí",
-        thumbnail: "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Minh"
-      }
-    ]
-  }
+        thumbnail:
+          "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Minh",
+      },
+    ],
+  },
 };
