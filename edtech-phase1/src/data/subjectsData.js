@@ -186,6 +186,17 @@ export const subjectsData = {
         thumbnail: "/thumb_hsa_dinh_luong_de3.jpg",
         instructor: "MTS Education",
         link: "https://baominh2627-del.github.io/de-3-hsa-dinh-luong-vnes/"
+      },
+      {
+        id: "hsa_dinhluong_de4",
+        title: "Đề 4 - HSA Định Lượng VNES",
+        tag: "Đề thi HSA",
+        questions: 50,
+        time: 75,
+        price: "Miễn phí",
+        thumbnail: "/thumb_hsa_dinh_luong_de4.jpg",
+        instructor: "MTS Education",
+        link: "https://baominh2627-del.github.io/de-4-hsa-dinh-luong-vnes/"
       }
     ]
   },
