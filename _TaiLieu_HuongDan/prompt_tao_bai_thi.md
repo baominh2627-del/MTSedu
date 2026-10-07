@@ -237,11 +237,6 @@ Hãy tạo đầy đủ 4 file sau, viết code hoàn chỉnh, không bỏ sót:
 
     <!-- Màn hình làm bài thi -->
     <div id="exam-screen" class="hidden container">
-      <div id="board-container" class="board-card">
-        <h3>Bảng Điều Hướng</h3>
-        <!-- board-wrapper chứa legend + q-grid riêng biệt (legend không làm lệch các ô số) -->
-        <div id="question-board" class="board-wrapper"></div>
-      </div>
       <div class="exam-header-block">
         <div class="exam-header-top">
           <div class="meta-text">KIỂM TRA [THỜI GIAN] PHÚT · MÔN [MÔN VIẾT HOA]</div>
@@ -249,7 +244,10 @@ Hãy tạo đầy đủ 4 file sau, viết code hoàn chỉnh, không bỏ sót:
           <div class="meta-sub">[SỐ CÂU MÔ TẢ]</div>
           <hr class="dashed-line" />
         </div>
-        <div class="exam-info-bar sticky">
+      </div>
+      <!-- THANH GHIM TRÊN CÙNG: đồng hồ + bảng điều hướng luôn hiện khi cuộn -->
+      <div class="top-sticky">
+        <div class="exam-info-bar">
           <div class="student-info">
             Thí sinh: <strong id="display-name" style="color: white"></strong> ·
             Lớp <strong id="display-class" style="color: white"></strong>
@@ -261,6 +259,12 @@ Hãy tạo đầy đủ 4 file sau, viết code hoàn chỉnh, không bỏ sót:
           <div class="score-pill hidden" id="score-pill">
             <span class="green-dot">✓</span> Điểm: <span id="review-score">0</span>/10
           </div>
+        </div>
+        <div id="board-container" class="board-card">
+          <h3>Bảng Điều Hướng</h3>
+          <!-- board-wrapper chứa legend + q-grid riêng biệt (legend không làm lệch các ô số) -->
+          <div id="question-board" class="board-wrapper"></div>
+          <button id="board-expand" type="button" title="Mở rộng bảng câu hỏi" aria-expanded="false">▼</button>
         </div>
       </div>
       <div id="questions-container"></div>
@@ -280,6 +284,24 @@ Hãy tạo đầy đủ 4 file sau, viết code hoàn chỉnh, không bỏ sót:
       </div>
     </div>
 
+    <script>
+      // Mở rộng / thu gọn bảng điều hướng (thanh ghim trên cùng)
+      document.addEventListener("click", function (e) {
+        var board = document.getElementById("board-container");
+        if (!board) return;
+        var btn = e.target.closest("#board-expand");
+        if (btn) {
+          var on = board.classList.toggle("expanded");
+          btn.setAttribute("aria-expanded", on);
+          btn.textContent = on ? "▲" : "▼";
+        } else if (e.target.closest(".q-box") && board.classList.contains("expanded")) {
+          board.classList.remove("expanded");
+          var b2 = document.getElementById("board-expand");
+          b2.setAttribute("aria-expanded", "false");
+          b2.textContent = "▼";
+        }
+      });
+    </script>
     <script type="module" src="script.js"></script>
   </body>
 </html>
@@ -778,7 +800,7 @@ document.getElementById("review-btn").addEventListener("click", () => {
 ---
 
 ## ⚠️ SAU KHI TẠO XONG (cả 2 giai đoạn):
-1. Copy file `style.css` từ thư mục `de-1-ktra-luong-giac-toan-11` vào (không thay đổi).
+1. Copy file `style.css` **bản mới** từ thư mục `de-5-hsa-dinh-luong-vnes` vào (không thay đổi). Bản này đã có thanh ghim trên cùng (đồng hồ + bảng điều hướng luôn hiện khi cuộn). **Không dùng style.css cũ** của `de-1-ktra-luong-giac-toan-11` vì bảng điều hướng cũ nằm cố định góc dưới phải, che nội dung trên điện thoại.
 2. Tạo GitHub repo mới, push code lên.
 3. Bật GitHub Pages (Settings → Pages → branch main).
 4. Thêm link GitHub Pages vào `subjectsData.js` trong MTSedu (field `link`).

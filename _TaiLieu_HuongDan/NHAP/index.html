@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ĐỀ THI ĐỊNH LƯỢNG HSA - ĐỀ SỐ 1</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      MathJax = {
+        tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] },
+        svg: { fontCache: "global" },
+      };
+    </script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <!-- Màn hình chờ / hướng dẫn -->
+    <div id="login-screen" class="container">
+      <div class="exam-header-block" style="margin-bottom: 20px">
+        <div class="exam-header-top" style="border-radius: 8px; border-bottom: 1px solid var(--border-color);">
+          <div class="meta-text">BÀI THI ĐÁNH GIÁ NĂNG LỰC HSA · TOÁN HỌC VÀ XỬ LÝ SỐ LIỆU</div>
+          <h1 class="exam-title">ĐỀ THI ĐỊNH LƯỢNG HSA - ĐỀ SỐ 1</h1>
+          <div class="meta-sub">50 câu hỏi · Trắc nghiệm &amp; Điền đáp án — thang điểm 50</div>
+          <hr class="dashed-line" />
+        </div>
+      </div>
+      <div class="card form-card">
+        <div class="exam-instructions" style="text-align: left;">
+          <h3 style="margin-top: 0; color: var(--navy); font-size: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; font-weight: bold;">📋 HƯỚNG DẪN &amp; QUY CHẾ THI</h3>
+          <ul style="font-size: 14px; color: #334155; line-height: 1.8; padding-left: 20px; margin-bottom: 16px;">
+            <li><strong>Tổng số câu hỏi:</strong> 50 câu (Bao gồm câu hỏi trắc nghiệm 4 lựa chọn và câu hỏi điền đáp án).</li>
+            <li><strong>Thang điểm:</strong> Mỗi câu trả lời đúng được <strong>1 điểm</strong> (Tối đa 50 điểm).</li>
+            <li><strong>Thời gian làm bài:</strong> 75 phút.</li>
+            <li><span style="color: #d97706; font-weight: bold;">⚠️ Lưu ý (Với câu điền đáp án):</span> Dùng dấu chấm (<code>.</code>) để phân cách thập phân. VD: <code>1.25</code></li>
+          </ul>
+          <div style="background: #fef9c3; border: 1px solid #fde047; border-radius: 6px; padding: 10px 14px; font-size: 13px; color: #854d0e; margin-bottom: 16px;">
+            ⚠️ <strong>Quy chế:</strong> Nếu bạn chuyển sang tab hoặc ứng dụng khác trong khi thi, hệ thống sẽ ghi nhận số lần vi phạm và báo cáo về giáo viên.
+          </div>
+          <button id="btn-start-exam" class="btn-primary" style="width: 100%; padding: 12px; font-size: 16px; font-weight: bold;">
+            ✅ Tôi đã đọc hướng dẫn — Bắt đầu thi
+          </button>
+        </div>
+      </div>
+      <div class="page-footer">Toán và Xử lý số liệu · tự động chấm điểm theo đúng barem &amp; lưu kết quả</div>
+    </div>
+
+    <!-- Màn hình làm bài thi -->
+    <div id="exam-screen" class="hidden container">
+      <div id="board-container" class="board-card">
+        <h3>Bảng Điều Hướng</h3>
+        <div id="question-board" class="board-wrapper"></div>
+      </div>
+      <div class="exam-header-block">
+        <div class="exam-header-top">
+          <div class="meta-text">KIỂM TRA 75 PHÚT · Toán và Xử lý số liệu</div>
+          <h1 class="exam-title">ĐỀ THI ĐỊNH LƯỢNG HSA - ĐỀ SỐ 1</h1>
+          <div class="meta-sub">50 câu hỏi</div>
+          <hr class="dashed-line" />
+        </div>
+        <div class="exam-info-bar sticky">
+          <div class="student-info">
+            Thí sinh: <strong id="display-name" style="color: white"></strong> ·
+            Lớp <strong id="display-class" style="color: white"></strong>
+          </div>
+          <div class="progress-info"><span id="answered-count">0/50</span> câu đã làm</div>
+          <div class="timer-pill">
+            <span class="green-dot">●</span> <span id="countdown">75:00</span>
+          </div>
+          <div class="score-pill hidden" id="score-pill">
+            <span class="green-dot">✓</span> Điểm: <span id="review-score">0</span>/50
+          </div>
+        </div>
+      </div>
+      <div id="questions-container"></div>
+      <div class="submit-container">
+        <button id="submit-btn" class="btn-primary">Nộp bài kiểm tra</button>
+      </div>
+    </div>
+
+    <!-- Màn hình kết quả -->
+    <div id="result-screen" class="hidden container">
+      <div class="card result-card">
+        <h2 style="font-family: var(--font-serif)">Kết Quả Bài Thi</h2>
+        <div class="score-display mono-font">Điểm: <span id="final-score"></span>/50</div>
+        <p>Số lần rời khỏi màn hình: <span id="cheat-display">0</span></p>
+        <p id="firebase-status" style="font-size: 14px; margin-top: 8px; color: #666;">⏳ Đang kết nối hệ thống lưu...</p>
+        <button id="review-btn" class="btn-primary">Xem lại bài làm</button>
+      </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
