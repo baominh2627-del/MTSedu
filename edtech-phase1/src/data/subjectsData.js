@@ -209,7 +209,7 @@ export const subjectsData = {
         questions: 50,
         time: 75,
         price: "Miễn phí",
-        thumbnail: "/thumb_hsa_dinh_luong.jpg",
+        thumbnail: "/thumb_hsa_dinh_luong_de1.jpg",
         instructor: "MTS Education",
         link: "https://baominh2627-del.github.io/de-1-hsa-dinh-luong-vnes/",
       },
