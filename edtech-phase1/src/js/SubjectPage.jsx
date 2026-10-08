@@ -9,6 +9,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState('Tất cả');
+  const [sortOption, setSortOption] = useState('Mới nhất');
 
   const data = subjectsData[subjectKey] || subjectsData['physics'];
   const mockTests = data.tests;
@@ -19,7 +20,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
     );
   };
 
-  const displayedTests = mockTests.filter(test => {
+  const filteredTests = mockTests.filter(test => {
     const matchesSearch = test.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(test.tag);
     
@@ -32,6 +33,14 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
     return matchesSearch && matchesCategory && matchesPrice;
   });
+
+  // Áp dụng sắp xếp
+  const displayedTests = [...filteredTests];
+  if (sortOption === 'Phổ biến nhất') {
+    displayedTests.sort((a, b) => b.questions - a.questions); // Mock logic (bài nhiều câu hỏi hơn)
+  } else if (sortOption === 'Được làm nhiều nhất') {
+    displayedTests.sort((a, b) => a.time - b.time); // Mock logic (bài thời gian làm nhanh hơn)
+  }
 
   // Xử lý khi click vào bài thi: kiểm tra đăng nhập trước
   const handleTestClick = (test) => {
@@ -258,10 +267,14 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <p className="text-gray-600 text-sm sm:text-base">Hiển thị {displayedTests.length} bài kiểm tra</p>
-              <select className="w-full sm:w-auto px-4 py-2 bg-white border border-black/10 rounded-md focus:outline-none focus:border-black/30 cursor-pointer text-sm sm:text-base">
-                <option>Mới nhất</option>
-                <option>Phổ biến nhất</option>
-                <option>Được làm nhiều nhất</option>
+              <select 
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+                className="w-full sm:w-auto px-4 py-2 bg-white border border-black/10 rounded-md focus:outline-none focus:border-black/30 cursor-pointer text-sm sm:text-base"
+              >
+                <option value="Mới nhất">Mới nhất</option>
+                <option value="Phổ biến nhất">Phổ biến nhất</option>
+                <option value="Được làm nhiều nhất">Được làm nhiều nhất</option>
               </select>
             </div>
 
