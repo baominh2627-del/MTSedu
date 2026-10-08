@@ -22,6 +22,7 @@ import LoginPage from "./LoginPage.jsx";
 import MainframeHome from "./MainframeHome.jsx";
 import SubjectPage from "./SubjectPage.jsx";
 import ProfilePage from "./ProfilePage.jsx";
+import FeedbackModal from "./FeedbackModal.jsx";
 import "../css/App.css";
 
 // Đọc trang hiện tại từ URL hash (ví dụ: #math -> "math")
@@ -115,6 +116,7 @@ function App() {
   return (
     <AuthProvider>
       <AppContent />
+      <FeedbackModal />
     </AuthProvider>
   );
 }
