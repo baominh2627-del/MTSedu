@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTS Education — Quản lý tài khoản Admin</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #333; padding: 40px 20px; }
+    .container { max-width: 700px; margin: 0 auto; }
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+    p.subtitle { color: #666; margin-bottom: 28px; font-size: 14px; }
+
+    .card { background: white; border-radius: 14px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.07); margin-bottom: 20px; }
+    .card h3 { margin-bottom: 18px; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 12px; font-weight: 600; color: #666; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+    input, select, textarea {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid #e5e7eb; border-radius: 8px;
+      font-size: 14px; outline: none; transition: border 0.2s;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #333; }
+
+    .btn { padding: 12px 24px; background: #111; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; }
+    .btn:hover { background: #333; }
+    .btn:disabled { background: #999; cursor: not-allowed; }
+    .btn-danger { background: #dc2626; }
+    .btn-danger:hover { background: #b91c1c; }
+
+    .status-box { margin-top: 14px; padding: 12px 16px; border-radius: 8px; font-size: 14px; display: none; }
+    .status-box.success { background: #f0fdf4; border: 1px solid #86efac; color: #166534; display: block; }
+    .status-box.error { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; display: block; }
+    .status-box.loading { background: #eff6ff; border: 1px solid #93c5fd; color: #1e40af; display: block; }
+
+    .user-list { margin-top: 8px; }
+    .user-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; border: 1px solid #e5e7eb; border-radius: 8px;
+      margin-bottom: 8px; font-size: 14px;
+    }
+    .user-item-info { display: flex; flex-direction: column; gap: 2px; }
+    .user-item-name { font-weight: 600; }
+    .user-item-meta { font-size: 12px; color: #888; }
+    .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+    .badge-student { background: #dbeafe; color: #1d4ed8; }
+    .badge-admin { background: #fef9c3; color: #854d0e; }
+
+    .btn-small { padding: 6px 12px; font-size: 12px; width: auto; border-radius: 6px; }
+    .btn-red-small { background: #dc2626; }
+    .btn-red-small:hover { background: #b91c1c; }
+
+    textarea { resize: vertical; }
+    code { font-family: monospace; background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+
+    .divider { border: none; border-top: 1px solid #f0f0f0; margin: 20px 0; }
+
+    .tab-row { display: flex; gap: 8px; margin-bottom: 20px; }
+    .tab { padding: 8px 18px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; background: white; color: #555; transition: all 0.15s; }
+    .tab.active { background: #111; color: white; border-color: #111; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎓 MTS Education — Admin</h1>
+    <p class="subtitle">Quản lý tài khoản học sinh — kết nối trực tiếp Firebase</p>
+
+    <!-- Tab navigation -->
+    <div class="tab-row">
+      <button class="tab active" onclick="switchTab('add')">➕ Thêm tài khoản</button>
+      <button class="tab" onclick="switchTab('bulk')">📋 Thêm hàng loạt</button>
+      <button class="tab" onclick="switchTab('list')">👥 Danh sách users</button>
+    </div>
+
+    <!-- TAB 1: Thêm 1 tài khoản -->
+    <div class="tab-content active" id="tab-add">
+      <div class="card">
+        <h3>➕ Thêm tài khoản mới</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tên đăng nhập (username)</label>
+            <input type="text" id="username" placeholder="vd: hocsinh01">
+          </div>
+          <div class="form-group">
+            <label>Mật khẩu</label>
+            <input type="text" id="password" placeholder="vd: matkhau123">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tên hiển thị (có dấu tiếng Việt OK)</label>
+            <input type="text" id="displayName" placeholder="vd: Nguyễn Văn A">
+          </div>
+          <div class="form-group">
+            <label>Vai trò</label>
+            <select id="role">
+              <option value="student">Học sinh</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn" id="btnAddUser" onclick="addSingleUser()">➕ Thêm vào Firebase ngay</button>
+        <div class="status-box" id="addStatus"></div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Thêm hàng loạt -->
+    <div class="tab-content" id="tab-bulk">
+      <div class="card">
+        <h3>📋 Thêm hàng loạt</h3>
+        <div class="form-group">
+          <label>Danh sách (mỗi dòng: username,mật khẩu,Tên hiển thị)</label>
+          <textarea id="bulkInput" rows="8" placeholder="hocsinh01,matkhau123,Nguyễn Văn A&#10;hocsinh02,matkhau456,Trần Thị B&#10;hocsinh03,matkhau789,Lê Văn C"></textarea>
+        </div>
+        <button class="btn" id="btnBulk" onclick="addBulkUsers()">📋 Thêm tất cả vào Firebase</button>
+        <div class="status-box" id="bulkStatus"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Danh sách users -->
+    <div class="tab-content" id="tab-list">
+      <div class="card">
+        <h3>👥 Danh sách tài khoản hiện tại</h3>
+        <button class="btn" style="margin-bottom:16px;" onclick="loadUserList()">🔄 Tải danh sách</button>
+        <div id="userListContainer">
+          <p style="color:#888;font-size:14px;">Nhấn "Tải danh sách" để xem.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK (compat v9) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+
+  <script>
+    // =====================================================
+    // FIREBASE CONFIG — Realtime Database MTSedu
+    // =====================================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyC8AT2g3vS54-Qco3uU36xYsXN04trj0Yw",
+      authDomain: "mtsedu-85ea3.firebaseapp.com",
+      databaseURL: "https://mtsedu-85ea3-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "mtsedu-85ea3",
+      storageBucket: "mtsedu-85ea3.firebasestorage.app",
+      messagingSenderId: "73617729802",
+      appId: "1:73617729802:web:e7fa3c3c3b9ded7522f2f3",
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // =====================================================
+    // HELPERS
+    // =====================================================
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function showStatus(elId, type, msg) {
+      const el = document.getElementById(elId);
+      el.className = `status-box ${type}`;
+      el.innerHTML = msg;
+    }
+
+    function switchTab(name) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // =====================================================
+    // THÊM 1 USER
+    // =====================================================
+    async function addSingleUser() {
+      const username = document.getElementById('username').value.trim().toLowerCase();
+      const password = document.getElementById('password').value.trim();
+      const displayName = document.getElementById('displayName').value.trim();
+      const role = document.getElementById('role').value;
+
+      if (!username || !password || !displayName) {
+        showStatus('addStatus', 'error', '⚠️ Vui lòng điền đầy đủ thông tin!');
+        return;
+      }
+      if (/\s/.test(username)) {
+        showStatus('addStatus', 'error', '⚠️ Username không được có khoảng trắng!');
+        return;
+      }
+
+      const btn = document.getElementById('btnAddUser');
+      btn.disabled = true;
+      btn.textContent = '⏳ Đang lưu...';
+      showStatus('addStatus', 'loading', '⏳ Đang kết nối Firebase và lưu tài khoản...');
+
+      try {
+        // Kiểm tra username đã tồn tại chưa
+        const existing = await db.ref(`users/user_${username}`).get();
+        if (existing.exists()) {
+          showStatus('addStatus', 'error', `⚠️ Username <code>${username}</code> đã tồn tại! Hãy dùng username khác.`);
+          btn.disabled = false;
+          btn.textContent = '➕ Thêm vào Firebase ngay';
+          return;
+        }
+
+        const hashedPw = await hashPassword(password);
+        const userId = 'user_' + username;
+
+        await db.ref(`users/${userId}`).set({
+          username,
+          displayName,
+          password: hashedPw,
+          role,
+          createdAt: new Date().toISOString().split('T')[0],
+          results: {}
+        });
+
+        showStatus('addStatus', 'success',
+          `✅ Đã thêm thành công!<br>
+          <b>Username:</b> <code>${username}</code><br>
+          <b>Tên:</b> ${displayName}<br>
+          <b>Mật khẩu gốc:</b> <code>${password}</code> (đã hash SHA-256)<br>
+          <b>Vai trò:</b> ${role}`
+        );
+        // Clear form
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('displayName').value = '';
+      } catch (err) {
+        showStatus('addStatus', 'error', `❌ Lỗi: ${err.message}`);
+      }
+
+      btn.disabled = false;
+      btn.textContent = '➕ Thêm vào Firebase ngay';
+    }
+
+    // =====================================================
+    // THÊM HÀNG LOẠT
+    // =====================================================
+    async function addBulkUsers() {
+      const bulkInput = document.getElementById('bulkInput').value.trim();
+      if (!bulkInput) {
+        showStatus('bulkStatus', 'error', '⚠️ Vui lòng nhập danh sách!');
+        return;
+      }
+
+      const lines = bulkInput.split('\n').filter(l => l.trim());
+      if (lines.length === 0) return;
+
+      const btn = document.getElementById('btnBulk');
+      btn.disabled = true;
+      btn.textContent = `⏳ Đang xử lý 0/${lines.length}...`;
+      showStatus('bulkStatus', 'loading', `⏳ Đang thêm ${lines.length} tài khoản...`);
+
+      let successCount = 0;
+      let errorList = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const parts = lines[i].split(',').map(s => s.trim());
+        if (parts.length < 3) {
+          errorList.push(`Dòng ${i+1}: Sai định dạng (cần: username,mật khẩu,Tên)`);
+          continue;
+        }
+
+        const [username, password, displayName] = parts;
+        const cleanUsername = username.toLowerCase();
+
+        if (/\s/.test(cleanUsername)) {
+          errorList.push(`Dòng ${i+1}: Username <code>${username}</code> có khoảng trắng!`);
+          continue;
+        }
+
+        try {
+          // Kiểm tra trùng
+          const existing = await db.ref(`users/user_${cleanUsername}`).get();
+          if (existing.exists()) {
+            errorList.push(`Dòng ${i+1}: Username <code>${cleanUsername}</code> đã tồn tại (bỏ qua)`);
+            continue;
+          }
+
+          const hashedPw = await hashPassword(password);
+          await db.ref(`users/user_${cleanUsername}`).set({
+            username: cleanUsername,
+            displayName,
+            password: hashedPw,
+            role: 'student',
+            createdAt: new Date().toISOString().split('T')[0],
+            results: {}
+          });
+          successCount++;
+        } catch (err) {
+          errorList.push(`Dòng ${i+1} (${username}): Lỗi — ${err.message}`);
+        }
+
+        btn.textContent = `⏳ Đang xử lý ${i+1}/${lines.length}...`;
+      }
+
+      let msg = `✅ Thêm thành công <b>${successCount}/${lines.length}</b> tài khoản.`;
+      if (errorList.length > 0) {
+        msg += `<br><br>⚠️ Các lỗi:<br>` + errorList.map(e => `• ${e}`).join('<br>');
+        showStatus('bulkStatus', errorList.length === lines.length ? 'error' : 'success', msg);
+      } else {
+        showStatus('bulkStatus', 'success', msg);
+      }
+
+      btn.disabled = false;
+      btn.textContent = '📋 Thêm tất cả vào Firebase';
+    }
+
+    // =====================================================
+    // XEM DANH SÁCH
+    // =====================================================
+    async function loadUserList() {
+      const container = document.getElementById('userListContainer');
+      container.innerHTML = '<p style="color:#888;font-size:14px;">⏳ Đang tải...</p>';
+
+      try {
+        const snap = await db.ref('users').get();
+        if (!snap.exists()) {
+          container.innerHTML = '<p style="color:#888;font-size:14px;">Chưa có tài khoản nào.</p>';
+          return;
+        }
+
+        const users = snap.val();
+        const userKeys = Object.keys(users);
+        let html = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${userKeys.length}</b> tài khoản</p>`;
+
+        for (const key of userKeys) {
+          const u = users[key];
+          const resultCount = u.results ? Object.keys(u.results).length : 0;
+          html += `
+            <div class="user-item">
+              <div class="user-item-info">
+                <div class="user-item-name">
+                  ${u.displayName || '—'}
+                  <span class="badge badge-${u.role}">${u.role || 'student'}</span>
+                </div>
+                <div class="user-item-meta">
+                  @${u.username || key} · Tạo: ${u.createdAt || '?'} · ${resultCount} bài đã làm
+                </div>
+              </div>
+              <button class="btn btn-small btn-danger btn-red-small"
+                onclick="deleteUser('${key}', '${u.displayName || u.username}')">
+                🗑 Xóa
+              </button>
+            </div>`;
+        }
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<p style="color:red;font-size:14px;">❌ Lỗi: ${err.message}</p>`;
+      }
+    }
+
+    async function deleteUser(userId, displayName) {
+      if (!confirm(`Bạn có chắc muốn XÓA tài khoản "${displayName}"?\nHành động này không thể hoàn tác!`)) return;
+      try {
+        await db.ref(`users/${userId}`).remove();
+        alert(`✅ Đã xóa tài khoản "${displayName}" thành công!`);
+        loadUserList(); // Refresh
+      } catch (err) {
+        alert(`❌ Lỗi khi xóa: ${err.message}`);
+      }
+    }
+  </script>
+</body>
+</html>
