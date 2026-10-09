@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext.jsx";
+import { getAvatar } from "./avatarService.js";
 
 // --- Custom Hook ---
 function useTypewriter(text, speed = 38, startDelay = 600) {
@@ -37,6 +38,9 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showPills, setShowPills] = useState(false);
   const { user, isLoggedIn, logout } = useAuth();
+  
+  const uid = user ? (user.id || user.uid || ('user_' + user.username)) : null;
+  const avatar = uid ? getAvatar(uid) : null;
 
   // Typewriter
   const { displayed, done } = useTypewriter(
@@ -104,7 +108,11 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
           {isLoggedIn ? (
             <>
               <button onClick={() => onNavigate('profile')} title="Trang cá nhân" className="text-[17px] text-black/60 hover:text-black flex items-center gap-2 transition-colors cursor-pointer">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                {avatar ? (
+                  <img src={avatar} alt="Avatar" className="w-6 h-6 rounded-full object-cover border border-gray-200" />
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                )}
                 {user?.displayName || user?.username}
               </button>
               <button
@@ -143,8 +151,11 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
             </button>
           )}
           {isLoggedIn && (
-            <button onClick={() => onNavigate('profile')} title="Trang cá nhân" className="text-[13px] text-black/60 hover:text-black font-medium truncate max-w-[80px] cursor-pointer">
-              {user?.displayName || user?.username}
+            <button onClick={() => onNavigate('profile')} title="Trang cá nhân" className="flex items-center gap-1.5 text-[13px] text-black/60 hover:text-black font-medium cursor-pointer">
+              {avatar && (
+                <img src={avatar} alt="Avatar" className="w-5 h-5 rounded-full object-cover border border-gray-200" />
+              )}
+              <span className="truncate max-w-[80px]">{user?.displayName || user?.username}</span>
             </button>
           )}
           <button
