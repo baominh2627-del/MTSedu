@@ -337,124 +337,139 @@
     // =====================================================
     // XEM DANH SÁCH & LỊCH SỬ LÀM BÀI (REALTIME)
     // =====================================================
+    // =====================================================
+    // XEM DANH SÁCH & LỊCH SỬ LÀM BÀI (REALTIME)
+    // =====================================================
+    
+    // Danh sách các mã đề hiện có (do Firebase không cho phép query gốc "/")
+    const KHO_DE_THI = [
+      "VATLY12_CHUONG1_DE1", "VATLY12_CHUONG1_DE2",
+      "TOAN11_DE1", "TOAN11_DE2",
+      "HSA_DINHLUONG_DE1", "HSA_DINHLUONG_DE2", "HSA_DINHLUONG_DE3", "HSA_DINHLUONG_DE4",
+      "HSA_DINHLUONG_DE5", "HSA_DINHLUONG_DE6", "HSA_DINHLUONG_DE7", "HSA_DINHLUONG_DE8"
+    ];
+    let allResults = [];
+
+    function renderResultsFeed() {
+      const resultsContainer = document.getElementById('resultsListContainer');
+      if(!resultsContainer) return;
+
+      let sorted = [...allResults].sort((a, b) => b.serverTimestamp - a.serverTimestamp);
+
+      if(sorted.length === 0) {
+        resultsContainer.innerHTML = '<p style="color:#888;font-size:14px;">Chưa có học sinh nào nộp bài hoặc đang tải dữ liệu...</p>';
+        return;
+      }
+
+      let resHtml = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${sorted.length}</b> lượt nộp bài từ tất cả các đề thi</p>`;
+      resHtml += `<div style="overflow-x:auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 900px;">
+        <thead style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+          <tr>
+            <th style="padding: 12px 16px;">Học sinh</th>
+            <th style="padding: 12px 16px;">Mã Đề</th>
+            <th style="padding: 12px 16px;">Phần 1</th>
+            <th style="padding: 12px 16px;">Phần 2</th>
+            <th style="padding: 12px 16px;">Phần 3</th>
+            <th style="padding: 12px 16px;">Tổng Điểm</th>
+            <th style="padding: 12px 16px;">Thoát</th>
+            <th style="padding: 12px 16px;">Ngày nộp</th>
+          </tr>
+        </thead>
+        <tbody>`;
+      
+      for(const r of sorted) {
+        const formattedDate = r.thoiGianNop ? new Date(r.thoiGianNop).toLocaleString('vi-VN') : '?';
+        resHtml += `
+        <tr style="border-bottom: 1px solid #f1f5f9;">
+          <td style="padding: 12px 16px;">
+            <b style="color: #333;">${r.hoTen}</b><br>
+            <span style="color:#888;font-size:12px;">Lớp: ${r.lop || '?'}</span>
+          </td>
+          <td style="padding: 12px 16px; color:#2563eb; font-weight: 600;">${r.maDe}</td>
+          <td style="padding: 12px 16px; color:#555;">${r.diemPhan1}</td>
+          <td style="padding: 12px 16px; color:#555;">${r.diemPhan2}</td>
+          <td style="padding: 12px 16px; color:#555;">${r.diemPhan3}</td>
+          <td style="padding: 12px 16px; color:#16a34a; font-weight: 700;">${r.tongDiem}</td>
+          <td style="padding: 12px 16px; color:#dc2626; font-weight: 600;">${r.soLanThoat}</td>
+          <td style="padding: 12px 16px; color:#888; font-size: 13px;">${formattedDate}</td>
+        </tr>`;
+      }
+      resHtml += `</tbody></table></div>`;
+      resultsContainer.innerHTML = resHtml;
+    }
+
     function startRealtimeUserList() {
       const container = document.getElementById('userListContainer');
       const resultsContainer = document.getElementById('resultsListContainer');
 
-      // Lấy TOÀN BỘ dữ liệu từ root để có cả users và các node nộp bài thi
-      db.ref('/').on('value', (snap) => {
-        const rootData = snap.val() || {};
-        
-        // 1. XỬ LÝ DANH SÁCH USERS
-        const users = rootData.users || {};
-        const userKeys = Object.keys(users).reverse();
-        
-        if (userKeys.length === 0) {
+      // 1. XỬ LÝ DANH SÁCH USERS
+      db.ref('users').on('value', (snap) => {
+        if (!snap.exists()) {
           container.innerHTML = '<p style="color:#888;font-size:14px;">Chưa có tài khoản nào.</p>';
-        } else {
-          let htmlUsers = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${userKeys.length}</b> tài khoản</p>`;
-          for (const key of userKeys) {
-            const u = users[key];
-            const resultCount = u.results ? Object.keys(u.results).length : 0;
-            htmlUsers += `
-              <div class="user-item">
-                <div class="user-item-info">
-                  <div class="user-item-name">
-                    ${u.displayName || '—'}
-                    <span class="badge badge-${u.role}">${u.role || 'student'}</span>
-                  </div>
-                  <div class="user-item-meta">
-                    @${u.username || key} · Tạo: ${u.createdAt || '?'}
-                  </div>
-                </div>
-                <button class="btn btn-small btn-danger btn-red-small"
-                  onclick="deleteUser('${key}', '${u.displayName || u.username}')">
-                  🗑 Xóa
-                </button>
-              </div>`;
-          }
-          container.innerHTML = htmlUsers;
+          return;
         }
 
-        // 2. XỬ LÝ LỊCH SỬ BÀI LÀM TỪ CÁC ĐỀ THI
-        if(resultsContainer) {
-          let allResults = [];
-          const ignoredRootNodes = ['users', 'rules', 'metadata'];
+        const users = snap.val();
+        const userKeys = Object.keys(users).reverse();
+        
+        let htmlUsers = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${userKeys.length}</b> tài khoản</p>`;
+        for (const key of userKeys) {
+          const u = users[key];
+          htmlUsers += `
+            <div class="user-item">
+              <div class="user-item-info">
+                <div class="user-item-name">
+                  ${u.displayName || '—'}
+                  <span class="badge badge-${u.role}">${u.role || 'student'}</span>
+                </div>
+                <div class="user-item-meta">
+                  @${u.username || key} · Tạo: ${u.createdAt || '?'}
+                </div>
+              </div>
+              <button class="btn btn-small btn-danger btn-red-small"
+                onclick="deleteUser('${key}', '${u.displayName || u.username}')">
+                🗑 Xóa
+              </button>
+            </div>`;
+        }
+        container.innerHTML = htmlUsers;
+      }, (err) => {
+        container.innerHTML = `<p style="color:red;font-size:14px;">❌ Lỗi Users: ${err.message}</p>`;
+      });
 
-          for (const rootKey of Object.keys(rootData)) {
-            if (ignoredRootNodes.includes(rootKey)) continue;
-
-            const testNode = rootData[rootKey];
-            if (typeof testNode === 'object' && testNode !== null) {
-              // Lặp qua các bài nộp trong đề thi này
-              for (const subKey of Object.keys(testNode)) {
-                const submission = testNode[subKey];
-                if (submission && (submission.maDe || submission.hoTen || submission.tongDiem !== undefined)) {
-                  allResults.push({
-                    id: subKey,
-                    maDe: submission.maDe || rootKey,
-                    hoTen: submission.hoTen || 'Ẩn danh',
-                    lop: submission.lop || '',
-                    diemPhan1: submission.diemPhan1 || 0,
-                    diemPhan2: submission.diemPhan2 || 0,
-                    diemPhan3: submission.diemPhan3 || 0,
-                    tongDiem: submission.tongDiem || 0,
-                    soLanThoat: submission.soLanThoat || 0,
-                    thoiGianNop: submission.thoiGianNop || '',
-                    serverTimestamp: submission.serverTimestamp || 0
-                  });
-                }
+      // 2. XỬ LÝ LỊCH SỬ BÀI LÀM (Lắng nghe từng mã đề)
+      KHO_DE_THI.forEach(maDe => {
+        db.ref(maDe).on('value', (snap) => {
+          // Xóa các dữ liệu cũ của mã đề này trước khi cập nhật
+          allResults = allResults.filter(r => r.maDe !== maDe);
+          
+          if(snap.exists()) {
+            const testNode = snap.val();
+            for (const subKey of Object.keys(testNode)) {
+              const submission = testNode[subKey];
+              if (submission && (submission.hoTen || submission.tongDiem !== undefined)) {
+                allResults.push({
+                  id: subKey,
+                  maDe: maDe,
+                  hoTen: submission.hoTen || 'Ẩn danh',
+                  lop: submission.lop || '',
+                  diemPhan1: submission.diemPhan1 || 0,
+                  diemPhan2: submission.diemPhan2 || 0,
+                  diemPhan3: submission.diemPhan3 || 0,
+                  tongDiem: submission.tongDiem || 0,
+                  soLanThoat: submission.soLanThoat || 0,
+                  thoiGianNop: submission.thoiGianNop || '',
+                  serverTimestamp: submission.serverTimestamp || 0
+                });
               }
             }
           }
-
-          // Sắp xếp bài làm mới nhất lên đầu (dựa vào serverTimestamp)
-          allResults.sort((a, b) => b.serverTimestamp - a.serverTimestamp);
-
-          if(allResults.length === 0) {
-            resultsContainer.innerHTML = '<p style="color:#888;font-size:14px;">Chưa có học sinh nào nộp bài.</p>';
-          } else {
-            let resHtml = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${allResults.length}</b> lượt nộp bài từ tất cả các đề thi</p>`;
-            resHtml += `<div style="overflow-x:auto;">
-              <table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 900px;">
-              <thead style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                <tr>
-                  <th style="padding: 12px 16px;">Học sinh</th>
-                  <th style="padding: 12px 16px;">Mã Đề</th>
-                  <th style="padding: 12px 16px;">Phần 1</th>
-                  <th style="padding: 12px 16px;">Phần 2</th>
-                  <th style="padding: 12px 16px;">Phần 3</th>
-                  <th style="padding: 12px 16px;">Tổng Điểm</th>
-                  <th style="padding: 12px 16px;">Thoát</th>
-                  <th style="padding: 12px 16px;">Ngày nộp</th>
-                </tr>
-              </thead>
-              <tbody>`;
-            
-            for(const r of allResults) {
-              const formattedDate = r.thoiGianNop ? new Date(r.thoiGianNop).toLocaleString('vi-VN') : '?';
-              resHtml += `
-              <tr style="border-bottom: 1px solid #f1f5f9;">
-                <td style="padding: 12px 16px;">
-                  <b style="color: #333;">${r.hoTen}</b><br>
-                  <span style="color:#888;font-size:12px;">Lớp: ${r.lop || '?'}</span>
-                </td>
-                <td style="padding: 12px 16px; color:#2563eb; font-weight: 600;">${r.maDe}</td>
-                <td style="padding: 12px 16px; color:#555;">${r.diemPhan1}</td>
-                <td style="padding: 12px 16px; color:#555;">${r.diemPhan2}</td>
-                <td style="padding: 12px 16px; color:#555;">${r.diemPhan3}</td>
-                <td style="padding: 12px 16px; color:#16a34a; font-weight: 700;">${r.tongDiem}</td>
-                <td style="padding: 12px 16px; color:#dc2626; font-weight: 600;">${r.soLanThoat}</td>
-                <td style="padding: 12px 16px; color:#888; font-size: 13px;">${formattedDate}</td>
-              </tr>`;
-            }
-            resHtml += `</tbody></table></div>`;
-            resultsContainer.innerHTML = resHtml;
-          }
-        }
-      }, (err) => {
-        container.innerHTML = `<p style="color:red;font-size:14px;">❌ Lỗi: ${err.message}</p>`;
-        if(resultsContainer) resultsContainer.innerHTML = `<p style="color:red;font-size:14px;">❌ Lỗi: ${err.message}</p>`;
+          // Gọi lại hàm render để vẽ lại bảng mỗi khi có 1 bài làm mới
+          renderResultsFeed();
+        }, (err) => {
+          console.warn(`Lỗi khi lấy dữ liệu đề thi ${maDe}:`, err.message);
+        });
       });
     }
 
