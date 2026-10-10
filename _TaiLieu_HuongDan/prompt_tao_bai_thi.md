@@ -717,24 +717,34 @@ submitBtn.addEventListener("click", () => {
 });
 
 function submitExam() {
-  isFinished = true; clearInterval(timerInterval);
+  isFinished = true;
+  clearInterval(timerInterval);
   document.querySelectorAll("input, .btn-flag").forEach((el) => (el.disabled = true));
   submitBtn.style.display = "none";
   const timerPill = document.querySelector(".timer-pill");
   if (timerPill) timerPill.classList.remove("timer-danger");
 
-  let totalScore = 0, diemPhan1 = 0, diemPhan2 = 0, diemPhan3 = 0;
-  let correctness = {}; // Lưu trạng thái đúng sai chi tiết
+  let totalScore = 0;
+  let diemPhan1 = 0;
+  let diemPhan2 = 0;
+  let diemPhan3 = 0;
+  let correctness = {};
 
   examData.forEach((q) => {
     document.getElementById(`exp-${q.id}`).classList.remove("hidden");
+
     if (q.part === 1) {
       const selected = userAnswers[q.id];
       document.getElementById(`lbl-${q.id}-${q.correctAnswer}`).classList.add("correct-ans");
-      if (selected === q.correctAnswer) { totalScore += [ĐIỂM/CÂU P1]; diemPhan1 += [ĐIỂM/CÂU P1]; correctness[q.id] = true; }
-      else { 
-        correctness[q.id] = false; 
-        if (selected !== undefined) document.getElementById(`lbl-${q.id}-${selected}`).classList.add("wrong-ans"); 
+      if (selected === q.correctAnswer) {
+        totalScore += [ĐIỂM/CÂU P1];
+        diemPhan1 += [ĐIỂM/CÂU P1];
+        correctness[q.id] = true;
+      } else {
+        correctness[q.id] = false;
+        if (selected !== undefined) {
+          document.getElementById(`lbl-${q.id}-${selected}`).classList.add("wrong-ans");
+        }
       }
     } else if (q.part === 2) {
       let cCount = 0;
@@ -742,8 +752,16 @@ function submitExam() {
       q.statements.forEach((stmt, idx) => {
         const row = document.getElementById(`row-${q.id}-${idx}`);
         const ans = userAnswers[q.id] ? userAnswers[q.id][idx] : null;
-        if (ans === stmt.correct.toString()) { cCount++; row.classList.add("correct-ans"); correctness[q.id][idx] = true; }
-        else { correctness[q.id][idx] = false; if (ans !== null) row.classList.add("wrong-ans"); }
+        if (ans === stmt.correct.toString()) {
+          cCount++;
+          row.classList.add("correct-ans");
+          correctness[q.id][idx] = true;
+        } else {
+          correctness[q.id][idx] = false;
+          if (ans !== null) {
+            row.classList.add("wrong-ans");
+          }
+        }
       });
       if (cCount === 4) { totalScore += 1.0; diemPhan2 += 1.0; }
       else if (cCount === 3) { totalScore += 0.5; diemPhan2 += 0.5; }
@@ -754,19 +772,29 @@ function submitExam() {
       const userVal = (userAnswers[q.id] || "").trim().toLowerCase();
       const correct = q.correctAnswer.toLowerCase();
       if (userVal === correct || userVal === correct.replace(".", ",")) {
-        totalScore += [ĐIỂM/CÂU P3]; diemPhan3 += [ĐIỂM/CÂU P3]; input.classList.add("correct-ans"); correctness[q.id] = true;
-      } else { input.classList.add("wrong-ans"); correctness[q.id] = false; }
+        totalScore += [ĐIỂM/CÂU P3];
+        diemPhan3 += [ĐIỂM/CÂU P3];
+        input.classList.add("correct-ans");
+        correctness[q.id] = true;
+      } else {
+        input.classList.add("wrong-ans");
+        correctness[q.id] = false;
+      }
     }
   });
 
   const scorePill = document.getElementById("score-pill");
   document.querySelector(".timer-pill")?.classList.add("hidden");
-  if (scorePill) { scorePill.classList.remove("hidden"); document.getElementById("review-score").innerText = totalScore.toFixed(2); }
+  if (scorePill) {
+    scorePill.classList.remove("hidden");
+    document.getElementById("review-score").innerText = totalScore.toFixed(2);
+  }
 
   saveExamResultToFirebase(diemPhan1, diemPhan2, diemPhan3, totalScore, cheatCount, correctness);
   document.getElementById("final-score").innerText = totalScore.toFixed(2);
   document.getElementById("cheat-display").innerText = cheatCount;
-  examScreen.classList.add("hidden"); resultScreen.classList.remove("hidden");
+  examScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
   localStorage.removeItem(DRAFT_KEY);
 }
 
