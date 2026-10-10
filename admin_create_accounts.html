@@ -75,6 +75,7 @@
       <button class="tab active" onclick="switchTab('add')">➕ Thêm tài khoản</button>
       <button class="tab" onclick="switchTab('bulk')">📋 Thêm hàng loạt</button>
       <button class="tab" onclick="switchTab('list')">👥 Danh sách users</button>
+      <button class="tab" onclick="switchTab('results')">📊 Lịch sử bài làm</button>
     </div>
 
     <!-- TAB 1: Thêm 1 tài khoản -->
@@ -128,6 +129,16 @@
         <h3>👥 Danh sách tài khoản hiện tại</h3>
         <div id="userListContainer">
           <p style="color:#888;font-size:14px;">Đang kết nối dữ liệu Realtime...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Lịch sử làm bài -->
+    <div class="tab-content" id="tab-results">
+      <div class="card">
+        <h3>📊 Thống kê bài làm của học sinh</h3>
+        <div id="resultsListContainer">
+          <p style="color:#888;font-size:14px;">Đang tải dữ liệu bài làm...</p>
         </div>
       </div>
     </div>
@@ -315,27 +326,42 @@
     }
 
     // =====================================================
-    // XEM DANH SÁCH (TỰ ĐỘNG CẬP NHẬT REALTIME)
+    // XEM DANH SÁCH & LỊCH SỬ LÀM BÀI (REALTIME)
     // =====================================================
     function startRealtimeUserList() {
       const container = document.getElementById('userListContainer');
+      const resultsContainer = document.getElementById('resultsListContainer');
 
       db.ref('users').on('value', (snap) => {
         if (!snap.exists()) {
           container.innerHTML = '<p style="color:#888;font-size:14px;">Chưa có tài khoản nào.</p>';
+          if(resultsContainer) resultsContainer.innerHTML = '<p style="color:#888;font-size:14px;">Chưa có dữ liệu bài làm.</p>';
           return;
         }
 
         const users = snap.val();
-        // Sắp xếp người dùng mới nhất lên đầu (optional, nhưng thường tốt hơn)
         const userKeys = Object.keys(users).reverse();
         
-        let html = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${userKeys.length}</b> tài khoản</p>`;
+        let htmlUsers = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${userKeys.length}</b> tài khoản</p>`;
+        let allResults = [];
 
         for (const key of userKeys) {
           const u = users[key];
           const resultCount = u.results ? Object.keys(u.results).length : 0;
-          html += `
+          
+          // Trích xuất dữ liệu bài làm của user này
+          if (u.results) {
+            Object.keys(u.results).forEach(rKey => {
+              allResults.push({
+                ...u.results[rKey],
+                studentName: u.displayName || u.username || 'Ẩn danh',
+                studentUsername: u.username || key,
+                _timestamp: u.results[rKey].timestamp || 0 // Dùng để sort nếu có
+              });
+            });
+          }
+
+          htmlUsers += `
             <div class="user-item">
               <div class="user-item-info">
                 <div class="user-item-name">
@@ -352,9 +378,53 @@
               </button>
             </div>`;
         }
-        container.innerHTML = html;
+        container.innerHTML = htmlUsers;
+
+        // Render lịch sử bài làm
+        if(resultsContainer) {
+          // Sắp xếp bài làm mới nhất lên đầu
+          allResults.sort((a, b) => {
+            if(a.date && b.date) return b.date.localeCompare(a.date);
+            return b._timestamp - a._timestamp;
+          });
+
+          if(allResults.length === 0) {
+            resultsContainer.innerHTML = '<p style="color:#888;font-size:14px;">Chưa có học sinh nào nộp bài.</p>';
+          } else {
+            let resHtml = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${allResults.length}</b> lượt nộp bài</p>`;
+            resHtml += `<div style="overflow-x:auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 600px;">
+              <thead style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                <tr>
+                  <th style="padding: 12px 16px;">Học sinh</th>
+                  <th style="padding: 12px 16px;">Bài thi</th>
+                  <th style="padding: 12px 16px;">Điểm</th>
+                  <th style="padding: 12px 16px;">Thời gian</th>
+                  <th style="padding: 12px 16px;">Ngày nộp</th>
+                </tr>
+              </thead>
+              <tbody>`;
+            
+            for(const r of allResults) {
+              resHtml += `
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 12px 16px;">
+                  <b style="color: #333;">${r.studentName}</b><br>
+                  <span style="color:#888;font-size:12px;">@${r.studentUsername}</span>
+                </td>
+                <td style="padding: 12px 16px; color:#2563eb; font-weight: 600;">${r.title || r.subject || 'Đề thi rỗng'}</td>
+                <td style="padding: 12px 16px; color:#16a34a; font-weight: 700;">${r.score || '?'}</td>
+                <td style="padding: 12px 16px; color:#555;">${r.time || '?'}</td>
+                <td style="padding: 12px 16px; color:#888; font-size: 13px;">${r.date || '?'}</td>
+              </tr>`;
+            }
+            resHtml += `</tbody></table></div>`;
+            resultsContainer.innerHTML = resHtml;
+          }
+        }
       }, (err) => {
         container.innerHTML = `<p style="color:red;font-size:14px;">❌ Lỗi: ${err.message}</p>`;
+        if(resultsContainer) resultsContainer.innerHTML = `<p style="color:red;font-size:14px;">❌ Lỗi: ${err.message}</p>`;
       });
     }
 
