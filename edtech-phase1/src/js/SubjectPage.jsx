@@ -88,15 +88,15 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
           </span>
         </div>
 
-        <div className="hidden lg:flex flex-row gap-6 items-center">
-          <button onClick={() => onNavigate('math')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'math' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Toán Học</button>
-          <button onClick={() => onNavigate('physics')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'physics' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Vật Lý</button>
-          <button onClick={() => onNavigate('chemistry')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'chemistry' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Hóa Học</button>
-          <button onClick={() => onNavigate('informatics')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'informatics' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Tin Học</button>
-          <button onClick={() => onNavigate('hsa')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'hsa' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi HSA</button>
-          <button onClick={() => onNavigate('tsa')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'tsa' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi TSA</button>
-          <button onClick={() => onNavigate('vact')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'vact' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi V-ACT</button>
-          <button onClick={() => onNavigate('mock_exams')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'mock_exams' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Thi thử TNTHPT</button>
+        <div className="hidden lg:flex flex-row gap-1 xl:gap-3 items-center">
+          <button onClick={() => onNavigate('math')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'math' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Toán Học</button>
+          <button onClick={() => onNavigate('physics')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'physics' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Vật Lý</button>
+          <button onClick={() => onNavigate('chemistry')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'chemistry' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Hóa Học</button>
+          <button onClick={() => onNavigate('informatics')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'informatics' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Tin Học</button>
+          <button onClick={() => onNavigate('hsa')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'hsa' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi HSA</button>
+          <button onClick={() => onNavigate('tsa')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'tsa' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi TSA</button>
+          <button onClick={() => onNavigate('vact')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'vact' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi V-ACT</button>
+          <button onClick={() => onNavigate('mock_exams')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'mock_exams' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Thi thử TNTHPT</button>
         </div>
 
         <div className="hidden lg:flex flex-row gap-4 items-center">
@@ -112,7 +112,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
               </button>
             </>
           ) : (
-            <button onClick={() => onNavigate('login')} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+            <button onClick={() => onNavigate('login')} className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
               Đăng nhập
             </button>
           )}

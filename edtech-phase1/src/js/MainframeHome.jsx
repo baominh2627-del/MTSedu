@@ -79,32 +79,32 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex flex-row gap-6 items-center">
-          <button onClick={() => onNavigate("math")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+        <div className="hidden lg:flex flex-row gap-1 xl:gap-3 items-center">
+          <button onClick={() => onNavigate("math")} className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Toán Học
           </button>
           <button
             onClick={() => onNavigate("physics")}
-            className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap"
+            className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap"
           >
             Vật Lý
           </button>
-          <button onClick={() => onNavigate("chemistry")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("chemistry")} className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Hóa Học
           </button>
-          <button onClick={() => onNavigate("informatics")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("informatics")} className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Tin Học
           </button>
-          <button onClick={() => onNavigate("hsa")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("hsa")} className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Đề thi HSA
           </button>
-          <button onClick={() => onNavigate("tsa")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("tsa")} className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Đề thi TSA
           </button>
-          <button onClick={() => onNavigate("vact")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("vact")} className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Đề thi V-ACT
           </button>
-          <button onClick={() => onNavigate("mock_exams")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+          <button onClick={() => onNavigate("mock_exams")} className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Thi thử TNTHPT
           </button>
         </div>
@@ -126,7 +126,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
             <>
               <button
                 onClick={onNavigateToLogin}
-                className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap"
+                className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap"
               >
                 Đăng nhập
               </button>
