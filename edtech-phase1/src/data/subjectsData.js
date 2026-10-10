@@ -186,10 +186,10 @@ export const subjectsData = {
     ],
   },
   hsa: {
-    title: "Đề thi HSA/TSA",
+    title: "Đề thi HSA",
     description:
-      "Tổng hợp các đề Đánh Giá Năng Lực (HSA) và Đánh Giá Tư Duy (TSA)",
-    categories: ["Đề thi HSA", "Đề thi TSA", "Toán", "Ngữ Văn", "Khoa học"],
+      "Tổng hợp các đề Đánh Giá Năng Lực (HSA) - Đại học Quốc gia Hà Nội",
+    categories: ["Đề thi HSA", "Toán", "Ngữ Văn", "Khoa học"],
     tests: [
       {
         id: "hsa_1",
@@ -292,6 +292,13 @@ export const subjectsData = {
         link: "https://baominh2627-del.github.io/de-8-hsa-dinh-luong-vnes/"
       },
     ],
+  },
+  tsa: {
+    title: "Đề thi TSA",
+    description:
+      "Tổng hợp các đề Đánh Giá Tư Duy (TSA) - Đại học Bách khoa Hà Nội",
+    categories: ["Đề thi TSA", "Toán", "Đọc hiểu", "Khoa học"],
+    tests: [],
   },
   mock_exams: {
     title: "Thi thử TNTHPT",

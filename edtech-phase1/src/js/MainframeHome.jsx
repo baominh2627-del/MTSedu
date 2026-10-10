@@ -96,7 +96,10 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
             Tin Học
           </button>
           <button onClick={() => onNavigate("hsa")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
-            Đề thi HSA/TSA
+            Đề thi HSA
+          </button>
+          <button onClick={() => onNavigate("tsa")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
+            Đề thi TSA
           </button>
           <button onClick={() => onNavigate("mock_exams")} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
             Thi thử TNTHPT
@@ -181,7 +184,8 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
         <button onClick={() => { setIsMenuOpen(false); onNavigate("physics"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Vật Lý</button>
         <button onClick={() => { setIsMenuOpen(false); onNavigate("chemistry"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Hóa Học</button>
         <button onClick={() => { setIsMenuOpen(false); onNavigate("informatics"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Tin Học</button>
-        <button onClick={() => { setIsMenuOpen(false); onNavigate("hsa"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Đề thi HSA/TSA</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate("hsa"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Đề thi HSA</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate("tsa"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Đề thi TSA</button>
         <button onClick={() => { setIsMenuOpen(false); onNavigate("mock_exams"); }} className="text-[15px] font-semibold text-black/80 px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left">Thi thử TNTHPT</button>
         <div className="w-full h-[1px] bg-black/8 my-1"></div>
         {isLoggedIn ? (
