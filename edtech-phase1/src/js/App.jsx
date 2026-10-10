@@ -89,7 +89,7 @@ function AppContent() {
   }
 
   // Handle all subjects dynamically
-  const subjects = ["physics", "math", "chemistry", "informatics", "hsa", "mock_exams"];
+  const subjects = ["physics", "math", "chemistry", "informatics", "hsa", "tsa", "vact", "mock_exams"];
   if (subjects.includes(currentPage)) {
     return (
       <SubjectPage 

@@ -95,6 +95,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
           <button onClick={() => onNavigate('informatics')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'informatics' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Tin Học</button>
           <button onClick={() => onNavigate('hsa')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'hsa' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi HSA</button>
           <button onClick={() => onNavigate('tsa')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'tsa' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi TSA</button>
+          <button onClick={() => onNavigate('vact')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'vact' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi V-ACT</button>
           <button onClick={() => onNavigate('mock_exams')} className={`text-[18px] font-bold uppercase tracking-wider px-5 py-3 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'mock_exams' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Thi thử TNTHPT</button>
         </div>
 
@@ -155,6 +156,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
         <button onClick={() => { setIsMenuOpen(false); onNavigate('informatics'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'informatics' ? 'text-black font-bold' : 'text-black/80'}`}>Tin Học</button>
         <button onClick={() => { setIsMenuOpen(false); onNavigate('hsa'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'hsa' ? 'text-black font-bold' : 'text-black/80'}`}>Đề thi HSA</button>
         <button onClick={() => { setIsMenuOpen(false); onNavigate('tsa'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'tsa' ? 'text-black font-bold' : 'text-black/80'}`}>Đề thi TSA</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('vact'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'vact' ? 'text-black font-bold' : 'text-black/80'}`}>Đề thi V-ACT</button>
         <button onClick={() => { setIsMenuOpen(false); onNavigate('mock_exams'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'mock_exams' ? 'text-black font-bold' : 'text-black/80'}`}>Thi thử TNTHPT</button>
         <div className="w-full h-[1px] bg-black/8 my-1"></div>
         {!isLoggedIn && (

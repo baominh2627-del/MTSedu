@@ -88,17 +88,6 @@ export const subjectsData = {
           "https://images.unsplash.com/photo-1507668077129-56e32842fceb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
         instructor: "Cô Mai",
       },
-      {
-        id: "phys_6",
-        title: "Đề thi VACT Vật Lý Cao Cấp",
-        tag: "Đề thi VACT",
-        questions: 50,
-        time: 90,
-        price: "99.000₫",
-        thumbnail:
-          "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Hùng",
-      },
     ],
   },
   math: {
@@ -299,6 +288,24 @@ export const subjectsData = {
       "Tổng hợp các đề Đánh Giá Tư Duy (TSA) - Đại học Bách khoa Hà Nội",
     categories: ["Đề thi TSA", "Toán", "Đọc hiểu", "Khoa học"],
     tests: [],
+  },
+  vact: {
+    title: "V-ACT",
+    description: "Tổng hợp các đề thi thử nghiệm và đánh giá V-ACT",
+    categories: ["Đề thi V-ACT", "Toán", "Ngữ Văn", "Tiếng Anh"],
+    tests: [
+      {
+        id: "phys_6",
+        title: "Đề thi VACT Vật Lý Cao Cấp",
+        tag: "Đề thi V-ACT",
+        questions: 50,
+        time: 90,
+        price: "99.000₫",
+        thumbnail:
+          "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        instructor: "Thầy Hùng",
+      },
+    ],
   },
   mock_exams: {
     title: "Thi thử TNTHPT",
