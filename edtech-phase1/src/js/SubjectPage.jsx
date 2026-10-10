@@ -109,12 +109,6 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
                 )}
                 {user?.displayName || user?.username}
               </button>
-              <button 
-                onClick={handleLogout}
-                className="text-[17px] font-bold text-red-500 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-red-700 hover:bg-red-50 transition-all whitespace-nowrap"
-              >
-                Đăng xuất
-              </button>
             </>
           ) : (
             <button onClick={() => onNavigate('login')} className="text-[18px] font-bold text-black/70 uppercase tracking-wider px-5 py-3 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">
@@ -163,9 +157,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
         <button onClick={() => { setIsMenuOpen(false); onNavigate('tsa'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'tsa' ? 'text-black font-bold' : 'text-black/80'}`}>Đề thi TSA</button>
         <button onClick={() => { setIsMenuOpen(false); onNavigate('mock_exams'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'mock_exams' ? 'text-black font-bold' : 'text-black/80'}`}>Thi thử TNTHPT</button>
         <div className="w-full h-[1px] bg-black/8 my-1"></div>
-        {isLoggedIn ? (
-          <button onClick={() => { setIsMenuOpen(false); handleLogout(); }} className="text-[15px] font-semibold text-red-500 px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors text-left">Đăng xuất</button>
-        ) : (
+        {!isLoggedIn && (
           <button onClick={() => { setIsMenuOpen(false); onNavigate('login'); }} className="text-[15px] font-semibold text-white bg-black px-4 py-2.5 rounded-xl hover:bg-black/80 transition-colors text-center">Vào học ngay</button>
         )}
       </div>
