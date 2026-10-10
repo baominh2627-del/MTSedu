@@ -1,4 +1,4 @@
-﻿# 📋 PROMPT TẠO ĐỀ THI ĐỊNH LƯỢNG HSA (ĐÁNH GIÁ NĂNG LỰC) — HỆ THỐNG MTS EDUCATION
+# 📋 PROMPT TẠO ĐỀ THI ĐỊNH LƯỢNG HSA (ĐÁNH GIÁ NĂNG LỰC) — HỆ THỐNG MTS EDUCATION
 
 Quy trình tạo bài thi mới được chia thành **2 Giai Đoạn**:
 - **Giai Đoạn 1 — dùng Gemini Pro** (có thể đọc file PDF): Trích xuất nội dung đề, tạo file `data.js`.
@@ -514,7 +514,8 @@ submitBtn.addEventListener("click", () => {
 });
 
 function submitExam() {
-  isFinished = true; clearInterval(timerInterval);
+  isFinished = true;
+  clearInterval(timerInterval);
   document.querySelectorAll("input, .btn-flag").forEach((el) => (el.disabled = true));
   submitBtn.style.display = "none";
   const timerPill = document.querySelector(".timer-pill");
@@ -525,28 +526,29 @@ function submitExam() {
 
   examData.forEach((q) => {
     document.getElementById(`exp-${q.id}`).classList.remove("hidden");
-    
+
     if (q.type === "mcq") {
       const selected = userAnswers[q.id];
       document.getElementById(`lbl-${q.id}-${q.correctAnswer}`).classList.add("correct-ans");
-      if (selected === q.correctAnswer) { 
-        totalScore += 1; 
+      if (selected === q.correctAnswer) {
+        totalScore += 1;
         correctness[q.id] = true;
       } else {
         correctness[q.id] = false;
         if (selected !== undefined) {
-        document.getElementById(`lbl-${q.id}-${selected}`).classList.add("wrong-ans");
+          document.getElementById(`lbl-${q.id}-${selected}`).classList.add("wrong-ans");
+        }
       }
     } else if (q.type === "fill") {
       const input = document.querySelector(`input[name="ans-${q.id}"]`);
       const userVal = (userAnswers[q.id] || "").trim().toLowerCase();
       const correct = q.correctAnswer.toLowerCase();
       if (userVal === correct || userVal === correct.replace(".", ",")) {
-        totalScore += 1; 
+        totalScore += 1;
         input.classList.add("correct-ans");
         correctness[q.id] = true;
-      } else { 
-        input.classList.add("wrong-ans"); 
+      } else {
+        input.classList.add("wrong-ans");
         correctness[q.id] = false;
       }
     }
@@ -554,15 +556,15 @@ function submitExam() {
 
   const scorePill = document.getElementById("score-pill");
   document.querySelector(".timer-pill")?.classList.add("hidden");
-  if (scorePill) { 
-    scorePill.classList.remove("hidden"); 
-    document.getElementById("review-score").innerText = totalScore.toFixed(0); 
+  if (scorePill) {
+    scorePill.classList.remove("hidden");
+    document.getElementById("review-score").innerText = totalScore.toFixed(0);
   }
 
   saveExamResultToFirebase(totalScore, cheatCount, correctness);
   document.getElementById("final-score").innerText = totalScore.toFixed(0);
   document.getElementById("cheat-display").innerText = cheatCount;
-  examScreen.classList.add("hidden"); 
+  examScreen.classList.add("hidden");
   resultScreen.classList.remove("hidden");
   localStorage.removeItem(DRAFT_KEY);
 }
@@ -574,12 +576,15 @@ async function saveExamResultToFirebase(tongDiem, soLanThoat, correctness) {
     const session = getMTSeduSession();
     const userId = session ? session.id : null;
     const resultData = {
-      hoTen: studentName, lop: studentClass, maDe: MA_DE,
-      tongDiem, soLanThoat,
-        chiTietDapAn: userAnswers,
-        chiTietDungSai: correctness,
-        cauDanhDau: flaggedQuestions,
-        userId: userId || "unknown",
+      hoTen: studentName,
+      lop: studentClass,
+      maDe: MA_DE,
+      tongDiem,
+      soLanThoat,
+      chiTietDapAn: userAnswers,
+      chiTietDungSai: correctness,
+      cauDanhDau: flaggedQuestions,
+      userId: userId || "unknown",
       thoiGianNop: new Date().toISOString(),
       serverTimestamp: serverTimestamp(),
     };
