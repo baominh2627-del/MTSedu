@@ -1,4 +1,4 @@
-# 📋 PROMPT TẠO ĐỀ THI ĐỊNH LƯỢNG HSA (ĐÁNH GIÁ NĂNG LỰC) — HỆ THỐNG MTS EDUCATION
+﻿# 📋 PROMPT TẠO ĐỀ THI ĐỊNH LƯỢNG HSA (ĐÁNH GIÁ NĂNG LỰC) — HỆ THỐNG MTS EDUCATION
 
 Quy trình tạo bài thi mới được chia thành **2 Giai Đoạn**:
 - **Giai Đoạn 1 — dùng Gemini Pro** (có thể đọc file PDF): Trích xuất nội dung đề, tạo file `data.js`.
@@ -521,6 +521,7 @@ function submitExam() {
   if (timerPill) timerPill.classList.remove("timer-danger");
 
   let totalScore = 0;
+  let correctness = {};
 
   examData.forEach((q) => {
     document.getElementById(`exp-${q.id}`).classList.remove("hidden");
@@ -530,7 +531,10 @@ function submitExam() {
       document.getElementById(`lbl-${q.id}-${q.correctAnswer}`).classList.add("correct-ans");
       if (selected === q.correctAnswer) { 
         totalScore += 1; 
-      } else if (selected !== undefined) {
+        correctness[q.id] = true;
+      } else {
+        correctness[q.id] = false;
+        if (selected !== undefined) {
         document.getElementById(`lbl-${q.id}-${selected}`).classList.add("wrong-ans");
       }
     } else if (q.type === "fill") {
@@ -540,8 +544,10 @@ function submitExam() {
       if (userVal === correct || userVal === correct.replace(".", ",")) {
         totalScore += 1; 
         input.classList.add("correct-ans");
+        correctness[q.id] = true;
       } else { 
         input.classList.add("wrong-ans"); 
+        correctness[q.id] = false;
       }
     }
   });
@@ -553,7 +559,7 @@ function submitExam() {
     document.getElementById("review-score").innerText = totalScore.toFixed(0); 
   }
 
-  saveExamResultToFirebase(totalScore, cheatCount);
+  saveExamResultToFirebase(totalScore, cheatCount, correctness);
   document.getElementById("final-score").innerText = totalScore.toFixed(0);
   document.getElementById("cheat-display").innerText = cheatCount;
   examScreen.classList.add("hidden"); 
@@ -561,7 +567,7 @@ function submitExam() {
   localStorage.removeItem(DRAFT_KEY);
 }
 
-async function saveExamResultToFirebase(tongDiem, soLanThoat) {
+async function saveExamResultToFirebase(tongDiem, soLanThoat, correctness) {
   const statusEl = document.getElementById("firebase-status");
   if (statusEl) statusEl.innerText = "⏳ Đang đồng bộ kết quả lên MTSedu...";
   try {
@@ -570,7 +576,10 @@ async function saveExamResultToFirebase(tongDiem, soLanThoat) {
     const resultData = {
       hoTen: studentName, lop: studentClass, maDe: MA_DE,
       tongDiem, soLanThoat,
-      userId: userId || "unknown",
+        chiTietDapAn: userAnswers,
+        chiTietDungSai: correctness,
+        cauDanhDau: flaggedQuestions,
+        userId: userId || "unknown",
       thoiGianNop: new Date().toISOString(),
       serverTimestamp: serverTimestamp(),
     };
@@ -599,3 +608,4 @@ document.getElementById("review-btn").addEventListener("click", () => {
 1. Copy file `style.css` **bản mới** từ thư mục `de-5-hsa-dinh-luong-vnes` vào (không thay đổi). Bản này có thanh ghim trên cùng (đồng hồ + bảng điều hướng luôn hiện khi cuộn). **Không dùng style.css cũ**.
 2. Dùng đúng `index.html` ở trên: bảng điều hướng và đồng hồ nằm chung trong `<div class="top-sticky">`. Nếu để lại cấu trúc cũ thì thanh sẽ không ghim được.
 3. `script.js` giữ nguyên, không cần sửa.
+
