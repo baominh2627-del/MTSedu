@@ -126,9 +126,8 @@
     <div class="tab-content" id="tab-list">
       <div class="card">
         <h3>👥 Danh sách tài khoản hiện tại</h3>
-        <button class="btn" style="margin-bottom:16px;" onclick="loadUserList()">🔄 Tải danh sách</button>
         <div id="userListContainer">
-          <p style="color:#888;font-size:14px;">Nhấn "Tải danh sách" để xem.</p>
+          <p style="color:#888;font-size:14px;">Đang kết nối dữ liệu Realtime...</p>
         </div>
       </div>
     </div>
@@ -316,21 +315,21 @@
     }
 
     // =====================================================
-    // XEM DANH SÁCH
+    // XEM DANH SÁCH (TỰ ĐỘNG CẬP NHẬT REALTIME)
     // =====================================================
-    async function loadUserList() {
+    function startRealtimeUserList() {
       const container = document.getElementById('userListContainer');
-      container.innerHTML = '<p style="color:#888;font-size:14px;">⏳ Đang tải...</p>';
 
-      try {
-        const snap = await db.ref('users').get();
+      db.ref('users').on('value', (snap) => {
         if (!snap.exists()) {
           container.innerHTML = '<p style="color:#888;font-size:14px;">Chưa có tài khoản nào.</p>';
           return;
         }
 
         const users = snap.val();
-        const userKeys = Object.keys(users);
+        // Sắp xếp người dùng mới nhất lên đầu (optional, nhưng thường tốt hơn)
+        const userKeys = Object.keys(users).reverse();
+        
         let html = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${userKeys.length}</b> tài khoản</p>`;
 
         for (const key of userKeys) {
@@ -354,17 +353,20 @@
             </div>`;
         }
         container.innerHTML = html;
-      } catch (err) {
+      }, (err) => {
         container.innerHTML = `<p style="color:red;font-size:14px;">❌ Lỗi: ${err.message}</p>`;
-      }
+      });
     }
+
+    // Khởi chạy lắng nghe ngay khi load trang
+    startRealtimeUserList();
 
     async function deleteUser(userId, displayName) {
       if (!confirm(`Bạn có chắc muốn XÓA tài khoản "${displayName}"?\nHành động này không thể hoàn tác!`)) return;
       try {
         await db.ref(`users/${userId}`).remove();
         alert(`✅ Đã xóa tài khoản "${displayName}" thành công!`);
-        loadUserList(); // Refresh
+        // Không cần gọi refresh vì on('value') sẽ tự động cập nhật
       } catch (err) {
         alert(`❌ Lỗi khi xóa: ${err.message}`);
       }
