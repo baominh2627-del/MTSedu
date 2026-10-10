@@ -340,14 +340,10 @@
     // =====================================================
     // XEM DANH SÁCH & LỊCH SỬ LÀM BÀI (REALTIME)
     // =====================================================
+    // =====================================================
+    // XEM DANH SÁCH & LỊCH SỬ LÀM BÀI (REALTIME)
+    // =====================================================
     
-    // Danh sách các mã đề hiện có (do Firebase không cho phép query gốc "/")
-    const KHO_DE_THI = [
-      "VATLY12_CHUONG1_DE1", "VATLY12_CHUONG1_DE2",
-      "TOAN11_DE1", "TOAN11_DE2",
-      "HSA_DINHLUONG_DE1", "HSA_DINHLUONG_DE2", "HSA_DINHLUONG_DE3", "HSA_DINHLUONG_DE4",
-      "HSA_DINHLUONG_DE5", "HSA_DINHLUONG_DE6", "HSA_DINHLUONG_DE7", "HSA_DINHLUONG_DE8"
-    ];
     let allResults = [];
 
     function renderResultsFeed() {
@@ -403,86 +399,77 @@
       const container = document.getElementById('userListContainer');
       const resultsContainer = document.getElementById('resultsListContainer');
 
-      // 1. XỬ LÝ DANH SÁCH USERS
-      db.ref('users').on('value', (snap) => {
-        if (!snap.exists()) {
-          container.innerHTML = '<p style="color:#888;font-size:14px;">Chưa có tài khoản nào.</p>';
-          return;
-        }
-
-        const users = snap.val();
+      // Do Firebase đã được cấp quyền đọc gốc, ta có thể tự động quét TOÀN BỘ database 
+      // để tìm TẤT CẢ các đề thi mới (bất kể mã đề là gì) thay vì phải code cứng.
+      db.ref('/').on('value', (snap) => {
+        const rootData = snap.val() || {};
+        
+        // 1. XỬ LÝ DANH SÁCH USERS
+        const users = rootData.users || {};
         const userKeys = Object.keys(users).reverse();
         
-        let htmlUsers = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${userKeys.length}</b> tài khoản</p>`;
-        for (const key of userKeys) {
-          const u = users[key];
-          htmlUsers += `
-            <div class="user-item">
-              <div class="user-item-info">
-                <div class="user-item-name">
-                  ${u.displayName || '—'}
-                  <span class="badge badge-${u.role}">${u.role || 'student'}</span>
+        if (userKeys.length === 0) {
+          container.innerHTML = '<p style="color:#888;font-size:14px;">Chưa có tài khoản nào.</p>';
+        } else {
+          let htmlUsers = `<p style="font-size:13px;color:#666;margin-bottom:12px;">Tổng cộng: <b>${userKeys.length}</b> tài khoản</p>`;
+          for (const key of userKeys) {
+            const u = users[key];
+            htmlUsers += `
+              <div class="user-item">
+                <div class="user-item-info">
+                  <div class="user-item-name">
+                    ${u.displayName || '—'}
+                    <span class="badge badge-${u.role}">${u.role || 'student'}</span>
+                  </div>
+                  <div class="user-item-meta">
+                    @${u.username || key} · Tạo: ${u.createdAt || '?'}
+                  </div>
                 </div>
-                <div class="user-item-meta">
-                  @${u.username || key} · Tạo: ${u.createdAt || '?'}
-                </div>
-              </div>
-              <button class="btn btn-small btn-danger btn-red-small"
-                onclick="deleteUser('${key}', '${u.displayName || u.username}')">
-                🗑 Xóa
-              </button>
-            </div>`;
+                <button class="btn btn-small btn-danger btn-red-small"
+                  onclick="deleteUser('${key}', '${u.displayName || u.username}')">
+                  🗑 Xóa
+                </button>
+              </div>`;
+          }
+          container.innerHTML = htmlUsers;
         }
-        container.innerHTML = htmlUsers;
-      }, (err) => {
-        container.innerHTML = `<p style="color:red;font-size:14px;">❌ Lỗi Users: ${err.message}</p>`;
-      });
 
-      // 2. XỬ LÝ LỊCH SỬ BÀI LÀM (Lắng nghe từng mã đề)
-      let loadedCount = 0;
-      let errorMessages = [];
+        // 2. XỬ LÝ LỊCH SỬ BÀI LÀM TỪ TẤT CẢ CÁC ĐỀ THI
+        if(resultsContainer) {
+          allResults = []; // reset để nạp lại toàn bộ
+          const ignoredRootNodes = ['users', 'rules', 'metadata', 'testResults', 'examLogs'];
 
-      KHO_DE_THI.forEach(maDe => {
-        db.ref(maDe).on('value', (snap) => {
-          loadedCount++;
-          // Xóa các dữ liệu cũ của mã đề này trước khi cập nhật
-          allResults = allResults.filter(r => r.maDe !== maDe);
-          
-          if(snap.exists()) {
-            const testNode = snap.val();
-            for (const subKey of Object.keys(testNode)) {
-              const submission = testNode[subKey];
-              if (submission && (submission.hoTen || submission.tongDiem !== undefined)) {
-                allResults.push({
-                  id: subKey,
-                  maDe: maDe,
-                  hoTen: submission.hoTen || 'Ẩn danh',
-                  lop: submission.lop || '',
-                  diemPhan1: submission.diemPhan1 || 0,
-                  diemPhan2: submission.diemPhan2 || 0,
-                  diemPhan3: submission.diemPhan3 || 0,
-                  tongDiem: submission.tongDiem || 0,
-                  soLanThoat: submission.soLanThoat || 0,
-                  thoiGianNop: submission.thoiGianNop || '',
-                  serverTimestamp: submission.serverTimestamp || 0
-                });
+          for (const rootKey of Object.keys(rootData)) {
+            if (ignoredRootNodes.includes(rootKey)) continue;
+
+            const testNode = rootData[rootKey];
+            if (typeof testNode === 'object' && testNode !== null) {
+              for (const subKey of Object.keys(testNode)) {
+                const submission = testNode[subKey];
+                if (submission && (submission.hoTen || submission.tongDiem !== undefined)) {
+                  allResults.push({
+                    id: subKey,
+                    maDe: submission.maDe || rootKey,
+                    hoTen: submission.hoTen || 'Ẩn danh',
+                    lop: submission.lop || '',
+                    diemPhan1: submission.diemPhan1 || 0,
+                    diemPhan2: submission.diemPhan2 || 0,
+                    diemPhan3: submission.diemPhan3 || 0,
+                    tongDiem: submission.tongDiem || 0,
+                    soLanThoat: submission.soLanThoat || 0,
+                    thoiGianNop: submission.thoiGianNop || '',
+                    serverTimestamp: submission.serverTimestamp || 0
+                  });
+                }
               }
             }
           }
-          renderResultsFeed();
-        }, (err) => {
-          loadedCount++;
-          console.warn(`Lỗi khi lấy dữ liệu đề thi ${maDe}:`, err.message);
-          if (!errorMessages.includes(err.message)) errorMessages.push(err.message);
           
-          if (loadedCount === KHO_DE_THI.length && allResults.length === 0) {
-             const resultsContainer = document.getElementById('resultsListContainer');
-             if(resultsContainer) {
-                resultsContainer.innerHTML = `<p style="color:red;font-size:14px;">❌ Không có quyền truy cập (Permission Denied) vào dữ liệu đề thi.<br>
-                <b>Hướng dẫn khắc phục:</b> Bạn cần vào Firebase Console > Realtime Database > Rules và thêm quyền <code>".read": true</code> cho các node đề thi, hoặc đặt ở thư mục gốc.</p>`;
-             }
-          }
-        });
+          renderResultsFeed(); // Gọi hàm render sau khi đã gom đủ dữ liệu
+        }
+      }, (err) => {
+        container.innerHTML = `<p style="color:red;font-size:14px;">❌ Lỗi: ${err.message}</p>`;
+        if(resultsContainer) resultsContainer.innerHTML = `<p style="color:red;font-size:14px;">❌ Lỗi: ${err.message}</p>`;
       });
     }
 
