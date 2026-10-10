@@ -724,21 +724,26 @@ function submitExam() {
   if (timerPill) timerPill.classList.remove("timer-danger");
 
   let totalScore = 0, diemPhan1 = 0, diemPhan2 = 0, diemPhan3 = 0;
+  let correctness = {}; // Lưu trạng thái đúng sai chi tiết
 
   examData.forEach((q) => {
     document.getElementById(`exp-${q.id}`).classList.remove("hidden");
     if (q.part === 1) {
       const selected = userAnswers[q.id];
       document.getElementById(`lbl-${q.id}-${q.correctAnswer}`).classList.add("correct-ans");
-      if (selected === q.correctAnswer) { totalScore += [ĐIỂM/CÂU P1]; diemPhan1 += [ĐIỂM/CÂU P1]; }
-      else if (selected !== undefined) document.getElementById(`lbl-${q.id}-${selected}`).classList.add("wrong-ans");
+      if (selected === q.correctAnswer) { totalScore += [ĐIỂM/CÂU P1]; diemPhan1 += [ĐIỂM/CÂU P1]; correctness[q.id] = true; }
+      else { 
+        correctness[q.id] = false; 
+        if (selected !== undefined) document.getElementById(`lbl-${q.id}-${selected}`).classList.add("wrong-ans"); 
+      }
     } else if (q.part === 2) {
       let cCount = 0;
+      correctness[q.id] = {};
       q.statements.forEach((stmt, idx) => {
         const row = document.getElementById(`row-${q.id}-${idx}`);
         const ans = userAnswers[q.id] ? userAnswers[q.id][idx] : null;
-        if (ans === stmt.correct.toString()) { cCount++; row.classList.add("correct-ans"); }
-        else if (ans !== null) row.classList.add("wrong-ans");
+        if (ans === stmt.correct.toString()) { cCount++; row.classList.add("correct-ans"); correctness[q.id][idx] = true; }
+        else { correctness[q.id][idx] = false; if (ans !== null) row.classList.add("wrong-ans"); }
       });
       if (cCount === 4) { totalScore += 1.0; diemPhan2 += 1.0; }
       else if (cCount === 3) { totalScore += 0.5; diemPhan2 += 0.5; }
@@ -749,8 +754,8 @@ function submitExam() {
       const userVal = (userAnswers[q.id] || "").trim().toLowerCase();
       const correct = q.correctAnswer.toLowerCase();
       if (userVal === correct || userVal === correct.replace(".", ",")) {
-        totalScore += [ĐIỂM/CÂU P3]; diemPhan3 += [ĐIỂM/CÂU P3]; input.classList.add("correct-ans");
-      } else { input.classList.add("wrong-ans"); }
+        totalScore += [ĐIỂM/CÂU P3]; diemPhan3 += [ĐIỂM/CÂU P3]; input.classList.add("correct-ans"); correctness[q.id] = true;
+      } else { input.classList.add("wrong-ans"); correctness[q.id] = false; }
     }
   });
 
@@ -758,14 +763,14 @@ function submitExam() {
   document.querySelector(".timer-pill")?.classList.add("hidden");
   if (scorePill) { scorePill.classList.remove("hidden"); document.getElementById("review-score").innerText = totalScore.toFixed(2); }
 
-  saveExamResultToFirebase(diemPhan1, diemPhan2, diemPhan3, totalScore, cheatCount);
+  saveExamResultToFirebase(diemPhan1, diemPhan2, diemPhan3, totalScore, cheatCount, correctness);
   document.getElementById("final-score").innerText = totalScore.toFixed(2);
   document.getElementById("cheat-display").innerText = cheatCount;
   examScreen.classList.add("hidden"); resultScreen.classList.remove("hidden");
   localStorage.removeItem(DRAFT_KEY);
 }
 
-async function saveExamResultToFirebase(diemPhan1, diemPhan2, diemPhan3, tongDiem, soLanThoat) {
+async function saveExamResultToFirebase(diemPhan1, diemPhan2, diemPhan3, tongDiem, soLanThoat, correctness) {
   const statusEl = document.getElementById("firebase-status");
   if (statusEl) statusEl.innerText = "⏳ Đang đồng bộ kết quả lên MTSedu...";
   try {
@@ -774,6 +779,9 @@ async function saveExamResultToFirebase(diemPhan1, diemPhan2, diemPhan3, tongDie
     const resultData = {
       hoTen: studentName, lop: studentClass, maDe: MA_DE,
       diemPhan1, diemPhan2, diemPhan3, tongDiem, soLanThoat,
+      chiTietDapAn: userAnswers,
+      chiTietDungSai: correctness,
+      cauDanhDau: flaggedQuestions,
       userId: userId || "unknown",
       thoiGianNop: new Date().toISOString(),
       serverTimestamp: serverTimestamp(),

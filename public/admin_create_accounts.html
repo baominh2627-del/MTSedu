@@ -439,8 +439,12 @@
       });
 
       // 2. XỬ LÝ LỊCH SỬ BÀI LÀM (Lắng nghe từng mã đề)
+      let loadedCount = 0;
+      let errorMessages = [];
+
       KHO_DE_THI.forEach(maDe => {
         db.ref(maDe).on('value', (snap) => {
+          loadedCount++;
           // Xóa các dữ liệu cũ của mã đề này trước khi cập nhật
           allResults = allResults.filter(r => r.maDe !== maDe);
           
@@ -465,10 +469,19 @@
               }
             }
           }
-          // Gọi lại hàm render để vẽ lại bảng mỗi khi có 1 bài làm mới
           renderResultsFeed();
         }, (err) => {
+          loadedCount++;
           console.warn(`Lỗi khi lấy dữ liệu đề thi ${maDe}:`, err.message);
+          if (!errorMessages.includes(err.message)) errorMessages.push(err.message);
+          
+          if (loadedCount === KHO_DE_THI.length && allResults.length === 0) {
+             const resultsContainer = document.getElementById('resultsListContainer');
+             if(resultsContainer) {
+                resultsContainer.innerHTML = `<p style="color:red;font-size:14px;">❌ Không có quyền truy cập (Permission Denied) vào dữ liệu đề thi.<br>
+                <b>Hướng dẫn khắc phục:</b> Bạn cần vào Firebase Console > Realtime Database > Rules và thêm quyền <code>".read": true</code> cho các node đề thi, hoặc đặt ở thư mục gốc.</p>`;
+             }
+          }
         });
       });
     }
