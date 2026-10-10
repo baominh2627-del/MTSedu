@@ -29,6 +29,7 @@ Tôi vừa upload một file PDF đề thi lên. Hãy đọc toàn bộ nội du
 - Tên đề: [VD: ĐỀ 2 - LƯỢNG GIÁC - TOÁN 11]
 - Môn học: [VD: Toán 11]
 - Mã đề (không dấu, không cách, dùng cho Firebase): [VD: TOAN11_DE2]
+- Tag/Role (dùng để phân loại trên web): [VD: Toán Học, Vật Lý, Đề Tư duy Định lượng, Đề thi HSA...]
 
 ## CẤU TRÚC ĐỀ THI (điền để AI biết cách phân loại)
 - Phần I — Trắc nghiệm khách quan: [VD: 12] câu × 0.25đ
@@ -857,3 +858,26 @@ document.getElementById("review-btn").addEventListener("click", () => {
 | Cảnh báo còn X giây | `script.js` → `startTimer()`: sửa `timeRemaining === 30` |
 | Sửa nội dung hướng dẫn & quy chế thi | `index.html` → phần `exam-instructions` trong `#login-screen` |
 | Bỏ mức điểm 0.1 khi đúng 1 ý Phần II | `script.js` → `submitExam()`: xóa dòng `else if (cCount === 1)...` |
+
+
+---
+
+## 🌟 BƯỚC 3: THÊM BÀI THI VÀO DANH SÁCH WEB (subjectsData.js)
+
+Sau khi bạn tạo xong mã nguồn của bài thi (có đủ data.js, index.html...), bạn cần cập nhật file src/data/subjectsData.js trên web để bài thi hiện ra trong danh mục mong muốn.
+
+Ví dụ bạn vừa tạo đề thi định lượng mới, bạn copy block sau và thêm vào mảng 	ests tương ứng trong file subjectsData.js:
+
+`js
+      {
+        id: "[Mã đề Firebase - VD: HSA_DINHLUONG_DE9]",
+        title: "[Tên bài thi - VD: Đề 9 - HSA Định Lượng VNES]",
+        tag: "[Role hiển thị - VD: Đề Tư duy Định lượng]",  // ⬅️ Quan trọng: Khai báo đúng ROLE (tag) khớp với các Category ở trên để nó xuất hiện khi click bộ lọc
+        questions: 50,
+        time: 75,
+        price: "Miễn phí",
+        thumbnail: "/thumb_hsa_dinh_luong.jpg",
+        instructor: "MTS Education",
+        link: "https://baominh2627-del.github.io/link-thu-muc-chua-de-thi/" // Đổi link này trỏ tới link github pages của bạn
+      },
+`

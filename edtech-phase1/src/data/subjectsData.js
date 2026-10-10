@@ -205,7 +205,7 @@ export const subjectsData = {
       {
         id: "hsa_dinhluong_de1",
         title: "Đề 1 - HSA Định Lượng VNES",
-        tag: "Đề thi HSA",
+        tag: "Đề Tư duy Định lượng",
         questions: 50,
         time: 75,
         price: "Miễn phí",
@@ -216,7 +216,7 @@ export const subjectsData = {
       {
         id: "hsa_dinhluong_de2",
         title: "Đề 2 - HSA Định Lượng VNES",
-        tag: "Đề thi HSA",
+        tag: "Đề Tư duy Định lượng",
         questions: 50,
         time: 75,
         price: "Miễn phí",
@@ -228,7 +228,7 @@ export const subjectsData = {
       {
         id: "hsa_dinhluong_de3",
         title: "Đề 3 - HSA Định Lượng VNES",
-        tag: "Đề thi HSA",
+        tag: "Đề Tư duy Định lượng",
         questions: 50,
         time: 75,
         price: "Miễn phí",
@@ -239,7 +239,7 @@ export const subjectsData = {
       {
         id: "hsa_dinhluong_de4",
         title: "Đề 4 - HSA Định Lượng VNES",
-        tag: "Đề thi HSA",
+        tag: "Đề Tư duy Định lượng",
         questions: 50,
         time: 75,
         price: "Miễn phí",
@@ -250,7 +250,7 @@ export const subjectsData = {
       {
         id: "hsa_dinhluong_de5",
         title: "Đề 5 - HSA Định Lượng VNES",
-        tag: "Đề thi HSA",
+        tag: "Đề Tư duy Định lượng",
         questions: 50,
         time: 75,
         price: "Miễn phí",
@@ -261,7 +261,7 @@ export const subjectsData = {
       {
         id: "hsa_dinhluong_de6",
         title: "Đề 6 - HSA Định Lượng VNES",
-        tag: "Đề thi HSA",
+        tag: "Đề Tư duy Định lượng",
         questions: 50,
         time: 75,
         price: "Miễn phí",
@@ -272,7 +272,7 @@ export const subjectsData = {
       {
         id: "hsa_dinhluong_de7",
         title: "Đề 7 - HSA Định Lượng VNES",
-        tag: "Đề thi HSA",
+        tag: "Đề Tư duy Định lượng",
         questions: 50,
         time: 75,
         price: "Miễn phí",
@@ -283,7 +283,7 @@ export const subjectsData = {
       {
         id: "hsa_dinhluong_de8",
         title: "Đề 8 - HSA Định Lượng VNES",
-        tag: "Đề thi HSA",
+        tag: "Đề Tư duy Định lượng",
         questions: 50,
         time: 75,
         price: "Miễn phí",
