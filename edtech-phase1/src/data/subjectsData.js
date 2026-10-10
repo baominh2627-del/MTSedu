@@ -189,7 +189,7 @@ export const subjectsData = {
     title: "Đề thi HSA",
     description:
       "Tổng hợp các đề Đánh Giá Năng Lực (HSA) - Đại học Quốc gia Hà Nội",
-    categories: ["Đề thi HSA", "Toán", "Ngữ Văn", "Khoa học"],
+    categories: ["Đề thi HSA", "Đề Tư duy Định lượng", "Đề Tư duy Định tính", "Đề Khoa học", "Đề Tiếng Anh"],
     tests: [
       {
         id: "hsa_1",
