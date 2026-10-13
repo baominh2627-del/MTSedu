@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useAuth } from './AuthContext.jsx';
 import { getAvatar, saveAvatar, removeAvatar, processImage } from './avatarService.js';
+import AdminDashboard from './admin/components/AdminDashboard.jsx';
 
 // ===== DỮ LIỆU MẪU: thay bằng dữ liệu thật khi có backend =====
 const STATS = [
@@ -59,6 +60,8 @@ export default function ProfilePage({ onNavigate }) {
   const [avatar, setAvatar] = useState(() => getAvatar(uid));
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const isAdmin = user?.role === 'admin' || user?.username === 'admin';
+  const [showAdmin, setShowAdmin] = useState(false);
 
   const handleFile = async (e) => {
     const file = e.target.files?.[0];
@@ -119,13 +122,11 @@ export default function ProfilePage({ onNavigate }) {
             ))}
 
             {/* Dành riêng cho tài khoản Admin */}
-            {(user?.role === 'admin' || user?.username === 'admin') && (
-              <button 
-                onClick={() => window.location.href = '/admin_create_accounts.html'} 
-                className="px-4 py-3 rounded-xl text-left font-medium text-emerald-700 bg-emerald-100 hover:bg-emerald-200 whitespace-nowrap lg:mt-2 transition-colors flex items-center gap-2"
-              >
-                <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                Tạo tài khoản
+            {isAdmin && (
+              <button type="button" onClick={() => setShowAdmin((value) => !value)} aria-pressed={showAdmin}
+                className={`px-4 py-3 rounded-xl text-left font-medium whitespace-nowrap lg:mt-2 transition-colors flex items-center gap-2 ${showAdmin ? 'bg-emerald-600 text-white' : 'text-emerald-700 bg-emerald-100 hover:bg-emerald-200'}`}>
+                <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                {showAdmin ? 'Thông tin' : 'Quản trị'}
               </button>
             )}
 
@@ -139,6 +140,7 @@ export default function ProfilePage({ onNavigate }) {
         </aside>
 
         <main className="flex-1 min-w-0 flex flex-col gap-6">
+          {isAdmin && showAdmin ? <AdminDashboard /> : (<>
           {/* Hồ sơ + upload ảnh đại diện */}
           <Card className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
             <div className="flex flex-col items-center gap-3">
@@ -205,6 +207,7 @@ export default function ProfilePage({ onNavigate }) {
               ))}
             </div>
           </Card>
+          </>)}
         </main>
       </div>
     </div>
