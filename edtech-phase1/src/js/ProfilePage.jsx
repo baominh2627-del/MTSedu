@@ -109,6 +109,17 @@ export default function ProfilePage({ onNavigate }) {
         {/* Sidebar (mobile: thanh cuộn ngang) */}
         <aside className="lg:w-[220px] shrink-0">
           <nav className="flex lg:flex-col gap-2 overflow-x-auto pb-1">
+            <button onClick={() => onNavigate('home')} className="px-4 py-3 rounded-xl text-left font-medium text-slate-600 hover:bg-blue-50 whitespace-nowrap">Trang chủ</button>
+
+            {/* Dành riêng cho tài khoản Admin */}
+            {isAdmin && (
+              <button type="button" onClick={() => setShowAdmin((value) => !value)} aria-pressed={showAdmin}
+                className={`px-4 py-3 rounded-xl text-left font-medium whitespace-nowrap transition-colors flex items-center gap-2 ${showAdmin ? 'bg-emerald-600 text-white' : 'text-emerald-700 bg-emerald-100 hover:bg-emerald-200'}`}>
+                <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                {showAdmin ? 'Thông tin' : 'Quản trị'}
+              </button>
+            )}
+
             {NAV.map((item) => (
               <button
                 key={item.label}
@@ -121,16 +132,7 @@ export default function ProfilePage({ onNavigate }) {
               </button>
             ))}
 
-            {/* Dành riêng cho tài khoản Admin */}
-            {isAdmin && (
-              <button type="button" onClick={() => setShowAdmin((value) => !value)} aria-pressed={showAdmin}
-                className={`px-4 py-3 rounded-xl text-left font-medium whitespace-nowrap lg:mt-2 transition-colors flex items-center gap-2 ${showAdmin ? 'bg-emerald-600 text-white' : 'text-emerald-700 bg-emerald-100 hover:bg-emerald-200'}`}>
-                <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                {showAdmin ? 'Thông tin' : 'Quản trị'}
-              </button>
-            )}
 
-            <button onClick={() => onNavigate('home')} className="px-4 py-3 rounded-xl text-left font-medium text-slate-600 hover:bg-blue-50 whitespace-nowrap lg:mt-4">Trang chủ</button>
             <button onClick={logout} className="px-4 py-3 rounded-xl text-left font-medium text-red-500 hover:bg-red-50 whitespace-nowrap">Đăng xuất</button>
           </nav>
           <div className="hidden lg:flex flex-col items-center mt-10 text-center text-sm text-blue-600 italic">
