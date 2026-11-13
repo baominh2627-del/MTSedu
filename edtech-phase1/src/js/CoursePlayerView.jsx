@@ -19,6 +19,7 @@ function LecturePlayerFrame({ part, lesson, trackerRef, onPlayStateChange }) {
         className="w-full h-full"
         src={`https://www.youtube.com/embed/${part.youtubeId}?rel=0`}
         title={lesson.title}
+        referrerPolicy="strict-origin-when-cross-origin"
         allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
         allowFullScreen
       />

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { addVideo, deleteVideo, getYoutubeThumbnail, handleYoutubeThumbFallback, parseYoutubeId, subscribeVideos, updateVideo } from '../../videoService.js';
-import { videoFilters } from '../../../data/videosData.js';
+import { videos as builtInVideos, videoFilters } from '../../../data/videosData.js';
 import { subjectsData } from '../../../data/subjectsData.js';
 
 const ALL_TAGS = videoFilters.flatMap((g) => g.items);
@@ -79,13 +79,17 @@ export default function AdminVideos() {
 
   useEffect(() => subscribeVideos(setVideos), []);
 
-  const existingCourses = useMemo(
-    () => [...new Set(videos.map((v) => (v.course || '').trim()).filter(Boolean))],
+  const allVideos = useMemo(
+    () => [...videos, ...builtInVideos.map((v) => ({ ...v, _static: true }))],
     [videos],
   );
+  const existingCourses = useMemo(
+    () => [...new Set(allVideos.map((v) => (v.course || '').trim()).filter(Boolean))],
+    [allVideos],
+  );
   const existingChapters = useMemo(
-    () => [...new Set(videos.filter((v) => !form.course || (v.course || '').trim() === form.course.trim()).map((v) => (v.chapter || '').trim()).filter(Boolean))],
-    [videos, form.course],
+    () => [...new Set(allVideos.filter((v) => !form.course || (v.course || '').trim() === form.course.trim()).map((v) => (v.chapter || '').trim()).filter(Boolean))],
+    [allVideos, form.course],
   );
   const allQuizzes = useMemo(() => {
     const out = [];
@@ -410,10 +414,10 @@ export default function AdminVideos() {
       </form>
 
       <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-[0_6px_24px_rgba(47,128,237,0.08)] sm:p-6">
-        <h3 className="mb-4 text-lg font-bold text-slate-800">Video đã đăng ({videos.length})</h3>
-        {videos.length === 0 ? <p className="text-sm text-slate-500">Chưa có video nào.</p> : (
+        <h3 className="mb-4 text-lg font-bold text-slate-800">Video đã đăng ({allVideos.length})</h3>
+        {allVideos.length === 0 ? <p className="text-sm text-slate-500">Chưa có video nào.</p> : (
           <ul className="divide-y divide-slate-100">
-            {videos.map((v) => (
+            {allVideos.map((v) => (
               <li key={v.id} className="flex flex-wrap items-center gap-3 py-3">
                 <img
                   src={v.cover}
@@ -436,8 +440,14 @@ export default function AdminVideos() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button type="button" onClick={() => startEdit(v)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Sửa</button>
-                  <button type="button" onClick={() => handleDelete(v)} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50">Xóa</button>
+                  {v._static ? (
+                    <span className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-500">Tích hợp sẵn</span>
+                  ) : (
+                    <>
+                      <button type="button" onClick={() => startEdit(v)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Sửa</button>
+                      <button type="button" onClick={() => handleDelete(v)} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50">Xóa</button>
+                    </>
+                  )}
                 </div>
               </li>
             ))}
