@@ -148,6 +148,7 @@ export const videos = [
 ];
 
 const SUBJECT_TAGS = ["Toán", "Lý", "Hóa", "Tin", "HSA", "TSA"];
+export const STATIC_VIDEO_IDS = new Set(videos.map((v) => v.id));
 
 function sortByOrder(a, b) {
   const oa = Number(a.order);
@@ -197,34 +198,98 @@ export function normalizeLesson(raw) {
   };
 }
 
-/** Gom danh sách video thành cấu trúc Khóa học → Chương → Bài giảng. */
-export function groupVideosIntoCourses(rawVideos = []) {
+function normalizeDeclaredChapters(chapters) {
+  if (!Array.isArray(chapters)) return [];
+  return chapters.map((c) => String(c || "").trim()).filter(Boolean);
+}
+
+/** Gom danh sách khóa học (courses trên Firebase) và video thành cấu trúc Khóa học → Chương → Bài giảng. */
+export function groupVideosIntoCourses(rawVideos = [], rawCourses = []) {
   const courseMap = new Map();
+  const byDbId = new Map();
+  const byTitleLower = new Map();
+
+  for (const c of rawCourses || []) {
+    const title = (c?.title || "").trim();
+    if (!title || !c?.id) continue;
+    const explicitTags = Array.isArray(c.tags) ? c.tags.filter(Boolean) : [];
+    const entry = {
+      id: c.id,
+      dbId: c.id,
+      _fromDb: true,
+      title,
+      sourceTitle: (c.sourceTitle || "").trim(),
+      cover: (c.cover || "").trim(),
+      hasExplicitCover: Boolean((c.cover || "").trim()),
+      teacher: (c.teacher || "").trim(),
+      description: (c.description || "").trim(),
+      tags: [...explicitTags],
+      hasExplicitTags: explicitTags.length > 0,
+      declaredChapters: normalizeDeclaredChapters(c.chapters),
+      latestAt: c.updatedAt || c.createdAt || 0,
+      createdAt: c.createdAt || 0,
+      chapterMap: new Map(),
+      hasStaticLessons: false,
+      firebaseVideoIds: [],
+    };
+    courseMap.set(entry.id, entry);
+    byDbId.set(entry.id, entry);
+    const titleKey = title.toLowerCase();
+    if (!byTitleLower.has(titleKey)) byTitleLower.set(titleKey, entry);
+    if (entry.sourceTitle) {
+      const sourceKey = entry.sourceTitle.toLowerCase();
+      if (!byTitleLower.has(sourceKey)) byTitleLower.set(sourceKey, entry);
+    }
+  }
 
   for (const item of rawVideos) {
     const lesson = normalizeLesson(item);
     const subjectTag = (lesson.tags || []).find((t) => SUBJECT_TAGS.includes(t));
-    const courseTitle = (lesson.course || "").trim() || (subjectTag ? `Bài giảng ${subjectTag}` : "Bài giảng tổng hợp");
+    const rawCourseTitle = (lesson.course || "").trim();
+    const fallbackTitle = rawCourseTitle || (subjectTag ? `Bài giảng ${subjectTag}` : "Bài giảng tổng hợp");
     const chapterTitle = (lesson.chapter || "").trim() || "Danh sách bài giảng";
 
-    if (!courseMap.has(courseTitle)) {
-      courseMap.set(courseTitle, {
-        id: courseTitle,
-        title: courseTitle,
+    let course = (lesson.courseId && byDbId.get(lesson.courseId))
+      || (rawCourseTitle && byTitleLower.get(rawCourseTitle.toLowerCase()))
+      || byTitleLower.get(fallbackTitle.toLowerCase());
+
+    if (!course) {
+      course = {
+        id: fallbackTitle,
+        dbId: null,
+        _fromDb: false,
+        title: fallbackTitle,
+        sourceTitle: fallbackTitle,
         cover: lesson.cover || "",
+        hasExplicitCover: false,
         teacher: lesson.teacher || "",
+        description: "",
         tags: [],
+        hasExplicitTags: false,
+        declaredChapters: [],
         latestAt: lesson.createdAt || 0,
+        createdAt: lesson.createdAt || 0,
         chapterMap: new Map(),
-      });
+        hasStaticLessons: false,
+        firebaseVideoIds: [],
+      };
+      courseMap.set(course.id, course);
+      byTitleLower.set(fallbackTitle.toLowerCase(), course);
     }
 
-    const course = courseMap.get(courseTitle);
+    if (item._static || STATIC_VIDEO_IDS.has(lesson.id)) {
+      course.hasStaticLessons = true;
+    } else if (lesson.id) {
+      course.firebaseVideoIds.push(lesson.id);
+    }
+
     if (!course.cover && lesson.cover) course.cover = lesson.cover;
     if (!course.teacher && lesson.teacher) course.teacher = lesson.teacher;
     if ((lesson.createdAt || 0) > course.latestAt) course.latestAt = lesson.createdAt || 0;
-    for (const tag of lesson.tags || []) {
-      if (!course.tags.includes(tag)) course.tags.push(tag);
+    if (!course.hasExplicitTags) {
+      for (const tag of lesson.tags || []) {
+        if (!course.tags.includes(tag)) course.tags.push(tag);
+      }
     }
 
     if (!course.chapterMap.has(chapterTitle)) {
@@ -234,6 +299,10 @@ export function groupVideosIntoCourses(rawVideos = []) {
   }
 
   return Array.from(courseMap.values()).map((course) => {
+    const declaredOrder = new Map(
+      course.declaredChapters.map((name, idx) => [name.toLowerCase(), idx]),
+    );
+
     const chapters = Array.from(course.chapterMap.entries())
       .map(([title, lessons]) => {
         const sorted = [...lessons].sort(sortByOrder);
@@ -243,20 +312,33 @@ export function groupVideosIntoCourses(rawVideos = []) {
           lessons: sorted,
           firstOrder: sorted[0]?.order || 0,
           firstCreatedAt: sorted[0]?.createdAt || 0,
+          declaredIdx: declaredOrder.has(title.toLowerCase()) ? declaredOrder.get(title.toLowerCase()) : Number.MAX_SAFE_INTEGER,
         };
       })
-      .sort((a, b) => sortByOrder({ order: a.firstOrder, createdAt: a.firstCreatedAt }, { order: b.firstOrder, createdAt: b.firstCreatedAt }));
+      .sort((a, b) => {
+        if (a.declaredIdx !== b.declaredIdx) return a.declaredIdx - b.declaredIdx;
+        return sortByOrder({ order: a.firstOrder, createdAt: a.firstCreatedAt }, { order: b.firstOrder, createdAt: b.firstCreatedAt });
+      });
 
     const totalLessons = chapters.reduce((sum, ch) => sum + ch.lessons.length, 0);
     return {
       id: course.id,
+      dbId: course.dbId,
+      _fromDb: course._fromDb,
       title: course.title,
+      sourceTitle: course.sourceTitle,
       cover: course.cover,
+      hasExplicitCover: course.hasExplicitCover,
       teacher: course.teacher || "Bảo Minh",
+      description: course.description,
       tags: course.tags,
+      declaredChapters: course.declaredChapters,
       latestAt: course.latestAt,
+      createdAt: course.createdAt,
       totalLessons,
       chapters,
+      hasStaticLessons: course.hasStaticLessons,
+      firebaseVideoIds: course.firebaseVideoIds,
     };
   });
 }

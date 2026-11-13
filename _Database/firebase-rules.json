@@ -27,6 +27,10 @@
       ".read": true,
       ".write": true
     },
+    "courses": {
+      ".read": true,
+      ".write": true
+    },
     "videoProgress": {
       ".read": true,
       ".write": true
@@ -36,6 +40,10 @@
       ".write": true
     },
     "videoReactions": {
+      ".read": true,
+      ".write": true
+    },
+    "feedbacks": {
       ".read": true,
       ".write": true
     }

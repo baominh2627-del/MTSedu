@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { videos, videoFilters, groupVideosIntoCourses } from '../data/videosData.js';
 import { useAuth } from './AuthContext.jsx';
-import { handleYoutubeThumbFallback, subscribeVideos, subscribeVideoProgress, setLessonCompleted } from './videoService.js';
+import { handleYoutubeThumbFallback, subscribeCourses, subscribeVideos, subscribeVideoProgress, setLessonCompleted } from './videoService.js';
 import { useUserAvatar } from './avatarService.js';
 import CoursePlayerView from './CoursePlayerView.jsx';
 
@@ -22,13 +22,15 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
   const [sortOption, setSortOption] = useState('Mới nhất');
   const [activeCourseId, setActiveCourseId] = useState(null);
   const [dbVideos, setDbVideos] = useState([]);
+  const [dbCourses, setDbCourses] = useState([]);
   const [progressMap, setProgressMap] = useState({});
 
   useEffect(() => subscribeVideos(setDbVideos), []);
+  useEffect(() => subscribeCourses(setDbCourses), []);
   useEffect(() => subscribeVideoProgress(uid, setProgressMap), [uid]);
 
   const allVideos = useMemo(() => [...dbVideos, ...videos], [dbVideos]);
-  const courses = useMemo(() => groupVideosIntoCourses(allVideos), [allVideos]);
+  const courses = useMemo(() => groupVideosIntoCourses(allVideos, dbCourses), [allVideos, dbCourses]);
   const activeCourse = useMemo(
     () => (activeCourseId ? courses.find((c) => c.id === activeCourseId) || null : null),
     [courses, activeCourseId],
@@ -41,6 +43,8 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
     const list = courses.filter((course) => {
       const matchText = !q
         || course.title.toLowerCase().includes(q)
+        || (course.description || '').toLowerCase().includes(q)
+        || (course.teacher || '').toLowerCase().includes(q)
         || course.chapters.some((ch) => ch.lessons.some((l) => l.title.toLowerCase().includes(q)));
       if (!matchText) return false;
       return videoFilters.every((g) => {

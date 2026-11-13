@@ -1,8 +1,11 @@
 ﻿import { useEffect, useMemo, useState } from 'react';
+import AdminFeedback from './AdminFeedback.jsx';
+import AdminCourses from './AdminCourses.jsx';
 import AdminVideos from './AdminVideos.jsx';
 import AdminTracking from './AdminTracking.jsx';
 import UserAvatar from '../../UserAvatar.jsx';
 import { getAvatar } from '../../avatarService.js';
+import { FEEDBACK_STATUS, normalizeFeedbacks } from '../../feedbackService.js';
 import { collectAdminResults, createAdminUser, createBulkAdminUsers, deleteAdminUser, subscribeAdminData } from '../services/adminService.js';
 
 const TABS = [
@@ -11,12 +14,15 @@ const TABS = [
   { id: 'users', label: '👥 Danh sách users' },
   { id: 'results', label: '📊 Lịch sử bài làm' },
   { id: 'tracking', label: '⏱️ Theo dõi học sinh' },
+  { id: 'courses', label: '📚 Tạo khóa học' },
   { id: 'videos', label: '🎬 Đăng video' },
+  { id: 'feedbacks', label: '💬 Góp ý' },
 ];
 const firebaseLinks = [
   ['🔥 Xem Realtime Database MTS', 'https://console.firebase.google.com/project/mtsedu-85ea3/database/mtsedu-85ea3-default-rtdb/data'],
   ['📊 Xem testResults (bài làm)', 'https://console.firebase.google.com/project/mtsedu-85ea3/database/mtsedu-85ea3-default-rtdb/data/~2FtestResults'],
   ['👥 Xem users (tài khoản)', 'https://console.firebase.google.com/project/mtsedu-85ea3/database/mtsedu-85ea3-default-rtdb/data/~2Fusers'],
+  ['💬 Xem feedbacks (góp ý)', 'https://console.firebase.google.com/project/mtsedu-85ea3/database/mtsedu-85ea3-default-rtdb/data/~2Ffeedbacks'],
 ];
 
 function ActionStatus({ status }) {
@@ -37,10 +43,22 @@ export default function AdminDashboard() {
   const [status, setStatus] = useState(null);
   const [rootData, setRootData] = useState(null);
   const [loadError, setLoadError] = useState('');
+  const [preselectedCourse, setPreselectedCourse] = useState(null);
+
+  const openVideoForCourse = (course) => {
+    setPreselectedCourse({ ...course, _pickedAt: Date.now() });
+    setTab('videos');
+    setStatus(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => subscribeAdminData(setRootData, (error) => setLoadError(error.message)), []);
   const users = useMemo(() => Object.entries(rootData?.users || {}).map(([id, user]) => ({ id, ...user })), [rootData]);
   const results = useMemo(() => collectAdminResults(rootData), [rootData]);
+  const unreadFeedbackCount = useMemo(
+    () => normalizeFeedbacks(rootData?.feedbacks).filter((item) => item.status !== FEEDBACK_STATUS.RESOLVED).length,
+    [rootData],
+  );
   const updateField = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
 
   async function handleCreate(event) {
@@ -77,8 +95,30 @@ export default function AdminDashboard() {
     <div className="flex flex-wrap gap-2">
       {firebaseLinks.map(([label, href]) => <a key={href} href={href} target="_blank" rel="noreferrer" className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-200 hover:text-blue-700">{label}</a>)}
     </div>
-    <div className="flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Chức năng quản trị">
-      {TABS.map((item) => <button key={item.id} type="button" role="tab" aria-selected={tab === item.id} onClick={() => { setTab(item.id); setStatus(null); }} className={`whitespace-nowrap rounded-xl border px-4 py-3 text-sm font-semibold transition ${tab === item.id ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-600 hover:bg-blue-50'}`}>{item.label}</button>)}
+    <div className="flex flex-wrap gap-2 pb-1" role="tablist" aria-label="Chức năng quản trị">
+      {TABS.map((item) => {
+        const badge = item.id === 'feedbacks' && unreadFeedbackCount > 0 ? unreadFeedbackCount : 0;
+        const isActive = tab === item.id;
+        return (
+          <button
+            key={item.id}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            onClick={() => { setTab(item.id); setPreselectedCourse(null); setStatus(null); }}
+            className={`inline-flex items-center gap-2 whitespace-nowrap rounded-xl border px-4 py-3 text-sm font-semibold transition ${
+              isActive ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-600 hover:bg-blue-50'
+            }`}
+          >
+            <span>{item.label}</span>
+            {badge > 0 && (
+              <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${isActive ? 'bg-blue-500 text-white' : 'bg-rose-500 text-white'}`}>
+                {badge}
+              </span>
+            )}
+          </button>
+        );
+      })}
     </div>
     {status && <ActionStatus status={status} />}
     {loadError && <ActionStatus status={{ type: 'error', message: `Không đọc được dữ liệu Firebase: ${loadError}` }} />}
@@ -111,6 +151,8 @@ export default function AdminDashboard() {
       {!rootData ? <p className="text-sm text-slate-500">Đang tải dữ liệu…</p> : results.length === 0 ? <p className="text-sm text-slate-500">Chưa có dữ liệu bài làm.</p> : <div className="overflow-x-auto"><table className="w-full min-w-[850px] text-left text-sm"><thead className="bg-slate-50 text-slate-600"><tr>{['Học sinh','Mã đề','Phần 1','Phần 2','Phần 3','Tổng điểm','Thoát','Ngày nộp'].map((heading) => <th key={heading} className="px-3 py-3 font-semibold">{heading}</th>)}</tr></thead><tbody className="divide-y divide-slate-100">{results.map((result) => <tr key={`${result.maDe}-${result.id}`}><td className="px-3 py-3 font-medium">{result.hoTen}<span className="block text-xs font-normal text-slate-500">Lớp: {result.lop}</span></td><td className="px-3 py-3">{result.maDe}</td><td className="px-3 py-3">{result.diemPhan1}</td><td className="px-3 py-3">{result.diemPhan2}</td><td className="px-3 py-3">{result.diemPhan3}</td><td className="px-3 py-3 font-bold text-emerald-700">{result.tongDiem}</td><td className="px-3 py-3">{result.soLanThoat}</td><td className="px-3 py-3">{result.thoiGianNop ? new Date(result.thoiGianNop).toLocaleString('vi-VN') : '—'}</td></tr>)}</tbody></table></div>}
     </div>}
     {tab === 'tracking' && <AdminTracking rootData={rootData} />}
-    {tab === 'videos' && <AdminVideos />}
+    {tab === 'courses' && <AdminCourses onAddVideoToCourse={openVideoForCourse} />}
+    {tab === 'videos' && <AdminVideos preselectedCourse={preselectedCourse} onOpenCourses={() => setTab('courses')} />}
+    {tab === 'feedbacks' && <AdminFeedback rootData={rootData} />}
   </section>;
 }

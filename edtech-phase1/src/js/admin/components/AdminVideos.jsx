@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-import { addVideo, deleteVideo, getYoutubeThumbnail, handleYoutubeThumbFallback, parseYoutubeId, subscribeVideos, updateVideo } from '../../videoService.js';
-import { videos as builtInVideos, videoFilters } from '../../../data/videosData.js';
+import { addVideo, deleteVideo, getYoutubeThumbnail, handleYoutubeThumbFallback, parseYoutubeId, subscribeCourses, subscribeVideos, updateVideo } from '../../videoService.js';
+import { videos as builtInVideos, groupVideosIntoCourses } from '../../../data/videosData.js';
 import { subjectsData } from '../../../data/subjectsData.js';
+import { CourseFormCard, VideoTagPicker } from './AdminCourses.jsx';
 
-const ALL_TAGS = videoFilters.flatMap((g) => g.items);
 const SOURCES = [['youtube', 'YouTube'], ['drive', 'Google Drive'], ['local', 'Tải file lên']];
 const inputCls = 'mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-normal text-slate-800 outline-none focus:border-blue-400';
 
 const emptyForm = {
   title: '',
   course: '',
+  courseId: '',
   chapter: '',
   order: '',
   tags: [],
@@ -67,30 +68,111 @@ function VideoSourceInputs({ source, link, onSourceChange, onLinkChange, onFileC
   );
 }
 
-export default function AdminVideos() {
+export default function AdminVideos({ preselectedCourse = null, onOpenCourses }) {
   const [form, setForm] = useState(emptyForm);
   const [editing, setEditing] = useState(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showQuickCourse, setShowQuickCourse] = useState(false);
+  const [customCourseMode, setCustomCourseMode] = useState(false);
   const [videos, setVideos] = useState([]);
+  const [dbCourses, setDbCourses] = useState([]);
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState(null);
   const [msg, setMsg] = useState(null);
   const [fileKey, setFileKey] = useState(0);
 
   useEffect(() => subscribeVideos(setVideos), []);
+  useEffect(() => subscribeCourses(setDbCourses), []);
+
+  useEffect(() => {
+    if (!preselectedCourse) return;
+    setEditing(null);
+    setCustomCourseMode(false);
+    setForm({
+      ...emptyForm,
+      course: preselectedCourse.title || '',
+      courseId: preselectedCourse.dbId || (preselectedCourse._fromDb ? preselectedCourse.id : '') || '',
+      tags: Array.isArray(preselectedCourse.tags) ? [...preselectedCourse.tags] : [],
+      teacher: preselectedCourse.teacher || '',
+    });
+    setMsg(null);
+  }, [preselectedCourse]);
 
   const allVideos = useMemo(
     () => [...videos, ...builtInVideos.map((v) => ({ ...v, _static: true }))],
     [videos],
   );
-  const existingCourses = useMemo(
-    () => [...new Set(allVideos.map((v) => (v.course || '').trim()).filter(Boolean))],
-    [allVideos],
+  const courseCatalog = useMemo(
+    () => groupVideosIntoCourses(allVideos, dbCourses),
+    [allVideos, dbCourses],
   );
-  const existingChapters = useMemo(
-    () => [...new Set(allVideos.filter((v) => !form.course || (v.course || '').trim() === form.course.trim()).map((v) => (v.chapter || '').trim()).filter(Boolean))],
-    [allVideos, form.course],
-  );
+  const matchedCourse = useMemo(() => {
+    const titleLower = form.course.trim().toLowerCase();
+    return courseCatalog.find(
+      (c) => (form.courseId && c.dbId === form.courseId) || (titleLower && c.title.trim().toLowerCase() === titleLower),
+    ) || null;
+  }, [courseCatalog, form.course, form.courseId]);
+
+  const existingChapters = useMemo(() => {
+    const setCh = new Set();
+    if (matchedCourse) {
+      for (const ch of matchedCourse.declaredChapters || []) setCh.add(ch);
+      for (const ch of matchedCourse.chapters || []) {
+        if (ch.title && ch.title !== 'Danh sách bài giảng') setCh.add(ch.title);
+      }
+    } else {
+      for (const v of allVideos) {
+        if (!form.course || (v.course || '').trim() === form.course.trim()) {
+          if ((v.chapter || '').trim()) setCh.add(v.chapter.trim());
+        }
+      }
+    }
+    return [...setCh];
+  }, [matchedCourse, allVideos, form.course]);
+
+  const suggestedOrder = matchedCourse ? String(matchedCourse.totalLessons + 1) : '1';
+  const selectValue = customCourseMode
+    ? '__custom__'
+    : matchedCourse
+      ? matchedCourse.id
+      : form.course.trim()
+        ? '__custom__'
+        : '';
+
+  const pickCourse = (value) => {
+    if (value === '__custom__') {
+      setCustomCourseMode(true);
+      set('courseId', '');
+      return;
+    }
+    setCustomCourseMode(false);
+    if (!value) {
+      setForm((f) => ({ ...f, course: '', courseId: '' }));
+      return;
+    }
+    const picked = courseCatalog.find((c) => c.id === value);
+    if (!picked) return;
+    setForm((f) => ({
+      ...f,
+      course: picked.title,
+      courseId: picked.dbId || '',
+      tags: f.tags.length > 0 ? f.tags : [...(picked.tags || [])],
+      teacher: f.teacher.trim() ? f.teacher : (picked.teacher || ''),
+    }));
+  };
+
+  const handleQuickCourseSaved = (saved) => {
+    setShowQuickCourse(false);
+    setCustomCourseMode(false);
+    setForm((f) => ({
+      ...f,
+      course: saved.title,
+      courseId: saved.id,
+      tags: f.tags.length > 0 ? f.tags : [...(saved.tags || [])],
+      teacher: f.teacher.trim() ? f.teacher : (saved.teacher || ''),
+    }));
+    setMsg({ ok: true, text: `Đã tạo và chọn khóa học “${saved.title}”. Tiếp tục điền thông tin video bên dưới.` });
+  };
   const allQuizzes = useMemo(() => {
     const out = [];
     for (const subj of Object.values(subjectsData || {})) {
@@ -108,6 +190,7 @@ export default function AdminVideos() {
     setForm(emptyForm);
     setEditing(null);
     setShowAdvanced(false);
+    setCustomCourseMode(false);
     setFileKey((k) => k + 1);
   }
 
@@ -116,10 +199,12 @@ export default function AdminVideos() {
     const p2 = Array.isArray(v.parts) && v.parts[1] ? v.parts[1] : null;
     const toLink = (item) => (item?.source === 'youtube' ? item.youtubeId : item?.source === 'drive' ? item.driveId : '');
     setEditing(v);
+    setCustomCourseMode(false);
     setForm({
       ...emptyForm,
       title: v.title || '',
       course: v.course || '',
+      courseId: v.courseId || '',
       chapter: v.chapter || '',
       order: v.order ? String(v.order) : '',
       tags: v.tags || [],
@@ -195,16 +280,44 @@ export default function AdminVideos() {
 
   return (
     <div className="flex flex-col gap-5">
+      {showQuickCourse && (
+        <CourseFormCard
+          compact
+          onSaved={handleQuickCourseSaved}
+          onCancel={() => setShowQuickCourse(false)}
+        />
+      )}
+
       <form onSubmit={submit} className="rounded-2xl border border-blue-100 bg-white p-5 shadow-[0_6px_24px_rgba(47,128,237,0.08)] sm:p-6">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-lg font-bold text-slate-800">
             {editing ? `✏️ Sửa bài giảng: ${editing.title}` : '🎬 Đăng video bài giảng'}
           </h3>
-          {editing && (
-            <button type="button" onClick={resetForm} className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50">
-              Hủy sửa
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowQuickCourse((v) => !v)}
+              className={`rounded-lg border px-3 py-1.5 text-xs font-semibold transition ${
+                showQuickCourse ? 'border-slate-900 bg-slate-900 text-white' : 'border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100'
+              }`}
+            >
+              {showQuickCourse ? '▾ Ẩn tạo khóa học' : '➕ Tạo khóa học mới'}
             </button>
-          )}
+            {onOpenCourses && (
+              <button
+                type="button"
+                onClick={onOpenCourses}
+                className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+              >
+                📚 Quản lý khóa học ({courseCatalog.length})
+              </button>
+            )}
+            {editing && (
+              <button type="button" onClick={resetForm} className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50">
+                Hủy sửa
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -213,19 +326,42 @@ export default function AdminVideos() {
             <input className={inputCls} value={form.title} onChange={(e) => set('title', e.target.value)} placeholder="vd: Bài 1: Bất phương trình bậc nhất 2 ẩn" required />
           </label>
 
-          <label className="block text-sm font-medium text-slate-600">
-            Khóa học / Chuyên đề
-            <input
-              list="mts-course-suggestions"
+          <div className="text-sm font-medium text-slate-600">
+            <div className="flex items-center justify-between gap-2">
+              <span>Thuộc khóa học</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowQuickCourse(true);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="text-xs font-semibold text-blue-600 hover:underline"
+              >
+                + Tạo khóa học mới
+              </button>
+            </div>
+            <select
               className={inputCls}
-              value={form.course}
-              onChange={(e) => set('course', e.target.value)}
-              placeholder="vd: Toán 10 — Đại số & Bất phương trình"
-            />
-            <datalist id="mts-course-suggestions">
-              {existingCourses.map((c) => <option key={c} value={c} />)}
-            </datalist>
-          </label>
+              value={selectValue}
+              onChange={(e) => pickCourse(e.target.value)}
+            >
+              <option value="">— Chọn khóa học (hoặc để trống tự gom theo môn) —</option>
+              {courseCatalog.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.title} ({c.totalLessons} bài)
+                </option>
+              ))}
+              <option value="__custom__">✏️ Tự nhập tên khóa học khác...</option>
+            </select>
+            {selectValue === '__custom__' && (
+              <input
+                className={inputCls}
+                value={form.course}
+                onChange={(e) => setForm((f) => ({ ...f, course: e.target.value, courseId: '' }))}
+                placeholder="vd: Toán 10 — Đại số & Bất phương trình"
+              />
+            )}
+          </div>
 
           <div className="grid grid-cols-3 gap-3">
             <label className="col-span-2 block text-sm font-medium text-slate-600">
@@ -240,10 +376,26 @@ export default function AdminVideos() {
               <datalist id="mts-chapter-suggestions">
                 {existingChapters.map((ch) => <option key={ch} value={ch} />)}
               </datalist>
+              {existingChapters.length > 0 && (
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {existingChapters.slice(0, 4).map((ch) => (
+                    <button
+                      key={ch}
+                      type="button"
+                      onClick={() => set('chapter', ch)}
+                      className={`rounded-md border px-2 py-0.5 text-[11px] font-medium transition ${
+                        form.chapter.trim() === ch ? 'border-slate-800 bg-slate-800 text-white' : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                      }`}
+                    >
+                      {ch}
+                    </button>
+                  ))}
+                </div>
+              )}
             </label>
             <label className="block text-sm font-medium text-slate-600">
               Thứ tự
-              <input type="number" min="1" className={inputCls} value={form.order} onChange={(e) => set('order', e.target.value)} placeholder="1" />
+              <input type="number" min="1" className={inputCls} value={form.order} onChange={(e) => set('order', e.target.value)} placeholder={suggestedOrder} />
             </label>
           </div>
 
@@ -301,18 +453,7 @@ export default function AdminVideos() {
 
         <div className="mt-4">
           <p className="mb-2 text-sm font-medium text-slate-600">Phân loại</p>
-          <div className="flex flex-wrap gap-2">
-            {ALL_TAGS.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => toggleTag(t)}
-                className={`rounded-full border px-3 py-1.5 text-sm ${form.tags.includes(t) ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-600'}`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+          <VideoTagPicker selected={form.tags} onToggle={toggleTag} />
         </div>
 
         {form.source === 'drive' && (

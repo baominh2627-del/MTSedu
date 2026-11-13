@@ -64,7 +64,7 @@ export async function deleteAdminUser(userId) {
 }
 
 export function collectAdminResults(rootData) {
-  const ignored = new Set(['users', 'rules', 'metadata', 'testResults', 'examLogs', 'activity', 'videoWatch', 'videos', 'videoProgress', 'videoComments', 'videoReactions']);
+  const ignored = new Set(['users', 'rules', 'metadata', 'testResults', 'examLogs', 'activity', 'videoWatch', 'videos', 'courses', 'videoProgress', 'videoComments', 'videoReactions', 'feedbacks']);
   const results = [];
   for (const [testId, testNode] of Object.entries(rootData || {})) {
     if (ignored.has(testId) || !testNode || typeof testNode !== 'object') continue;

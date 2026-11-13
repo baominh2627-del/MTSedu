@@ -1,8 +1,8 @@
 import { onValue, ref } from 'firebase/database';
 import { database } from './firebase.js';
 import { getUid, toDateKey } from './activityService.js';
-import { subscribeVideos, subscribeVideoProgress } from './videoService.js';
-import { groupVideosIntoCourses } from '../data/videosData.js';
+import { subscribeCourses, subscribeVideos, subscribeVideoProgress } from './videoService.js';
+import { groupVideosIntoCourses, videos as builtInVideos } from '../data/videosData.js';
 
 function normalizeExamResult(id, raw, fallbackMaDe = '') {
   if (!raw || typeof raw !== 'object') return null;
@@ -80,8 +80,16 @@ function buildDailyRows(daysObj) {
   return Array.from(map.values()).sort((a, b) => b.date.localeCompare(a.date));
 }
 
-function buildCourseProgress(videos, videoProgress) {
-  return groupVideosIntoCourses(videos)
+function buildCourseProgress(videos, courses, videoProgress) {
+  const seen = new Set();
+  const merged = [];
+  for (const v of [...(videos || []), ...builtInVideos]) {
+    if (!v?.id || seen.has(v.id)) continue;
+    seen.add(v.id);
+    merged.push(v);
+  }
+  return groupVideosIntoCourses(merged, courses)
+    .filter((course) => course.totalLessons > 0)
     .map((course) => {
       let doneCount = 0;
       for (const ch of course.chapters || []) {
@@ -122,7 +130,7 @@ function buildStatsSnapshot(state, candidateIds, loading) {
     dailyRows,
     examResults,
     distinctExamCount: new Set(examResults.map((r) => r.maDe)).size,
-    coursesProgress: buildCourseProgress(state.videos, state.videoProgress),
+    coursesProgress: buildCourseProgress(state.videos, state.courses, state.videoProgress),
     watchedVideos,
     completedLessonsCount: Object.values(state.videoProgress || {}).filter((p) => p?.completed).length,
   };
@@ -145,6 +153,7 @@ export function subscribeStudentStats(user, onData, onError = () => {}) {
     videoWatch: null,
     videoProgress: null,
     videos: [],
+    courses: [],
   };
 
   if (!uid || !database) {
@@ -152,7 +161,7 @@ export function subscribeStudentStats(user, onData, onError = () => {}) {
     return () => {};
   }
 
-  const pending = new Set(['activity', 'userResults', 'testResults', 'videoWatch', 'videoProgress', 'videos']);
+  const pending = new Set(['activity', 'userResults', 'testResults', 'videoWatch', 'videoProgress', 'videos', 'courses']);
   const emit = () => onData(buildStatsSnapshot(state, candidateIds, pending.size > 0));
   const markReady = (key) => {
     pending.delete(key);
@@ -185,6 +194,10 @@ export function subscribeStudentStats(user, onData, onError = () => {}) {
     subscribeVideos((list) => {
       state.videos = list || [];
       markReady('videos');
+    }),
+    subscribeCourses((list) => {
+      state.courses = list || [];
+      markReady('courses');
     }),
   ];
 

@@ -2,6 +2,24 @@ import { ref, push, set, update, remove, onValue } from 'firebase/database';
 import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { app, database } from './firebase.js';
 
+// Khóa học do admin tạo được lưu ở Firebase: courses/{id}
+export function subscribeCourses(onData, onError) {
+  if (!database) { onData([]); return () => {}; }
+  return onValue(
+    ref(database, 'courses'),
+    (snap) => {
+      const val = snap.val() || {};
+      const list = Object.entries(val).map(([id, c]) => ({ ...c, id }));
+      list.sort((a, b) => (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0));
+      onData(list);
+    },
+    (err) => {
+      onData([]);
+      if (onError) onError(err);
+    },
+  );
+}
+
 // Video do admin đăng được lưu ở Firebase: videos/{id}
 export function subscribeVideos(onData) {
   if (!database) { onData([]); return () => {}; }
@@ -135,7 +153,7 @@ async function buildVideoPayload(form, id, existing, onProgress) {
 
   let cover = manualCoverUrl || existing?.cover || autoYoutubeCover;
   if (form.coverFile) {
-    cover = await uploadFile(form.coverFile, `video-covers/${id}_${safeName(form.coverFile.name)}`);
+    cover = await compressCoverImage(form.coverFile);
   }
 
   let docUrl = (form.docUrl || '').trim();
@@ -149,6 +167,7 @@ async function buildVideoPayload(form, id, existing, onProgress) {
   const data = {
     title: form.title.trim(),
     course: (form.course || '').trim(),
+    courseId: (form.courseId || '').trim(),
     chapter: (form.chapter || '').trim(),
     order: Number.isFinite(orderNum) && orderNum > 0 ? orderNum : 0,
     tags: form.tags,
@@ -190,6 +209,153 @@ export async function updateVideo(id, form, existing, onProgress) {
 
 export async function deleteVideo(id) {
   await remove(ref(database, `videos/${id}`));
+}
+
+/** Nén ảnh bìa khóa học thành JPEG 16:9 gọn nhẹ (không phụ thuộc Firebase Storage). */
+export async function compressCoverImage(file) {
+  if (!file || !file.type?.startsWith('image/')) {
+    throw new Error('Vui lòng chọn file ảnh hợp lệ (JPG, PNG, WebP).');
+  }
+  if (file.size > 8 * 1024 * 1024) {
+    throw new Error('Ảnh quá lớn. Chọn ảnh dưới 8MB.');
+  }
+
+  let bitmap;
+  try {
+    bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  } catch {
+    bitmap = await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('Không đọc được ảnh này. Thử ảnh khác.'));
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  const outW = 640;
+  const outH = 360;
+  const srcRatio = bitmap.width / bitmap.height;
+  const targetRatio = outW / outH;
+  let sx = 0; let sy = 0; let sw = bitmap.width; let sh = bitmap.height;
+  if (srcRatio > targetRatio) {
+    sw = bitmap.height * targetRatio;
+    sx = (bitmap.width - sw) / 2;
+  } else {
+    sh = bitmap.width / targetRatio;
+    sy = (bitmap.height - sh) / 2;
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = outW;
+  canvas.height = outH;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, outW, outH);
+  ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, outW, outH);
+  return canvas.toDataURL('image/jpeg', 0.82);
+}
+
+function normalizeCourseChaptersInput(chaptersInput) {
+  if (Array.isArray(chaptersInput)) {
+    return chaptersInput.map((c) => String(c || '').trim()).filter(Boolean);
+  }
+  return String(chaptersInput || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function wrapCourseDbError(err) {
+  const msg = String(err?.message || '');
+  if (/permission_denied/i.test(msg) || err?.code === 'PERMISSION_DENIED') {
+    return new Error('Chưa có quyền ghi mục courses trên Firebase Realtime Database. Hãy cập nhật Rules từ _Database/firebase-rules.json.');
+  }
+  return err instanceof Error ? err : new Error(msg || 'Không lưu được khóa học.');
+}
+
+async function buildCoursePayload(form, existing = null) {
+  const title = (form.title || '').trim();
+  if (!title) throw new Error('Vui lòng nhập tên khóa học.');
+  if (!form.tags?.length) throw new Error('Chọn ít nhất một nhãn phân loại (Môn học / Lớp / Kỳ thi).');
+
+  let cover = '';
+  if (form.coverFile) {
+    cover = await compressCoverImage(form.coverFile);
+  } else if ((form.coverUrl || '').trim()) {
+    cover = form.coverUrl.trim();
+  } else if (!form.removeCover && existing?.hasExplicitCover) {
+    cover = existing.cover || '';
+  }
+
+  const now = Date.now();
+  return {
+    title,
+    sourceTitle: (existing?.sourceTitle || (existing && !existing._fromDb ? existing.title : '') || '').trim(),
+    cover,
+    teacher: (form.teacher || '').trim() || 'Bảo Minh',
+    description: (form.description || '').trim(),
+    tags: [...form.tags],
+    chapters: normalizeCourseChaptersInput(form.chapters),
+    createdAt: existing?.createdAt || now,
+    updatedAt: now,
+  };
+}
+
+export async function addCourse(form) {
+  if (!database) throw new Error('Firebase chưa sẵn sàng.');
+  try {
+    const node = push(ref(database, 'courses'));
+    const data = await buildCoursePayload(form, null);
+    await set(node, data);
+    return { id: node.key, ...data };
+  } catch (err) {
+    throw wrapCourseDbError(err);
+  }
+}
+
+export async function updateCourse(courseId, form, existing, linkedFirebaseVideoIds = []) {
+  if (!database) throw new Error('Firebase chưa sẵn sàng.');
+  try {
+    const data = await buildCoursePayload(form, existing);
+    let targetId = existing?._fromDb ? (existing.dbId || courseId) : null;
+    if (!targetId) {
+      const node = push(ref(database, 'courses'));
+      targetId = node.key;
+      await set(node, data);
+    } else {
+      await update(ref(database, `courses/${targetId}`), data);
+    }
+
+    if (linkedFirebaseVideoIds.length > 0 && (data.title !== existing?.title || !existing?._fromDb)) {
+      const patch = {};
+      for (const vid of linkedFirebaseVideoIds) {
+        patch[`videos/${vid}/course`] = data.title;
+        patch[`videos/${vid}/courseId`] = targetId;
+      }
+      await update(ref(database), patch);
+    }
+
+    return { id: targetId, ...data };
+  } catch (err) {
+    throw wrapCourseDbError(err);
+  }
+}
+
+export async function deleteCourse(course, deleteLinkedVideos = false) {
+  if (!database) throw new Error('Firebase chưa sẵn sàng.');
+  try {
+    const patch = {};
+    if (course?.dbId) patch[`courses/${course.dbId}`] = null;
+    if (deleteLinkedVideos) {
+      for (const vid of course?.firebaseVideoIds || []) {
+        patch[`videos/${vid}`] = null;
+      }
+    }
+    if (Object.keys(patch).length === 0) return;
+    await update(ref(database), patch);
+  } catch (err) {
+    throw wrapCourseDbError(err);
+  }
 }
 
 const sanitizeKey = (k) => String(k || '').replace(/[.#$[\]/]/g, '_');

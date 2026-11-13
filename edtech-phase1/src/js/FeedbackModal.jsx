@@ -1,36 +1,68 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from './AuthContext.jsx';
+import { FEEDBACK_TYPES, formatFeedbackError, submitFeedback } from './feedbackService.js';
 
 export default function FeedbackModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const [type, setType] = useState('Lỗi đáp án/câu hỏi');
+  const [type, setType] = useState(FEEDBACK_TYPES[0]);
   const [content, setContent] = useState('');
   const [status, setStatus] = useState('idle'); // idle, submitting, success
+  const [errorMsg, setErrorMsg] = useState('');
+  const closeTimerRef = useRef(null);
   const { user } = useAuth();
 
-  const handleSubmit = (e) => {
+  useEffect(() => () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+  }, []);
+
+  const closeModal = () => {
+    if (status === 'submitting') return;
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setIsOpen(false);
+    setStatus('idle');
+    setErrorMsg('');
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!content.trim()) return;
-    
+    if (!content.trim() || status === 'submitting') return;
+
     setStatus('submitting');
-    
-    // Giả lập API gửi dữ liệu đi (có thể thay bằng Firebase sau này)
-    setTimeout(() => {
+    setErrorMsg('');
+
+    try {
+      await submitFeedback({
+        type,
+        content,
+        user,
+        page: window.location.hash || '#home',
+      });
       setStatus('success');
-      setTimeout(() => {
+      closeTimerRef.current = setTimeout(() => {
         setIsOpen(false);
         setStatus('idle');
         setContent('');
-        setType('Lỗi đáp án/câu hỏi');
-      }, 2000);
-    }, 1000);
+        setType(FEEDBACK_TYPES[0]);
+        setErrorMsg('');
+        closeTimerRef.current = null;
+      }, 1800);
+    } catch (err) {
+      setStatus('idle');
+      setErrorMsg(formatFeedbackError(err, 'Không gửi được phản hồi. Vui lòng thử lại.'));
+    }
   };
 
   return (
     <>
       {/* Floating Button (Nút nổi ở góc phải dưới) */}
       <button 
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          setErrorMsg('');
+          setIsOpen(true);
+        }}
         className="fixed bottom-6 right-6 z-40 bg-blue-600 text-white p-3 sm:p-4 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-[0_8px_20px_rgba(37,99,235,0.4)] transition-all hover:-translate-y-1 flex items-center justify-center group"
         title="Báo lỗi & Góp ý"
       >
@@ -43,13 +75,13 @@ export default function FeedbackModal() {
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-opacity">
           {/* Nhấn ra ngoài để đóng */}
-          <div className="absolute inset-0" onClick={() => setStatus === 'submitting' ? null : setIsOpen(false)}></div>
+          <div className="absolute inset-0" onClick={closeModal}></div>
           
           <div className="relative bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center p-5 border-b border-gray-100">
               <h3 className="text-xl font-bold text-gray-800">Góp ý & Báo lỗi</h3>
               <button 
-                onClick={() => setIsOpen(false)} 
+                onClick={closeModal} 
                 disabled={status === 'submitting'}
                 className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
               >
@@ -79,10 +111,9 @@ export default function FeedbackModal() {
                       onChange={(e) => setType(e.target.value)}
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
                     >
-                      <option>Lỗi đáp án/câu hỏi sai</option>
-                      <option>Lỗi giao diện/form/kỹ thuật</option>
-                      <option>Góp ý thêm tính năng</option>
-                      <option>Vấn đề khác</option>
+                      {FEEDBACK_TYPES.map((item) => (
+                        <option key={item} value={item}>{item}</option>
+                      ))}
                     </select>
                   </div>
                   <div>
@@ -92,10 +123,18 @@ export default function FeedbackModal() {
                       rows="4"
                       placeholder="VD: Ở đề Toán 12 chương 1, câu 5 phần đáp án bị lỗi hiển thị..."
                       value={content}
-                      onChange={(e) => setContent(e.target.value)}
+                      onChange={(e) => {
+                        setContent(e.target.value);
+                        if (errorMsg) setErrorMsg('');
+                      }}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none resize-none"
                     ></textarea>
                   </div>
+                  {errorMsg && (
+                    <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+                      {errorMsg}
+                    </p>
+                  )}
                   <button 
                     type="submit" 
                     disabled={status === 'submitting'}
