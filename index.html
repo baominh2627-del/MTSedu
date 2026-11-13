@@ -36,54 +36,17 @@
     <div id="root"></div>
     <script type="module" src="/edtech-phase1/src/js/main.jsx"></script>
     <script>
-      // Chặn click chuột phải
-      document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-      });
-
-      // Chặn các phím tắt (F12, Ctrl+U, Ctrl+Shift+I/J/C, Ctrl+S)
-      document.onkeydown = function(e) {
-        if (e.keyCode === 123) return false;
-        if (e.ctrlKey && e.keyCode === 85) return false;
-        if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false;
-        if (e.ctrlKey && e.keyCode === 83) return false;
-      };
-    </script>
-    
-    <!-- ANTI-SCREENSHOT PROTECTION -->
-    <style>
-      #mts-anti-screenshot { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.95); color: #fff; z-index: 9999999; justify-content: center; align-items: center; flex-direction: column; font-family: sans-serif; text-align: center; }
-    </style>
-    <div id="mts-anti-screenshot">
-        <span style="font-size: 50px; margin-bottom: 20px;">⚠️</span>
-        <b style="font-size: 24px;">NỘI DUNG TẠM ẨN</b>
-        <p style="font-size: 16px; color: #ccc; margin-top: 10px;">Màn hình bị che vì bạn đang mở công cụ chụp ảnh hoặc click ra ngoài trang web.<br>Vui lòng <b>Click chuột lại vào màn hình này</b> để học tiếp.</p>
-    </div>
-    <script>
-        // Xóa hình phạt cũ nếu người dùng vẫn còn lưu trong máy
-        localStorage.removeItem('mts_penalty_until');
-        
-        const daDangNhap = false; 
-        if (!daDangNhap) {
-            const protectionOverlay = document.getElementById('mts-anti-screenshot');
-            
-            // Lắng nghe phím PrintScreen để chặn
-            document.addEventListener('keyup', function(e) {
-                if (e.key === 'PrintScreen' || e.keyCode === 44) {
-                    try { navigator.clipboard.writeText('Nội dung đã được bảo vệ bản quyền.'); } catch(e) {}
-                }
-            });
-
-            // Khi mất focus (mở Snipping tool hoặc chuyển tab) -> Chỉ che tạm thời, KHÔNG phạt thời gian
-            window.addEventListener('blur', function() {
-                protectionOverlay.style.display = 'flex';
-            });
-
-            // Khi click quay lại web -> Tắt che ngay lập tức
-            window.addEventListener('focus', function() {
-                protectionOverlay.style.display = 'none';
-            });
+      // Chỉ chặn phím tắt (F12, Ctrl+U)
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'F12' || e.keyCode === 123) {
+          e.preventDefault();
+          return false;
         }
+        if (e.ctrlKey && !e.shiftKey && !e.altKey && (e.keyCode === 85 || (e.key && e.key.toLowerCase() === 'u'))) {
+          e.preventDefault();
+          return false;
+        }
+      });
     </script>
   </body>
 </html>
