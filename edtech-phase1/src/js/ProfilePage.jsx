@@ -34,10 +34,23 @@ const NAV = [
 // Logo & linh vật: file CỐ ĐỊNH trong /public, không đổi theo học sinh.
 function Logo({ className = '' }) {
   const [ok, setOk] = useState(true);
-  return ok ? (
-    <img src={`${import.meta.env.BASE_URL}net_ve.svg`} alt="BM Education" className={className} onError={() => setOk(false)} />
-  ) : (
-    <span className="text-2xl font-bold text-blue-600">BM Education</span>
+  return (
+    <>
+      {ok && (
+        <img
+          src={`${import.meta.env.BASE_URL}net_ve.svg`}
+          alt=""
+          className={className}
+          onError={() => setOk(false)}
+        />
+      )}
+      <span
+        className="text-[19px] sm:text-[22px] tracking-tight font-bold text-slate-900 whitespace-nowrap"
+        style={{ fontFamily: 'var(--font-heading)' }}
+      >
+        BM Education
+      </span>
+    </>
   );
 }
 function Mascot({ className = '' }) {
@@ -94,8 +107,13 @@ export default function ProfilePage({ onNavigate }) {
     <div className="min-h-screen bg-gradient-to-b from-[#eef5ff] to-[#f8fbff] text-slate-800">
       {/* Topbar */}
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-blue-100 px-4 sm:px-6 py-3 flex items-center justify-between">
-        <button onClick={() => onNavigate('home')} className="flex items-center gap-3" aria-label="BM Education - Về trang chủ">
-          <Logo className="h-12 w-12 object-contain" />
+        <button
+          type="button"
+          onClick={() => onNavigate('home')}
+          className="flex items-center gap-2.5 cursor-pointer hover:opacity-75 transition-opacity"
+          aria-label="BM Education - Về trang chủ"
+        >
+          <Logo className="h-11 w-11 object-contain shrink-0" />
         </button>
         <div className="flex items-center gap-3">
           <span className="hidden sm:block font-semibold">{name}</span>
