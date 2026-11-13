@@ -241,3 +241,53 @@ export async function deleteVideoComment(videoId, commentId) {
   if (!key || !commentId) return;
   await remove(ref(database, `videoComments/${key}/${commentId}`));
 }
+
+export const REACTION_TYPES = [
+  { key: 'like', emoji: '👍', label: 'Thích' },
+  { key: 'heart', emoji: '❤️', label: 'Yêu thích' },
+  { key: 'fire', emoji: '🔥', label: 'Hay quá' },
+  { key: 'haha', emoji: '😆', label: 'Vui' },
+  { key: 'clap', emoji: '👏', label: 'Tuyệt vời' },
+  { key: 'idea', emoji: '💡', label: 'Dễ hiểu' },
+];
+
+export function getReactionInfo(reactionsObj, reactionKey, uid) {
+  const bucket = reactionsObj?.[reactionKey];
+  if (!bucket || typeof bucket !== 'object') return { count: 0, active: false };
+  const users = Object.keys(bucket).filter((k) => Boolean(bucket[k]));
+  return { count: users.length, active: Boolean(uid && bucket[uid]) };
+}
+
+async function toggleReactionAtPath(basePath, reactionKey, user, currentlyActive) {
+  if (!database) throw new Error('Firebase chưa sẵn sàng.');
+  const uid = user ? (user.id || user.uid || `user_${user.username}`) : '';
+  if (!uid) throw new Error('Vui lòng đăng nhập để thả cảm xúc.');
+  const targetRef = ref(database, `${basePath}/${reactionKey}/${uid}`);
+  if (currentlyActive) await remove(targetRef);
+  else await set(targetRef, true);
+}
+
+export async function toggleCommentReaction(videoId, commentId, reactionKey, user, currentlyActive) {
+  const key = sanitizeKey(videoId);
+  if (!key || !commentId) return;
+  await toggleReactionAtPath(`videoComments/${key}/${commentId}/reactions`, reactionKey, user, currentlyActive);
+}
+
+export function subscribeVideoReactions(videoId, onData, onError) {
+  const key = sanitizeKey(videoId);
+  if (!database || !key) { onData({}); return () => {}; }
+  return onValue(
+    ref(database, `videoReactions/${key}`),
+    (snap) => onData(snap.val() || {}),
+    (err) => {
+      onData({});
+      if (onError) onError(err);
+    },
+  );
+}
+
+export async function toggleVideoReaction(videoId, reactionKey, user, currentlyActive) {
+  const key = sanitizeKey(videoId);
+  if (!key) return;
+  await toggleReactionAtPath(`videoReactions/${key}`, reactionKey, user, currentlyActive);
+}

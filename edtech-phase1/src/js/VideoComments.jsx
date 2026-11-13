@@ -1,7 +1,16 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { getUid } from './activityService.js';
 import { useAvatarsMap, useUserAvatar } from './avatarService.js';
-import { addVideoComment, deleteVideoComment, subscribeVideoComments } from './videoService.js';
+import {
+  REACTION_TYPES,
+  addVideoComment,
+  deleteVideoComment,
+  getReactionInfo,
+  subscribeVideoComments,
+  toggleCommentReaction,
+} from './videoService.js';
+
+const QUICK_EMOJIS = ['👍', '❤️', '🔥', '👏', '💡', '😂', '😍', '🤔', '😭', '🙏', '✅', '✨', '💯', '❓', '📚', '🎉'];
 
 function formatCommentTime(ts) {
   if (!ts) return '';
@@ -47,9 +56,12 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
   const isAdmin = user?.role === 'admin';
   const myAvatar = useUserAvatar(uid);
 
+  const textareaRef = useRef(null);
   const [comments, setComments] = useState([]);
   const [text, setText] = useState('');
   const [replyTarget, setReplyTarget] = useState(null);
+  const [showEmojiMenu, setShowEmojiMenu] = useState(false);
+  const [openReactionForId, setOpenReactionForId] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
 
@@ -60,6 +72,8 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
     setComments([]);
     setText('');
     setReplyTarget(null);
+    setShowEmojiMenu(false);
+    setOpenReactionForId(null);
     setError('');
     if (!videoId) return undefined;
     return subscribeVideoComments(
@@ -96,10 +110,36 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
       await addVideoComment(videoId, user, text, replyTarget);
       setText('');
       setReplyTarget(null);
+      setShowEmojiMenu(false);
     } catch (err) {
       setError(err.message || 'Không gửi được bình luận.');
     } finally {
       setBusy(false);
+    }
+  };
+
+  const insertEmoji = (emoji) => {
+    const el = textareaRef.current;
+    const start = el?.selectionStart ?? text.length;
+    const end = el?.selectionEnd ?? text.length;
+    const next = `${text.slice(0, start)}${emoji}${text.slice(end)}`.slice(0, 1500);
+    setText(next);
+    setShowEmojiMenu(false);
+    requestAnimationFrame(() => {
+      if (!el) return;
+      const pos = Math.min(start + emoji.length, next.length);
+      el.focus();
+      el.setSelectionRange(pos, pos);
+    });
+  };
+
+  const handleToggleReaction = async (commentId, reactionKey, currentlyActive) => {
+    if (!isLoggedIn) { onRequireLogin?.(); return; }
+    setOpenReactionForId(null);
+    try {
+      await toggleCommentReaction(videoId, commentId, reactionKey, user, currentlyActive);
+    } catch (err) {
+      setError(err.message || 'Không thả được cảm xúc.');
     }
   };
 
@@ -118,6 +158,10 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
     const replies = !isReply ? (repliesByParent.get(item.id) || []) : [];
 
     const avatarUrl = avatarsMap[item.uid] || (item.uid === uid ? myAvatar : null);
+    const activeReactions = REACTION_TYPES
+      .map((r) => ({ ...r, ...getReactionInfo(item.reactions, r.key, uid) }))
+      .filter((r) => r.count > 0);
+    const showPicker = openReactionForId === item.id;
 
     return (
       <div key={item.id} className={isReply ? 'flex items-start gap-2.5' : 'py-4 first:pt-1 last:pb-1 flex items-start gap-3'}>
@@ -140,7 +184,38 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
             {item.text}
           </p>
 
-          <div className="mt-1.5 flex items-center gap-3 text-xs">
+          {activeReactions.length > 0 && (
+            <div className="mt-2 flex flex-wrap items-center gap-1.5">
+              {activeReactions.map((r) => (
+                <button
+                  key={r.key}
+                  type="button"
+                  title={r.label}
+                  onClick={() => handleToggleReaction(item.id, r.key, r.active)}
+                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border transition cursor-pointer ${
+                    r.active
+                      ? 'bg-black text-white border-black'
+                      : 'bg-black/[0.04] text-gray-700 border-black/10 hover:bg-black/10'
+                  }`}
+                >
+                  <span>{r.emoji}</span>
+                  <span>{r.count}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs relative">
+            <button
+              type="button"
+              onClick={() => {
+                if (!isLoggedIn) { onRequireLogin?.(); return; }
+                setOpenReactionForId(showPicker ? null : item.id);
+              }}
+              className="font-semibold text-gray-500 hover:text-black transition-colors cursor-pointer"
+            >
+              Thả icon
+            </button>
             <button
               type="button"
               onClick={() => {
@@ -160,6 +235,27 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
               >
                 Xóa
               </button>
+            )}
+
+            {showPicker && (
+              <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white border border-black/15 shadow-md">
+                {REACTION_TYPES.map((r) => {
+                  const { active } = getReactionInfo(item.reactions, r.key, uid);
+                  return (
+                    <button
+                      key={r.key}
+                      type="button"
+                      title={r.label}
+                      onClick={() => handleToggleReaction(item.id, r.key, active)}
+                      className={`w-7 h-7 rounded-full flex items-center justify-center text-base transition hover:scale-110 cursor-pointer ${
+                        active ? 'bg-black/10 ring-1 ring-black' : 'hover:bg-black/5'
+                      }`}
+                    >
+                      {r.emoji}
+                    </button>
+                  );
+                })}
+              </div>
             )}
           </div>
 
@@ -208,8 +304,9 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
             <div className="mt-0.5 shrink-0">
               <AuthorAvatar name={user?.displayName || user?.username} avatarUrl={myAvatar} isAdmin={isAdmin} />
             </div>
-            <div className="flex-1 min-w-0 space-y-2">
+            <div className="flex-1 min-w-0 space-y-2 relative">
               <textarea
+                ref={textareaRef}
                 rows="2"
                 maxLength={1500}
                 value={text}
@@ -220,8 +317,21 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
                 placeholder={isLoggedIn ? 'Đặt câu hỏi hoặc chia sẻ thảo luận về video này...' : 'Đăng nhập để viết bình luận công khai...'}
                 className="w-full rounded-xl border border-black/15 bg-gray-50/70 focus:bg-white p-3 text-sm text-black placeholder-gray-400 outline-none focus:border-black/40 transition"
               />
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-xs text-gray-400 hidden sm:inline">Mọi học viên xem bài giảng này đều thấy bình luận của bạn (Ctrl + Enter để gửi)</span>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!isLoggedIn) { onRequireLogin?.(); return; }
+                      setShowEmojiMenu((v) => !v);
+                    }}
+                    className="px-2.5 py-1.5 rounded-lg border border-black/15 bg-white hover:bg-gray-50 text-xs font-semibold text-gray-700 cursor-pointer"
+                    title="Chèn icon vào bình luận"
+                  >
+                    😊 Icon
+                  </button>
+                  <span className="text-xs text-gray-400 hidden sm:inline">Ctrl + Enter để gửi</span>
+                </div>
                 <button
                   type="submit"
                   disabled={busy || (isLoggedIn && !text.trim())}
@@ -230,6 +340,21 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
                   {busy ? 'Đang gửi...' : isLoggedIn ? 'Gửi bình luận' : 'Đăng nhập để bình luận'}
                 </button>
               </div>
+
+              {showEmojiMenu && (
+                <div className="p-2.5 rounded-xl bg-white border border-black/15 shadow-lg flex flex-wrap gap-1.5">
+                  {QUICK_EMOJIS.map((em) => (
+                    <button
+                      key={em}
+                      type="button"
+                      onClick={() => insertEmoji(em)}
+                      className="w-8 h-8 rounded-lg hover:bg-black/5 text-lg flex items-center justify-center transition cursor-pointer"
+                    >
+                      {em}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 

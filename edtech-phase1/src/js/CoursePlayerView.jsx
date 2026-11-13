@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { startVideoTracking, getUid } from './activityService.js';
-import { handleYoutubeThumbFallback } from './videoService.js';
+import {
+  REACTION_TYPES,
+  getReactionInfo,
+  handleYoutubeThumbFallback,
+  subscribeVideoReactions,
+  toggleVideoReaction,
+} from './videoService.js';
 import VideoComments from './VideoComments.jsx';
 
 const SOURCE_LABEL = { youtube: 'YouTube', drive: 'Google Drive', local: 'Tải lên' };
@@ -98,6 +104,8 @@ export default function CoursePlayerView({
   const [sessionSec, setSessionSec] = useState(0);
   const [isTrackingActive, setIsTrackingActive] = useState(false);
   const [noteText, setNoteText] = useState('');
+  const [videoReactions, setVideoReactions] = useState({});
+  const [reactionError, setReactionError] = useState('');
 
   const trackerRef = useRef(null);
   const activeEntryIdx = Math.max(0, flatLessons.findIndex((x) => x.lesson.id === activeLessonId));
@@ -119,6 +127,13 @@ export default function CoursePlayerView({
     const key = `mts_video_note_${uid || 'guest'}_${activeLesson.id}`;
     localStorage.setItem(key, val);
   };
+
+  useEffect(() => {
+    setVideoReactions({});
+    setReactionError('');
+    if (!activeLesson?.id) return undefined;
+    return subscribeVideoReactions(activeLesson.id, setVideoReactions);
+  }, [activeLesson?.id]);
 
   // Track video watch time into Firebase
   useEffect(() => {
@@ -314,6 +329,36 @@ export default function CoursePlayerView({
                 >
                   Bài tiếp theo →
                 </button>
+              </div>
+
+              <div className="pt-3 border-t border-black/8 flex flex-wrap items-center gap-2">
+                <span className="text-xs font-semibold text-gray-500 mr-1">Cảm xúc bài giảng:</span>
+                {REACTION_TYPES.map((r) => {
+                  const { count, active } = getReactionInfo(videoReactions, r.key, uid);
+                  return (
+                    <button
+                      key={r.key}
+                      type="button"
+                      title={r.label}
+                      onClick={() => {
+                        if (!isLoggedIn) { onRequireLogin(); return; }
+                        setReactionError('');
+                        toggleVideoReaction(activeLesson.id, r.key, user, active).catch((err) => {
+                          setReactionError(err.message || 'Không thả được cảm xúc (kiểm tra Firebase Rules videoReactions).');
+                        });
+                      }}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition cursor-pointer ${
+                        active
+                          ? 'bg-black text-white border-black'
+                          : 'bg-black/[0.04] text-gray-700 border-black/10 hover:bg-black/10'
+                      }`}
+                    >
+                      <span>{r.emoji}</span>
+                      {count > 0 && <span>{count}</span>}
+                    </button>
+                  );
+                })}
+                {reactionError && <span className="text-xs text-red-600">{reactionError}</span>}
               </div>
             </div>
           </div>

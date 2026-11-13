@@ -34,6 +34,10 @@
     "videoComments": {
       ".read": true,
       ".write": true
+    },
+    "videoReactions": {
+      ".read": true,
+      ".write": true
     }
   }
 }
