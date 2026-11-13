@@ -26,6 +26,10 @@
     "videos": {
       ".read": true,
       ".write": true
+    },
+    "videoProgress": {
+      ".read": true,
+      ".write": true
     }
   }
 }

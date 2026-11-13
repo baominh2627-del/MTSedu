@@ -1,4 +1,4 @@
-# 📋 PROMPT TẠO ĐỀ THI ĐỊNH LƯỢNG HSA (ĐÁNH GIÁ NĂNG LỰC) — HỆ THỐNG MTS EDUCATION
+# 📋 PROMPT TẠO ĐỀ THI ĐỊNH LƯỢNG HSA (ĐÁNH GIÁ NĂNG LỰC) — HỆ THỐNG BM EDUCATION
 
 Quy trình tạo bài thi mới được chia thành **2 Giai Đoạn**:
 - **Giai Đoạn 1 — dùng Gemini Pro** (có thể đọc file PDF): Trích xuất nội dung đề, tạo file `data.js`.
@@ -99,7 +99,7 @@ Hãy kết thúc bằng dòng thông báo sau:
 ### PROMPT GIAI ĐOẠN 2 (GỬI CHO CLAUDE)
 
 ````text
-Tôi đang xây dựng hệ thống bài thi online cho MTS Education. Tôi đã có sẵn file `data.js` (dán bên dưới / đính kèm). Bây giờ hãy tạo cho tôi 4 file còn lại để hoàn thiện bài thi HSA Phần Định Lượng.
+Tôi đang xây dựng hệ thống bài thi online cho BM Education. Tôi đã có sẵn file `data.js` (dán bên dưới / đính kèm). Bây giờ hãy tạo cho tôi 4 file còn lại để hoàn thiện bài thi HSA Phần Định Lượng.
 
 ## THÔNG TIN BÀI THI
 - Tên đề: [VD: ĐỀ THI ĐỊNH LƯỢNG HSA - ĐỀ SỐ 1]
@@ -107,7 +107,7 @@ Tôi đang xây dựng hệ thống bài thi online cho MTS Education. Tôi đã
 - Mô tả ngắn trên header: [VD: BÀI THI ĐÁNH GIÁ NĂNG LỰC HSA · TOÁN HỌC VÀ XỬ LÝ SỐ LIỆU]
 - Thời gian làm bài: 75 phút
 - Mã đề (dùng cho Firebase, không dấu, không cách): [VD: HSA_DINHLUONG_DE1]
-- Hash trang MTSedu để quay về: [VD: #math]
+- Hash trang BM Education để quay về: [VD: #math]
 - Cấu trúc: 50 câu (trắc nghiệm và điền đáp án đan xen). Mỗi câu 1 điểm, tổng 50 điểm.
 
 ---
@@ -277,7 +277,7 @@ const submitBtn = document.getElementById("submit-btn");
 const MA_DE       = "[MÃ ĐỀ]";                       // mã đề Firebase (không dấu, không cách)
 const DRAFT_KEY   = "examDraft_[MÃ ĐỀ]";             // key localStorage
 const EXAM_MINUTES = 75;                             // thời gian làm bài (phút)
-const RETURN_HASH = "[HASH VD: #math]";              // hash trang MTSedu
+const RETURN_HASH = "[HASH VD: #math]";              // hash trang BM Education
 // ================================
 
 let timeRemaining = EXAM_MINUTES * 60;

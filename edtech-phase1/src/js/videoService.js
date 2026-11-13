@@ -1,4 +1,4 @@
-import { ref, push, set, remove, onValue } from 'firebase/database';
+import { ref, push, set, update, remove, onValue } from 'firebase/database';
 import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { app, database } from './firebase.js';
 
@@ -17,6 +17,24 @@ export function subscribeVideos(onData) {
   );
 }
 
+// Tiến độ đánh dấu đã học của học sinh: videoProgress/{uid}/{videoId}
+export function subscribeVideoProgress(uid, onData) {
+  if (!database || !uid) { onData({}); return () => {}; }
+  return onValue(
+    ref(database, `videoProgress/${uid}`),
+    (snap) => onData(snap.val() || {}),
+    () => onData({}),
+  );
+}
+
+export async function setLessonCompleted(uid, videoId, completed) {
+  if (!database || !uid || !videoId) return;
+  await set(ref(database, `videoProgress/${uid}/${videoId}`), {
+    completed: Boolean(completed),
+    updatedAt: Date.now(),
+  });
+}
+
 function uploadFile(file, path, onProgress) {
   if (!app) return Promise.reject(new Error('Firebase chưa sẵn sàng.'));
   const task = uploadBytesResumable(sRef(getStorage(app), path), file);
@@ -29,6 +47,8 @@ function uploadFile(file, path, onProgress) {
     );
   });
 }
+
+const safeName = (n) => n.replace(/[^\w.-]+/g, '_');
 
 export function parseYoutubeId(input) {
   const s = (input || '').trim();
@@ -44,32 +64,112 @@ export function parseDriveId(input) {
   return /^[\w-]{20,}$/.test(s) ? s : '';
 }
 
-export async function addVideo({ title, tags, source, link, teacher, duration, coverFile, videoFile }, onProgress) {
-  if (!database) throw new Error('Firebase chưa sẵn sàng.');
-  if (!title.trim()) throw new Error('Vui lòng nhập tên video.');
-  if (!tags.length) throw new Error('Chọn ít nhất một nhãn phân loại.');
-  if (!coverFile) throw new Error('Video bắt buộc phải có ảnh bìa.');
-
-  const node = push(ref(database, 'videos'));
-  const id = node.key;
-  const data = { title: title.trim(), tags, source, teacher: teacher.trim(), duration: duration.trim(), createdAt: Date.now() };
-
+async function resolveVideoPart({ name, source, link, videoFile, existingFile, duration }, storagePathPrefix, onProgress) {
+  const part = { name: (name || 'Video bài giảng').trim(), source, duration: (duration || '').trim() };
   if (source === 'youtube') {
-    data.youtubeId = parseYoutubeId(link);
-    if (!data.youtubeId) throw new Error('Link YouTube không hợp lệ.');
+    part.youtubeId = parseYoutubeId(link);
+    if (!part.youtubeId) throw new Error(`Link YouTube không hợp lệ (${part.name}).`);
   } else if (source === 'drive') {
-    data.driveId = parseDriveId(link);
-    if (!data.driveId) throw new Error('Link Google Drive không hợp lệ.');
+    part.driveId = parseDriveId(link);
+    if (!part.driveId) throw new Error(`Link Google Drive không hợp lệ (${part.name}).`);
+  } else if (videoFile) {
+    part.file = await uploadFile(videoFile, `${storagePathPrefix}_${safeName(videoFile.name)}`, onProgress);
+  } else if (existingFile) {
+    part.file = existingFile;
   } else {
-    if (!videoFile) throw new Error('Chọn file video để tải lên.');
+    throw new Error(`Chọn file video để tải lên (${part.name}).`);
+  }
+  return part;
+}
+
+async function buildVideoPayload(form, id, existing, onProgress) {
+  if (!form.title?.trim()) throw new Error('Vui lòng nhập tên video.');
+  if (!form.tags?.length) throw new Error('Chọn ít nhất một nhãn phân loại.');
+  if (!form.coverFile && !existing?.cover) throw new Error('Video bắt buộc phải có ảnh bìa.');
+
+  const primaryPart = await resolveVideoPart(
+    {
+      name: form.part1Name || 'Phần 1: Video bài giảng',
+      source: form.source,
+      link: form.link,
+      videoFile: form.videoFile,
+      existingFile: existing?.source === 'local' ? existing?.file : '',
+      duration: form.duration,
+    },
+    `videos/${id}`,
+    onProgress,
+  );
+
+  const parts = [primaryPart];
+  const hasPart2 = Boolean(form.hasPart2 && (form.part2Link?.trim() || form.part2File || form.part2ExistingFile));
+  if (hasPart2) {
+    const part2 = await resolveVideoPart(
+      {
+        name: form.part2Name || 'Phần 2: Bài tập & Ví dụ',
+        source: form.part2Source || 'youtube',
+        link: form.part2Link,
+        videoFile: form.part2File,
+        existingFile: form.part2ExistingFile,
+        duration: form.part2Duration,
+      },
+      `videos/${id}_p2`,
+      onProgress,
+    );
+    parts.push(part2);
   }
 
-  const safe = (n) => n.replace(/[^\w.-]+/g, '_');
-  data.cover = await uploadFile(coverFile, `video-covers/${id}_${safe(coverFile.name)}`);
-  if (source === 'local') {
-    data.file = await uploadFile(videoFile, `videos/${id}_${safe(videoFile.name)}`, onProgress);
+  let cover = existing?.cover || '';
+  if (form.coverFile) {
+    cover = await uploadFile(form.coverFile, `video-covers/${id}_${safeName(form.coverFile.name)}`);
   }
+
+  let docUrl = (form.docUrl || '').trim();
+  let docName = (form.docName || '').trim();
+  if (form.docFile) {
+    docUrl = await uploadFile(form.docFile, `video-docs/${id}_${safeName(form.docFile.name)}`);
+    if (!docName) docName = form.docFile.name;
+  }
+
+  const orderNum = Number(form.order);
+  const data = {
+    title: form.title.trim(),
+    course: (form.course || '').trim(),
+    chapter: (form.chapter || '').trim(),
+    order: Number.isFinite(orderNum) && orderNum > 0 ? orderNum : 0,
+    tags: form.tags,
+    source: primaryPart.source,
+    youtubeId: primaryPart.youtubeId || '',
+    driveId: primaryPart.driveId || '',
+    file: primaryPart.file || '',
+    cover,
+    teacher: (form.teacher || '').trim(),
+    duration: (form.duration || '').trim(),
+    description: (form.description || '').trim(),
+    docName: docUrl ? (docName || 'Tài liệu bài giảng') : '',
+    docUrl,
+    quizTitle: (form.quizUrl || '').trim() ? ((form.quizTitle || '').trim() || 'Làm bài kiểm tra liên quan') : '',
+    quizUrl: (form.quizUrl || '').trim(),
+    quizQuestions: Number(form.quizQuestions) || null,
+    quizMinutes: Number(form.quizMinutes) || null,
+    parts: parts.length > 1 || form.part1Name?.trim() ? parts : null,
+    createdAt: existing?.createdAt || Date.now(),
+  };
+
+  return data;
+}
+
+export async function addVideo(form, onProgress) {
+  if (!database) throw new Error('Firebase chưa sẵn sàng.');
+  const node = push(ref(database, 'videos'));
+  const data = await buildVideoPayload(form, node.key, null, onProgress);
   await set(node, data);
+  return node.key;
+}
+
+export async function updateVideo(id, form, existing, onProgress) {
+  if (!database) throw new Error('Firebase chưa sẵn sàng.');
+  const data = await buildVideoPayload(form, id, existing, onProgress);
+  await update(ref(database, `videos/${id}`), data);
   return id;
 }
 
