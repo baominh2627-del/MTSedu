@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { formatDuration } from '../../activityService.js';
+import { getAvatar } from '../../avatarService.js';
+import UserAvatar from '../../UserAvatar.jsx';
 
 const ONLINE_WINDOW_MS = 2 * 60 * 1000;
 
@@ -33,6 +35,7 @@ export default function AdminTracking({ rootData }) {
         }, { site: 0, video: 0 });
         return {
           id, name: u.displayName || u.username || id, username: u.username,
+          avatar: u.avatar || getAvatar(id),
           siteTotal: a.siteSeconds || 0, videoTotal: a.videoSeconds || 0,
           siteRange: inRange.site, videoRange: inRange.video,
           lastSeen: a.lastSeen || 0,
@@ -67,7 +70,15 @@ export default function AdminTracking({ rootData }) {
                 const online = Date.now() - r.lastSeen < ONLINE_WINDOW_MS;
                 return (
                   <tr key={r.id} onClick={() => setSelected(r.id === selected ? null : r.id)} className={`cursor-pointer hover:bg-blue-50 ${r.id === selected ? 'bg-blue-50' : ''}`}>
-                    <td className="px-3 py-3 font-medium">{r.name}<span className="block text-xs font-normal text-slate-500">@{r.username}</span></td>
+                    <td className="px-3 py-3 font-medium">
+                      <div className="flex items-center gap-3">
+                        <UserAvatar name={r.name} avatarUrl={r.avatar} sizeClass="w-9 h-9" fallbackClass="bg-blue-100 text-blue-700" />
+                        <div className="min-w-0">
+                          <span className="block truncate text-slate-800">{r.name}</span>
+                          <span className="block text-xs font-normal text-slate-500">@{r.username}</span>
+                        </div>
+                      </div>
+                    </td>
                     <td className="px-3 py-3">
                       <span className={`inline-flex items-center gap-1.5 text-xs font-semibold ${online ? 'text-emerald-700' : 'text-slate-500'}`}>
                         <span className={`h-2 w-2 rounded-full ${online ? 'bg-emerald-500' : 'bg-slate-300'}`} />{online ? 'Đang online' : (r.lastSeen ? new Date(r.lastSeen).toLocaleString('vi-VN') : 'Chưa truy cập')}

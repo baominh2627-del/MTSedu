@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { getUid } from './activityService.js';
 import { useAvatarsMap, useUserAvatar } from './avatarService.js';
+import UserAvatar from './UserAvatar.jsx';
 import {
   REACTION_TYPES,
   addVideoComment,
@@ -25,29 +26,14 @@ function formatCommentTime(ts) {
   return `${pad(d.getHours())}:${pad(d.getMinutes())} · ${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
 }
 
-function AuthorAvatar({ name, avatarUrl, isAdmin, small = false }) {
-  const [failed, setFailed] = useState(false);
-  useEffect(() => setFailed(false), [avatarUrl]);
-
-  const sizeCls = small ? 'w-7 h-7' : 'w-8 h-8';
-  if (avatarUrl && !failed) {
-    return (
-      <img
-        src={avatarUrl}
-        alt={name || 'Avatar'}
-        onError={() => setFailed(true)}
-        className={`${sizeCls} rounded-full object-cover border border-black/10 bg-gray-100 shrink-0`}
-      />
-    );
-  }
-
-  const parts = (name || 'H').trim().split(/\s+/);
-  const initial = (parts[parts.length - 1]?.[0] || 'H').toUpperCase();
-  const colorCls = isAdmin ? 'bg-black text-white' : 'bg-gray-200 text-gray-800';
+function CommentAvatar({ name, avatarUrl, isAdmin, small = false }) {
   return (
-    <div className={`${sizeCls} rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${colorCls}`}>
-      {initial}
-    </div>
+    <UserAvatar
+      name={name}
+      avatarUrl={avatarUrl}
+      sizeClass={small ? 'w-7 h-7' : 'w-8 h-8'}
+      fallbackClass={isAdmin ? 'bg-black text-white' : 'bg-gray-200 text-gray-800'}
+    />
   );
 }
 
@@ -165,7 +151,7 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
 
     return (
       <div key={item.id} className={isReply ? 'flex items-start gap-2.5' : 'py-4 first:pt-1 last:pb-1 flex items-start gap-3'}>
-        <AuthorAvatar name={item.authorName} avatarUrl={avatarUrl} isAdmin={isAuthorAdmin} small={isReply} />
+        <CommentAvatar name={item.authorName} avatarUrl={avatarUrl} isAdmin={isAuthorAdmin} small={isReply} />
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm font-bold text-black">{item.authorName || 'Học sinh'}</span>
@@ -302,7 +288,7 @@ export default function VideoComments({ videoId, videoTitle, user, isLoggedIn, o
 
           <div className="flex items-start gap-3">
             <div className="mt-0.5 shrink-0">
-              <AuthorAvatar name={user?.displayName || user?.username} avatarUrl={myAvatar} isAdmin={isAdmin} />
+              <CommentAvatar name={user?.displayName || user?.username} avatarUrl={myAvatar} isAdmin={isAdmin} />
             </div>
             <div className="flex-1 min-w-0 space-y-2 relative">
               <textarea

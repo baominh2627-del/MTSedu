@@ -1,6 +1,8 @@
 ﻿import { useEffect, useMemo, useState } from 'react';
 import AdminVideos from './AdminVideos.jsx';
 import AdminTracking from './AdminTracking.jsx';
+import UserAvatar from '../../UserAvatar.jsx';
+import { getAvatar } from '../../avatarService.js';
 import { collectAdminResults, createAdminUser, createBulkAdminUsers, deleteAdminUser, subscribeAdminData } from '../services/adminService.js';
 
 const TABS = [
@@ -101,7 +103,7 @@ export default function AdminDashboard() {
 
     {tab === 'users' && <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-[0_6px_24px_rgba(47,128,237,0.08)] sm:p-6">
       <h3 className="mb-4 text-lg font-bold text-slate-800">👥 Danh sách tài khoản ({users.length})</h3>
-      {!rootData ? <p className="text-sm text-slate-500">Đang tải dữ liệu…</p> : users.length === 0 ? <p className="text-sm text-slate-500">Chưa có tài khoản nào.</p> : <ul className="divide-y divide-slate-100">{users.map((user) => <li key={user.id} className="flex flex-wrap items-center justify-between gap-3 py-4"><div><p className="font-semibold text-slate-800">{user.displayName || '—'} <span className="ml-2 rounded-full bg-blue-50 px-2 py-1 text-xs text-blue-700">{user.role || 'student'}</span></p><p className="mt-1 text-xs text-slate-500">@{user.username || user.id} · Tạo: {user.createdAt || '—'}</p></div><button type="button" onClick={() => handleDelete(user)} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50">Xóa</button></li>)}</ul>}
+      {!rootData ? <p className="text-sm text-slate-500">Đang tải dữ liệu…</p> : users.length === 0 ? <p className="text-sm text-slate-500">Chưa có tài khoản nào.</p> : <ul className="divide-y divide-slate-100">{users.map((user) => <li key={user.id} className="flex flex-wrap items-center justify-between gap-3 py-4"><div className="flex items-center gap-3 min-w-0"><UserAvatar name={user.displayName || user.username} avatarUrl={user.avatar || getAvatar(user.id)} sizeClass="w-9 h-9" fallbackClass="bg-blue-100 text-blue-700" /><div className="min-w-0"><p className="font-semibold text-slate-800">{user.displayName || '—'} <span className="ml-2 rounded-full bg-blue-50 px-2 py-1 text-xs text-blue-700">{user.role || 'student'}</span></p><p className="mt-1 text-xs text-slate-500">@{user.username || user.id} · Tạo: {user.createdAt || '—'}</p></div></div><button type="button" onClick={() => handleDelete(user)} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50">Xóa</button></li>)}</ul>}
     </div>}
 
     {tab === 'results' && <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-[0_6px_24px_rgba(47,128,237,0.08)] sm:p-6">
