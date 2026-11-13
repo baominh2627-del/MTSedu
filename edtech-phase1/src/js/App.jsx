@@ -22,6 +22,7 @@ import LoginPage from "./LoginPage.jsx";
 import MainframeHome from "./MainframeHome.jsx";
 import SubjectPage from "./SubjectPage.jsx";
 import ProfilePage from "./ProfilePage.jsx";
+import VideoPage from "./VideoPage.jsx";
 import FeedbackModal from "./FeedbackModal.jsx";
 import "../css/App.css";
 
@@ -98,6 +99,10 @@ function AppContent() {
         onRequireLogin={() => navigateToLoginWithReturn(currentPage)}
       />
     );
+  }
+
+  if (currentPage === "videos") {
+    return <VideoPage onNavigate={navigateTo} onRequireLogin={() => navigateToLoginWithReturn("videos")} />;
   }
 
   if (currentPage === "profile") {

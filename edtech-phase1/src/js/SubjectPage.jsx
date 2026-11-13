@@ -97,6 +97,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
           <button onClick={() => onNavigate('tsa')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'tsa' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi TSA</button>
           <button onClick={() => onNavigate('vact')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'vact' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Đề thi V-ACT</button>
           <button onClick={() => onNavigate('mock_exams')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'mock_exams' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Thi thử TNTHPT</button>
+          <button onClick={() => onNavigate('videos')} className={`text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${subjectKey === 'videos' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`}>Video bài giảng</button>
         </div>
 
         <div className="hidden lg:flex flex-row gap-4 items-center">
@@ -158,6 +159,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
         <button onClick={() => { setIsMenuOpen(false); onNavigate('tsa'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'tsa' ? 'text-black font-bold' : 'text-black/80'}`}>Đề thi TSA</button>
         <button onClick={() => { setIsMenuOpen(false); onNavigate('vact'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'vact' ? 'text-black font-bold' : 'text-black/80'}`}>Đề thi V-ACT</button>
         <button onClick={() => { setIsMenuOpen(false); onNavigate('mock_exams'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'mock_exams' ? 'text-black font-bold' : 'text-black/80'}`}>Thi thử TNTHPT</button>
+        <button onClick={() => { setIsMenuOpen(false); onNavigate('videos'); }} className={`text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${subjectKey === 'videos' ? 'text-black font-bold' : 'text-black/80'}`}>Video bài giảng</button>
         <div className="w-full h-[1px] bg-black/8 my-1"></div>
         {!isLoggedIn && (
           <button onClick={() => { setIsMenuOpen(false); onNavigate('login'); }} className="text-[15px] font-semibold text-white bg-black px-4 py-2.5 rounded-xl hover:bg-black/80 transition-colors text-center">Vào học ngay</button>
