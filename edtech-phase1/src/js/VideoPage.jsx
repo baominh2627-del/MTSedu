@@ -104,7 +104,7 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
       className={
         mobile
           ? `text-[15px] font-semibold px-4 py-2.5 rounded-xl hover:bg-black/6 transition-colors text-left ${key === 'videos' ? 'text-black font-bold' : 'text-black/80'}`
-          : `text-[14px] xl:text-[15px] font-bold uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${key === 'videos' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`
+          : `text-[11px] xl:text-[12.5px] 2xl:text-[14px] font-bold uppercase tracking-wide xl:tracking-wider px-1.5 xl:px-2.5 2xl:px-3 py-2 rounded-lg transition-all whitespace-nowrap ${key === 'videos' ? 'text-black bg-black/8' : 'text-black/70 hover:text-black hover:bg-black/8'}`
       }
     >
       {label}
@@ -113,28 +113,28 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
 
   return (
     <div className="relative w-full min-h-screen mts-bg text-black font-sans">
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-4 sm:py-5 lg:py-4 flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8">
-        <div className="flex flex-row gap-2 items-center cursor-pointer hover:opacity-70 transition-opacity" onClick={() => onNavigate('home')}>
-          <span className="text-[20px] sm:text-[24px] lg:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>MTS Education</span>
-          <span className="text-[24px] sm:text-[28px] lg:text-[30px] text-black/40 select-none">&#10033;</span>
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-4 lg:px-5 xl:px-8 py-3 sm:py-4 flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8">
+        <div className="flex flex-row gap-1.5 xl:gap-2 items-center cursor-pointer hover:opacity-70 transition-opacity shrink-0 whitespace-nowrap" onClick={() => onNavigate('home')}>
+          <span className="text-[18px] sm:text-[20px] xl:text-[23px] 2xl:text-[25px] tracking-tight text-black font-bold whitespace-nowrap" style={{ fontFamily: 'var(--font-heading)' }}>MTS Education</span>
+          <span className="text-[20px] sm:text-[22px] xl:text-[26px] 2xl:text-[28px] text-black/40 select-none">&#10033;</span>
         </div>
 
-        <div className="hidden lg:flex flex-row gap-1 xl:gap-3 items-center">
+        <div className="hidden lg:flex flex-row gap-0.5 xl:gap-1.5 2xl:gap-2.5 items-center">
           {NAV.map(([k, l]) => navBtn(k, l, false))}
         </div>
 
-        <div className="hidden lg:flex flex-row gap-4 items-center">
+        <div className="hidden lg:flex flex-row gap-3 items-center shrink-0">
           {isLoggedIn ? (
-            <button onClick={() => onNavigate('profile')} title="Trang cá nhân" className="text-[17px] text-black/60 hover:text-black flex items-center gap-2 transition-colors cursor-pointer">
+            <button onClick={() => onNavigate('profile')} title="Trang cá nhân" className="text-[14px] xl:text-[15px] 2xl:text-[16px] text-black/60 hover:text-black flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap">
               {avatar ? (
-                <img src={avatar} alt="Avatar" className="w-6 h-6 rounded-full object-cover border border-gray-200" />
+                <img src={avatar} alt="Avatar" className="w-6 h-6 rounded-full object-cover border border-gray-200 shrink-0" />
               ) : (
-                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" className="shrink-0"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
               )}
-              {user?.displayName || user?.username}
+              <span className="truncate max-w-[140px] xl:max-w-[180px]">{user?.displayName || user?.username}</span>
             </button>
           ) : (
-            <button onClick={() => onNavigate('login')} className="text-[14px] xl:text-[15px] font-bold text-black/70 uppercase tracking-wider px-2 xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">Đăng nhập</button>
+            <button onClick={() => onNavigate('login')} className="text-[11px] xl:text-[12.5px] 2xl:text-[14px] font-bold text-black/70 uppercase tracking-wide xl:tracking-wider px-1.5 xl:px-2.5 2xl:px-3 py-2 rounded-lg hover:text-black hover:bg-black/8 transition-all whitespace-nowrap">Đăng nhập</button>
           )}
         </div>
 
@@ -300,7 +300,7 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
                           <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
                             <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                           </div>
-                          <span className="truncate">{v.teacher || 'MTS Education'}</span>
+                          <span className="truncate">{v.teacher || 'Bảo Minh'}</span>
                         </div>
                       </div>
                     </div>

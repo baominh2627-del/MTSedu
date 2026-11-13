@@ -22,7 +22,7 @@
 //   source: "youtube",
 //   youtubeId: "dQw4w9WgXcQ",
 //   cover: "/video-covers/toan12_hamso_01.jpg",
-//   teacher: "Thầy Minh",
+//   teacher: "Bảo Minh",
 //   duration: "45 phút",
 // },
 

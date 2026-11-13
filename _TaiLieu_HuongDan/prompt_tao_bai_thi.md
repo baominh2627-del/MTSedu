@@ -877,7 +877,7 @@ Ví dụ bạn vừa tạo đề thi định lượng mới, bạn copy block sa
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong.jpg",
-        instructor: "MTS Education",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/link-thu-muc-chua-de-thi/" // Đổi link này trỏ tới link github pages của bạn
       },
 `

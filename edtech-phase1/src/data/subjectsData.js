@@ -19,7 +19,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail:
           "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Hùng",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/bai-ktra-vat-ly-nhiet-ly-12/",
       },
       {
@@ -30,7 +30,7 @@ export const subjectsData = {
         time: 50,
         price: "Miễn phí",
         thumbnail: "/thumb_vatly12_chuong1_de2.jpg",
-        instructor: "Thầy Hùng",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/de-2-kiem-tra-vat-ly-12-chuong-1/",
       },
       {
@@ -42,7 +42,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail:
           "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Hùng",
+        instructor: "Bảo Minh",
       },
       {
         id: "phys_2",
@@ -53,7 +53,7 @@ export const subjectsData = {
         price: "49.000₫",
         thumbnail:
           "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Cô Mai",
+        instructor: "Bảo Minh",
       },
       {
         id: "phys_3",
@@ -64,7 +64,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail:
           "https://images.unsplash.com/photo-1610428584852-5a98bf49b015?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Hùng",
+        instructor: "Bảo Minh",
       },
       {
         id: "phys_4",
@@ -75,7 +75,7 @@ export const subjectsData = {
         price: "29.000₫",
         thumbnail:
           "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Bình",
+        instructor: "Bảo Minh",
       },
       {
         id: "phys_5",
@@ -86,7 +86,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail:
           "https://images.unsplash.com/photo-1507668077129-56e32842fceb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Cô Mai",
+        instructor: "Bảo Minh",
       },
     ],
   },
@@ -110,7 +110,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail:
           "https://images.unsplash.com/photo-1509228468518-180dd4864904?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Minh",
+        instructor: "Bảo Minh",
       },
       {
         id: "math_2",
@@ -121,7 +121,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail:
           "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Minh",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/de-1-ktra-luong-giac-toan-11/",
       },
     ],
@@ -146,7 +146,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail:
           "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Cô Lan",
+        instructor: "Bảo Minh",
       },
     ],
   },
@@ -170,7 +170,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail:
           "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Bình",
+        instructor: "Bảo Minh",
       },
     ],
   },
@@ -189,7 +189,7 @@ export const subjectsData = {
         price: "99.000₫",
         thumbnail:
           "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "MTS Education",
+        instructor: "Bảo Minh",
       },
       {
         id: "hsa_dinhluong_de1",
@@ -199,7 +199,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de1.jpg",
-        instructor: "MTS Education",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/de-1-hsa-dinh-luong-vnes/",
       },
       {
@@ -210,7 +210,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de2.jpg",
-        instructor: "MTS Education",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/de-2-hsa-dinh-luong-vnes/",
       },
 
@@ -222,7 +222,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de3.jpg",
-        instructor: "MTS Education",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/de-3-hsa-dinh-luong-vnes/",
       },
       {
@@ -233,7 +233,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de4.jpg",
-        instructor: "MTS Education",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/de-4-hsa-dinh-luong-vnes/",
       },
       {
@@ -244,7 +244,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de5.jpg",
-        instructor: "MTS Education",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/de-5-hsa-dinh-luong-vnes/",
       },
       {
@@ -255,7 +255,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de6.jpg",
-        instructor: "MTS Education",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/de-6-hsa-dinh-luong-vnes/",
       },
       {
@@ -266,7 +266,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de7.jpg",
-        instructor: "MTS Education",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/de-7-hsa-dinh-luong-vnes/"
       },
       {
@@ -277,7 +277,7 @@ export const subjectsData = {
           time: 60,
           price: "Miễn phí",
           thumbnail: "/thumb_hsa_dinh_luong_de1.jpg",
-          instructor: "MTS Education",
+          instructor: "Bảo Minh",
           link: "https://baominh2627-del.github.io/de-1-hsa-dinh-tinh-vnes/"
         },
         {
@@ -288,7 +288,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de8.jpg",
-        instructor: "MTS Education",
+        instructor: "Bảo Minh",
         link: "https://baominh2627-del.github.io/de-8-hsa-dinh-luong-vnes/"
       },
     ],
@@ -314,7 +314,7 @@ export const subjectsData = {
         price: "99.000₫",
         thumbnail:
           "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Hùng",
+        instructor: "Bảo Minh",
       },
     ],
   },
@@ -333,7 +333,7 @@ export const subjectsData = {
         price: "Miễn phí",
         thumbnail:
           "https://images.unsplash.com/photo-1636466497217-26c8c60caa47?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "Thầy Minh",
+        instructor: "Bảo Minh",
       },
     ],
   },
