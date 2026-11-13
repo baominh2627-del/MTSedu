@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { videos, videoFilters, groupVideosIntoCourses } from '../data/videosData.js';
 import { useAuth } from './AuthContext.jsx';
-import { subscribeVideos, subscribeVideoProgress, setLessonCompleted } from './videoService.js';
+import { handleYoutubeThumbFallback, subscribeVideos, subscribeVideoProgress, setLessonCompleted } from './videoService.js';
 import { getAvatar } from './avatarService.js';
 import CoursePlayerView from './CoursePlayerView.jsx';
 
@@ -238,6 +238,8 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
                               <img
                                 src={course.cover}
                                 alt={course.title}
+                                onError={(e) => handleYoutubeThumbFallback(e.currentTarget)}
+                                onLoad={(e) => e.currentTarget.naturalWidth <= 120 && handleYoutubeThumbFallback(e.currentTarget)}
                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 loading="lazy"
                               />

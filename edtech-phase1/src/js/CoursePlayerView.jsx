@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { startVideoTracking, getUid } from './activityService.js';
+import { handleYoutubeThumbFallback } from './videoService.js';
 
 const SOURCE_LABEL = { youtube: 'YouTube', drive: 'Google Drive', local: 'Tải lên' };
 
@@ -492,6 +493,17 @@ export default function CoursePlayerView({
                             >
                               {isDone ? '✓' : '▶'}
                             </span>
+
+                            {lesson.cover && (
+                              <img
+                                src={lesson.cover}
+                                alt={lesson.title}
+                                loading="lazy"
+                                onError={(e) => handleYoutubeThumbFallback(e.currentTarget)}
+                                onLoad={(e) => e.currentTarget.naturalWidth <= 120 && handleYoutubeThumbFallback(e.currentTarget)}
+                                className="w-16 aspect-video rounded object-cover border border-black/10 bg-gray-100 shrink-0"
+                              />
+                            )}
 
                             <div className="flex-1 min-w-0 space-y-1">
                               <p className={`text-sm leading-snug ${isActive ? 'font-bold text-black' : 'font-medium text-gray-800'}`}>

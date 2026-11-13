@@ -57,6 +57,16 @@ export function parseYoutubeId(input) {
   return m ? m[1] : '';
 }
 
+export function getYoutubeThumbnail(youtubeId, quality = 'maxresdefault') {
+  return youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/${quality}.jpg` : '';
+}
+
+export function handleYoutubeThumbFallback(imgEl) {
+  if (!imgEl?.src) return;
+  const match = imgEl.src.match(/i\.ytimg\.com\/vi\/([\w-]{11})\/maxresdefault\.jpg/);
+  if (match) imgEl.src = getYoutubeThumbnail(match[1], 'hqdefault');
+}
+
 export function parseDriveId(input) {
   const s = (input || '').trim();
   const m = s.match(/\/d\/([\w-]+)/) || s.match(/[?&]id=([\w-]+)/);
@@ -85,7 +95,6 @@ async function resolveVideoPart({ name, source, link, videoFile, existingFile, d
 async function buildVideoPayload(form, id, existing, onProgress) {
   if (!form.title?.trim()) throw new Error('Vui lòng nhập tên video.');
   if (!form.tags?.length) throw new Error('Chọn ít nhất một nhãn phân loại.');
-  if (!form.coverFile && !existing?.cover) throw new Error('Video bắt buộc phải có ảnh bìa.');
 
   const primaryPart = await resolveVideoPart(
     {
@@ -99,6 +108,12 @@ async function buildVideoPayload(form, id, existing, onProgress) {
     `videos/${id}`,
     onProgress,
   );
+
+  const manualCoverUrl = (form.coverUrl || '').trim();
+  const autoYoutubeCover = primaryPart.source === 'youtube' ? getYoutubeThumbnail(primaryPart.youtubeId) : '';
+  if (!form.coverFile && !manualCoverUrl && !existing?.cover && !autoYoutubeCover) {
+    throw new Error('Video bắt buộc phải có ảnh bìa.');
+  }
 
   const parts = [primaryPart];
   const hasPart2 = Boolean(form.hasPart2 && (form.part2Link?.trim() || form.part2File || form.part2ExistingFile));
@@ -118,7 +133,7 @@ async function buildVideoPayload(form, id, existing, onProgress) {
     parts.push(part2);
   }
 
-  let cover = existing?.cover || '';
+  let cover = manualCoverUrl || existing?.cover || autoYoutubeCover;
   if (form.coverFile) {
     cover = await uploadFile(form.coverFile, `video-covers/${id}_${safeName(form.coverFile.name)}`);
   }

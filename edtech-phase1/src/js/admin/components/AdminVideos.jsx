@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { addVideo, deleteVideo, subscribeVideos, updateVideo } from '../../videoService.js';
+import { addVideo, deleteVideo, getYoutubeThumbnail, handleYoutubeThumbFallback, parseYoutubeId, subscribeVideos, updateVideo } from '../../videoService.js';
 import { videoFilters } from '../../../data/videosData.js';
 import { subjectsData } from '../../../data/subjectsData.js';
 
@@ -18,6 +18,7 @@ const emptyForm = {
   videoFile: null,
   part1Name: '',
   coverFile: null,
+  coverUrl: '',
   teacher: '',
   duration: '',
   description: '',
@@ -121,6 +122,7 @@ export default function AdminVideos() {
       source: v.source || 'youtube',
       link: toLink(v),
       part1Name: p1?.name && p1.name !== 'Phần 1: Video bài giảng' ? p1.name : '',
+      coverUrl: v.cover || '',
       teacher: v.teacher || '',
       duration: v.duration || '',
       description: v.description || '',
@@ -252,14 +254,39 @@ export default function AdminVideos() {
           />
 
           <label className="block text-sm font-medium text-slate-600">
-            Ảnh bìa {editing ? '(để trống nếu giữ ảnh cũ)' : '(bắt buộc)'}
+            Ảnh bìa {editing ? '(để trống nếu giữ ảnh cũ)' : form.source === 'youtube' ? '(tự lấy từ YouTube nếu để trống)' : '(bắt buộc)'}
             <input key={`c-${fileKey}`} type="file" accept="image/*" className={inputCls} onChange={(e) => set('coverFile', e.target.files[0] || null)} />
           </label>
 
-          <div className="grid grid-cols-2 gap-3">
+          <label className="block text-sm font-medium text-slate-600">
+            Link ảnh bìa (tùy chọn)
+            <input
+              className={inputCls}
+              value={form.coverUrl}
+              onChange={(e) => set('coverUrl', e.target.value)}
+              placeholder={form.source === 'youtube' ? 'Tự lấy thumbnail YouTube nếu để trống' : 'https://...'}
+            />
+          </label>
+
+          {!form.coverFile && (form.coverUrl.trim() || (form.source === 'youtube' && parseYoutubeId(form.link))) && (
+            <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 sm:col-span-2">
+              <img
+                src={form.coverUrl.trim() || getYoutubeThumbnail(parseYoutubeId(form.link))}
+                alt="Xem trước ảnh bìa"
+                onError={(e) => handleYoutubeThumbFallback(e.currentTarget)}
+                onLoad={(e) => e.currentTarget.naturalWidth <= 120 && handleYoutubeThumbFallback(e.currentTarget)}
+                className="h-12 w-20 rounded-md object-cover border border-slate-200 bg-white shrink-0"
+              />
+              <span className="text-xs text-slate-600">
+                {form.coverUrl.trim() ? 'Xem trước ảnh bìa từ link đã nhập.' : 'Đang tự động lấy ảnh bìa tương ứng từ video YouTube.'}
+              </span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 gap-3 sm:col-span-2">
             <label className="block text-sm font-medium text-slate-600">
               Giáo viên
-              <input className={inputCls} value={form.teacher} onChange={(e) => set('teacher', e.target.value)} placeholder="vd: Thầy Minh" />
+              <input className={inputCls} value={form.teacher} onChange={(e) => set('teacher', e.target.value)} placeholder="vd: Bảo Minh" />
             </label>
             <label className="block text-sm font-medium text-slate-600">
               Thời lượng
@@ -388,7 +415,13 @@ export default function AdminVideos() {
           <ul className="divide-y divide-slate-100">
             {videos.map((v) => (
               <li key={v.id} className="flex flex-wrap items-center gap-3 py-3">
-                <img src={v.cover} alt="" className="h-12 w-20 rounded-lg object-cover bg-slate-100" />
+                <img
+                  src={v.cover}
+                  alt=""
+                  onError={(e) => handleYoutubeThumbFallback(e.currentTarget)}
+                  onLoad={(e) => e.currentTarget.naturalWidth <= 120 && handleYoutubeThumbFallback(e.currentTarget)}
+                  className="h-12 w-20 rounded-lg object-cover bg-slate-100"
+                />
                 <div className="min-w-0 flex-1">
                   {(v.course || v.chapter) && (
                     <p className="truncate text-xs font-medium text-blue-600">
