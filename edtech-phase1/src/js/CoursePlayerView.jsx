@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { startVideoTracking, getUid } from './activityService.js';
 import { handleYoutubeThumbFallback } from './videoService.js';
+import VideoComments from './VideoComments.jsx';
 
 const SOURCE_LABEL = { youtube: 'YouTube', drive: 'Google Drive', local: 'Tải lên' };
 
@@ -419,6 +420,15 @@ export default function CoursePlayerView({
               )}
             </div>
           </div>
+
+          {/* Public per-video discussion comments */}
+          <VideoComments
+            videoId={activeLesson.id}
+            videoTitle={activeLesson.title}
+            user={user}
+            isLoggedIn={isLoggedIn}
+            onRequireLogin={onRequireLogin}
+          />
         </div>
 
         {/* RIGHT COLUMN: COURSE SYLLABUS / CHAPTER ACCORDION */}

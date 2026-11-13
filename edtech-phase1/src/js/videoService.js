@@ -191,3 +191,53 @@ export async function updateVideo(id, form, existing, onProgress) {
 export async function deleteVideo(id) {
   await remove(ref(database, `videos/${id}`));
 }
+
+const sanitizeKey = (k) => String(k || '').replace(/[.#$[\]/]/g, '_');
+
+// Bình luận công khai cho từng video: videoComments/{videoId}/{commentId}
+export function subscribeVideoComments(videoId, onData, onError) {
+  const key = sanitizeKey(videoId);
+  if (!database || !key) { onData([]); return () => {}; }
+  return onValue(
+    ref(database, `videoComments/${key}`),
+    (snap) => {
+      const val = snap.val() || {};
+      const list = Object.entries(val).map(([id, c]) => ({ ...c, id }));
+      list.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+      onData(list);
+    },
+    (err) => {
+      onData([]);
+      if (onError) onError(err);
+    },
+  );
+}
+
+export async function addVideoComment(videoId, user, text, replyTo = null) {
+  if (!database) throw new Error('Firebase chưa sẵn sàng.');
+  const key = sanitizeKey(videoId);
+  const body = (text || '').trim();
+  if (!key || !body) throw new Error('Vui lòng nhập nội dung bình luận.');
+  const uid = user ? (user.id || user.uid || `user_${user.username}`) : '';
+  if (!uid) throw new Error('Vui lòng đăng nhập để bình luận.');
+
+  const node = push(ref(database, `videoComments/${key}`));
+  await set(node, {
+    uid,
+    username: user.username || '',
+    authorName: user.displayName || user.username || 'Học sinh',
+    role: user.role || 'student',
+    text: body.slice(0, 1500),
+    replyToId: replyTo?.id || null,
+    replyToName: replyTo?.authorName || null,
+    createdAt: Date.now(),
+  });
+  return node.key;
+}
+
+export async function deleteVideoComment(videoId, commentId) {
+  if (!database) throw new Error('Firebase chưa sẵn sàng.');
+  const key = sanitizeKey(videoId);
+  if (!key || !commentId) return;
+  await remove(ref(database, `videoComments/${key}/${commentId}`));
+}

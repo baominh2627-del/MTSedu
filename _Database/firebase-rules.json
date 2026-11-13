@@ -30,6 +30,10 @@
     "videoProgress": {
       ".read": true,
       ".write": true
+    },
+    "videoComments": {
+      ".read": true,
+      ".write": true
     }
   }
 }
