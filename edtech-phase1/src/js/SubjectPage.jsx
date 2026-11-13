@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { subjectsData } from '../data/subjectsData.js';
 import { useAuth } from './AuthContext.jsx';
 import { useUserAvatar } from './avatarService.js';
+import { useExamOverlay } from './ExamFullscreenOverlay.jsx';
 
 export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isLoggedIn, logout } = useAuth();
+  const { openExam } = useExamOverlay();
   
   const uid = user ? (user.id || user.uid || ('user_' + user.username)) : null;
   const avatar = useUserAvatar(uid);
@@ -53,16 +55,16 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
       onRequireLogin();
       return;
     }
-    // Đã đăng nhập → chuyển sang bài thi TRONG CÙNG TAB (không mở tab mới)
+    // Đã đăng nhập → mở bài thi toàn màn hình ngay trong cùng trang
     if (test.link) {
       // Truyền thông tin user qua URL params (vì localStorage bị cô lập theo domain)
-      const url = new URL(test.link);
+      const url = new URL(test.link, window.location.origin);
       url.searchParams.set('mtsedu_user', user.username || '');
       url.searchParams.set('mtsedu_name', user.displayName || user.username || '');
       url.searchParams.set('mtsedu_id', user.id || ('user_' + user.username));
       // Lưu URL trang chủ để quiz có thể quay lại
       url.searchParams.set('mtsedu_return', window.location.origin + window.location.pathname + '#' + subjectKey);
-      window.location.href = url.toString();
+      openExam(url.toString(), test.title);
     } else {
       alert('Bài thi này đang được cập nhật. Vui lòng quay lại sau!');
     }

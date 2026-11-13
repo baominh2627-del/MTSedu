@@ -25,6 +25,7 @@ import ProfilePage from "./ProfilePage.jsx";
 import VideoPage from "./VideoPage.jsx";
 import { startSiteTracking } from "./activityService.js";
 import FeedbackModal from "./FeedbackModal.jsx";
+import { ExamOverlayProvider } from "./ExamFullscreenOverlay.jsx";
 import "../css/App.css";
 
 // Đọc trang hiện tại từ URL hash (ví dụ: #math -> "math")
@@ -128,9 +129,11 @@ function ActivityTracker() {
 function App() {
   return (
     <AuthProvider>
-      <ActivityTracker />
-      <AppContent />
-      <FeedbackModal />
+      <ExamOverlayProvider>
+        <ActivityTracker />
+        <AppContent />
+        <FeedbackModal />
+      </ExamOverlayProvider>
     </AuthProvider>
   );
 }

@@ -946,3 +946,82 @@ body > .container {
   font-weight: 700;
   box-shadow: 0 8px 20px rgba(220, 38, 38, 0.35);
 }
+
+/* HỘP THOẠI XÁC NHẬN TRONG TRANG (KHÔNG LÀM THOÁT FULLSCREEN) */
+#mts-confirm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+#mts-confirm-modal .mts-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+#mts-confirm-modal .mts-modal-box {
+  position: relative;
+  width: min(100%, 420px);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.3);
+  border: 1px solid #e2e8f0;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+#mts-confirm-modal .mts-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+
+#mts-confirm-modal .mts-modal-msg {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #334155;
+  margin: 0 0 20px;
+}
+
+#mts-confirm-modal .mts-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+#mts-confirm-modal .mts-modal-cancel,
+#mts-confirm-modal .mts-modal-ok {
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+#mts-confirm-modal .mts-modal-cancel {
+  background: #f1f5f9;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
+#mts-confirm-modal .mts-modal-cancel:hover {
+  background: #e2e8f0;
+}
+
+#mts-confirm-modal .mts-modal-ok {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+
+#mts-confirm-modal .mts-modal-ok:hover {
+  background: #172554;
+}

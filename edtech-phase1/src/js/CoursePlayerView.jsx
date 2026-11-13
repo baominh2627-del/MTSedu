@@ -8,6 +8,7 @@ import {
   toggleVideoReaction,
 } from './videoService.js';
 import VideoComments from './VideoComments.jsx';
+import { useExamOverlay } from './ExamFullscreenOverlay.jsx';
 
 const SOURCE_LABEL = { youtube: 'YouTube', drive: 'Google Drive', local: 'Tải lên' };
 
@@ -76,6 +77,7 @@ export default function CoursePlayerView({
   onToggleComplete,
 }) {
   const uid = getUid(user);
+  const { openExam } = useExamOverlay();
   const flatLessons = useMemo(() => {
     const out = [];
     for (const ch of course.chapters || []) {
@@ -160,9 +162,21 @@ export default function CoursePlayerView({
 
   if (!activeLesson) {
     return (
-      <div className="bg-white border border-black/10 rounded-xl p-10 text-center space-y-4">
-        <p className="text-gray-600">Khóa học này chưa có bài giảng nào.</p>
-        <button onClick={onBack} className="px-4 py-2 rounded-lg bg-black text-white text-sm font-semibold">
+      <div className="bg-white border border-black/10 rounded-xl p-8 sm:p-10 text-center space-y-4 max-w-2xl mx-auto">
+        {course.tags?.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-1.5">
+            {course.tags.map((t) => (
+              <span key={t} className="text-green-700 bg-green-50 px-2.5 py-0.5 rounded-full text-xs font-semibold">{t}</span>
+            ))}
+          </div>
+        )}
+        <h2 className="text-xl sm:text-2xl font-bold text-black">{course.title}</h2>
+        {course.teacher && <p className="text-xs text-gray-500">Giáo viên: {course.teacher}</p>}
+        {course.description && (
+          <p className="text-sm text-gray-600 whitespace-pre-line">{course.description}</p>
+        )}
+        <p className="text-sm text-gray-500 pt-2">Khóa học này chưa có bài giảng nào. Admin có thể đăng video vào khóa từ Trang cá nhân → Quản trị → Đăng video.</p>
+        <button onClick={onBack} className="px-4 py-2 rounded-lg bg-black text-white text-sm font-semibold cursor-pointer">
           ← Quay lại thư mục Video
         </button>
       </div>
@@ -195,7 +209,7 @@ export default function CoursePlayerView({
       url.searchParams.set('mtsedu_name', user.displayName || user.username || '');
       url.searchParams.set('mtsedu_id', user.id || (`user_${user.username}`));
       url.searchParams.set('mtsedu_return', `${window.location.origin}${window.location.pathname}#videos`);
-      window.location.href = url.toString();
+      openExam(url.toString(), quiz.title || 'Bài kiểm tra');
     } catch {
       window.open(quiz.url, '_blank', 'noreferrer');
     }
@@ -443,6 +457,12 @@ export default function CoursePlayerView({
 
               {activeTab === 'notes' && (
                 <div className="space-y-4">
+                  {course.description && (
+                    <div className="p-3.5 rounded-xl bg-gray-50 border border-black/8 text-sm text-gray-700 whitespace-pre-line">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">Giới thiệu khóa học</p>
+                      {course.description}
+                    </div>
+                  )}
                   {activeLesson.description && (
                     <div className="p-3.5 rounded-xl bg-gray-50 border border-black/8 text-sm text-gray-700 whitespace-pre-line">
                       {activeLesson.description}

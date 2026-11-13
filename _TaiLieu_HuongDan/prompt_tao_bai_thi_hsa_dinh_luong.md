@@ -289,11 +289,19 @@ let cheatCount = 0;
 let studentName = "";
 let studentClass = "";
 
+const __isInExamIframe = (() => {
+  try { return window.self !== window.top; } catch { return true; }
+})();
+
 function isFullscreenActive() {
   return !!(document.fullscreenElement || document.webkitFullscreenElement);
 }
 
 function enterExamFullscreen() {
+  if (__isInExamIframe) {
+    try { window.parent.postMessage({ type: "MTSEDU_EXAM_REQUEST_FULLSCREEN" }, "*"); } catch {}
+    return;
+  }
   if (isFullscreenActive()) return;
   const el = document.documentElement;
   const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
@@ -301,6 +309,10 @@ function enterExamFullscreen() {
 }
 
 function exitExamFullscreen() {
+  if (__isInExamIframe) {
+    try { window.parent.postMessage({ type: "MTSEDU_EXAM_SUBMITTED" }, "*"); } catch {}
+    return;
+  }
   if (!isFullscreenActive()) return;
   const exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
   if (exit) Promise.resolve(exit.call(document)).catch(() => {});
@@ -319,34 +331,89 @@ function showExamToast(message) {
   window.__mtsToastTimer = setTimeout(() => toast.classList.add("hidden"), 5000);
 }
 
-function syncFullscreenUI() {
-  const btn = document.getElementById("mts-fs-btn");
-  if (!btn) return;
-  const inExam = typeof examScreen !== "undefined" && examScreen && !examScreen.classList.contains("hidden") && !isFinished;
-  if (isFullscreenActive()) {
-    btn.innerText = "✕ Thoát toàn màn hình";
-    btn.classList.remove("needs-fs");
-  } else {
-    btn.innerText = inExam ? "⛶ Bật toàn màn hình để làm bài" : "⛶ Toàn màn hình";
-    btn.classList.toggle("needs-fs", inExam);
+function showExamConfirm(message, onConfirm) {
+  let modal = document.getElementById("mts-confirm-modal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "mts-confirm-modal";
+    modal.innerHTML = `
+      <div class="mts-modal-backdrop"></div>
+      <div class="mts-modal-box" role="dialog" aria-modal="true">
+        <div class="mts-modal-title">Xác nhận</div>
+        <p class="mts-modal-msg"></p>
+        <div class="mts-modal-actions">
+          <button type="button" class="mts-modal-cancel">Quay lại</button>
+          <button type="button" class="mts-modal-ok">Đồng ý</button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
   }
+  modal.querySelector(".mts-modal-msg").innerText = message;
+  const btnCancel = modal.querySelector(".mts-modal-cancel");
+  const btnOk = modal.querySelector(".mts-modal-ok");
+  const close = () => {
+    modal.classList.add("hidden");
+    btnCancel.onclick = null;
+    btnOk.onclick = null;
+  };
+  btnCancel.onclick = () => { close(); syncFullscreenUI(); };
+  btnOk.onclick = () => { close(); onConfirm(); };
+  modal.classList.remove("hidden");
+}
+
+function syncFullscreenUI() {
+  const bar = document.getElementById("mts-fs-bar");
+  const btn = document.getElementById("mts-fs-btn");
+  if (!bar || !btn) return;
+  if (__isInExamIframe || isFinished || isFullscreenActive()) {
+    bar.classList.add("hidden");
+    return;
+  }
+  const inExam = typeof examScreen !== "undefined" && examScreen && !examScreen.classList.contains("hidden");
+  btn.innerText = inExam ? "⛶ Bật toàn màn hình để tiếp tục làm bài" : "⛶ Bật chế độ toàn màn hình";
+  btn.classList.add("needs-fs");
+  bar.classList.remove("hidden");
 }
 
 function ensureFullscreenBar() {
-  if (document.getElementById("mts-fs-bar")) { syncFullscreenUI(); return; }
-  const bar = document.createElement("div");
-  bar.id = "mts-fs-bar";
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.id = "mts-fs-btn";
-  btn.addEventListener("click", () => {
-    if (isFullscreenActive()) exitExamFullscreen();
-    else enterExamFullscreen();
-  });
-  bar.appendChild(btn);
-  document.body.appendChild(bar);
-  document.addEventListener("fullscreenchange", syncFullscreenUI);
-  document.addEventListener("webkitfullscreenchange", syncFullscreenUI);
+  if (!document.getElementById("mts-fs-bar")) {
+    const bar = document.createElement("div");
+    bar.id = "mts-fs-bar";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.id = "mts-fs-btn";
+    btn.addEventListener("click", () => enterExamFullscreen());
+    bar.appendChild(btn);
+    document.body.appendChild(bar);
+    document.addEventListener("fullscreenchange", syncFullscreenUI);
+    document.addEventListener("webkitfullscreenchange", syncFullscreenUI);
+    if (!__isInExamIframe) {
+      const keepFullscreen = (e) => {
+        if (isFinished || isFullscreenActive()) return;
+        if (e.type === "keydown" && e.key === "Escape") return;
+        if (e.target && e.target.closest && e.target.closest("#mtsedu-back-btn, .mts-modal-ok")) return;
+        enterExamFullscreen();
+      };
+      document.addEventListener("pointerdown", keepFullscreen, { capture: true });
+      document.addEventListener("keydown", keepFullscreen, { capture: true });
+      enterExamFullscreen();
+    } else {
+      document.addEventListener("click", (e) => {
+        const backLink = e.target && e.target.closest ? e.target.closest("#mtsedu-back-btn a") : null;
+        if (!backLink) return;
+        e.preventDefault();
+        const inExam = typeof examScreen !== "undefined" && examScreen && !examScreen.classList.contains("hidden") && !isFinished;
+        if (inExam) {
+          showExamConfirm("Bạn chưa nộp bài. Bạn có chắc muốn thoát về trang chủ?", () => {
+            if (typeof saveDraft === "function") saveDraft();
+            window.parent.postMessage({ type: "MTSEDU_EXAM_CLOSE" }, "*");
+          });
+        } else {
+          window.parent.postMessage({ type: "MTSEDU_EXAM_CLOSE" }, "*");
+        }
+      });
+    }
+  }
   syncFullscreenUI();
 }
 
@@ -576,8 +643,7 @@ function setupAntiCheat() {
 }
 
 submitBtn.addEventListener("click", () => {
-  if (confirm("Bạn có chắc muốn nộp bài?")) submitExam();
-  else syncFullscreenUI();
+  showExamConfirm("Bạn có chắc muốn nộp bài kiểm tra?", () => submitExam());
 });
 
 function submitExam() {
