@@ -33,25 +33,26 @@ body {
 }
 
 .container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 20px;
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  margin: 0;
+  padding: 56px 20px 24px;
+  box-sizing: border-box;
 }
 
-/* BẢNG ĐIỀU HƯỚNG STICKY NHỎ */
+/* BẢNG ĐIỀU HƯỚNG (MẶC ĐỊNH SIDEBAR PHẢI - TƯƠNG THÍCH AZOTA FULLSCREEN) */
 #board-container {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 280px;
-  max-height: 400px;
+  position: static;
+  width: 100%;
   background: #fff;
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 500;
+  padding: 14px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+  z-index: 90;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 #board-container h3 {
@@ -153,8 +154,8 @@ body {
 .login-card,
 .result-card {
   text-align: center;
-  max-width: 500px;
-  margin: 80px auto;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .form-group input {
@@ -601,4 +602,296 @@ body {
 
 .score-pill .green-dot {
   color: #fff;
+}
+
+
+/* ============================================================
+   AZOTA FULL-SCREEN EXAM LAYOUT (DESKTOP + MOBILE)
+   Tương thích cả HTML có .top-sticky lẫn HTML cũ #board-container
+   ============================================================ */
+html,
+body {
+  min-height: 100vh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+body > .container {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  margin: 0;
+  padding: 56px 20px 28px;
+  box-sizing: border-box;
+}
+
+/* MÀN HÌNH VÀO THI: PHỦ KÍN MÀN HÌNH */
+#login-screen:not(.hidden) {
+  width: 100%;
+  min-height: calc(100vh - 84px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+
+#login-screen .exam-header-block,
+#login-screen .form-card,
+#login-screen .login-card,
+#login-screen .card {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+#login-screen .form-card,
+#login-screen .login-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px 48px;
+}
+
+#login-screen .exam-instructions,
+#login-screen .warning-box,
+#login-screen #btn-start-exam,
+#login-screen .auth-required-box {
+  width: 100%;
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#login-screen .footer-note {
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* MÀN HÌNH KẾT QUẢ: CĂN GIỮA RỘNG RÃI TRÊN NỀN FULL-SCREEN */
+#result-screen:not(.hidden) {
+  width: 100%;
+  min-height: calc(100vh - 84px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#result-screen .result-card {
+  width: min(100%, 760px);
+  max-width: 760px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* MÀN HÌNH LÀM BÀI THI: AZOTA 2 CỘT FULL-SCREEN TRÊN DESKTOP */
+#exam-screen:not(.hidden) {
+  width: 100%;
+  max-width: none;
+}
+
+@media (min-width: 960px) {
+  #exam-screen:not(.hidden) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 18px 20px;
+    align-items: start;
+  }
+
+  #exam-screen > .exam-header-block {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  #exam-screen > #questions-container {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  #exam-screen > .submit-container {
+    grid-column: 1;
+    grid-row: 3;
+    width: 100%;
+    margin: 24px 0 40px;
+  }
+
+  /* HTML mới (có .top-sticky) */
+  #exam-screen > .top-sticky {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    position: sticky;
+    top: 56px;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-height: calc(100vh - 72px);
+    z-index: 90;
+    box-sizing: border-box;
+  }
+
+  #exam-screen > .top-sticky .exam-info-bar {
+    position: static;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  }
+
+  #exam-screen > .top-sticky .info-left,
+  #exam-screen > .top-sticky .info-right {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  #exam-screen > .top-sticky #board-container {
+    position: static;
+    inset: auto;
+    bottom: auto;
+    right: auto;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    flex: 1;
+    min-height: 180px;
+    overflow-y: auto;
+    margin: 0;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+  }
+
+  #exam-screen > .top-sticky #board-expand {
+    display: none !important;
+  }
+
+  /* HTML cũ (#board-container đứng trực tiếp trong #exam-screen) */
+  #exam-screen > #board-container {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    position: sticky;
+    top: 56px;
+    inset: auto;
+    bottom: auto;
+    right: auto;
+    align-self: start;
+    width: 100%;
+    max-width: none;
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
+    margin: 0;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+  }
+
+  #exam-screen > .exam-header-block .exam-info-bar.sticky {
+    top: 56px;
+  }
+
+  /* Lưới ô câu hỏi rộng, dễ bấm giống Azota */
+  #exam-screen #board-container .q-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  #exam-screen #board-container .q-box {
+    width: 100%;
+    height: 36px;
+  }
+}
+
+/* MÀN HÌNH NHỎ / ĐIỆN THOẠI */
+@media (max-width: 959px) {
+  body > .container {
+    padding: 52px 12px 24px;
+  }
+
+  #login-screen .form-card,
+  #login-screen .login-card {
+    padding: 20px 16px;
+  }
+
+  #exam-screen > .top-sticky {
+    position: sticky;
+    top: 52px;
+    z-index: 90;
+    margin-bottom: 14px;
+  }
+
+  #exam-screen > .top-sticky #board-container,
+  #exam-screen > #board-container {
+    position: static;
+    inset: auto;
+    bottom: auto;
+    right: auto;
+    width: 100%;
+    max-width: none;
+    max-height: 220px;
+    margin: 8px 0 14px;
+  }
+}
+
+/* THANH ĐIỀU KHIỂN TOÀN MÀN HÌNH & CẢNH BÁO KHÔNG CHẶN */
+#mts-fs-bar {
+  position: fixed;
+  top: 10px;
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#mts-fs-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(15, 23, 42, 0.9);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+#mts-fs-btn:hover {
+  transform: translateY(-1px);
+  background: #0f172a;
+}
+
+#mts-fs-btn.needs-fs {
+  background: #1e3a8a;
+  box-shadow: 0 4px 14px rgba(30, 58, 138, 0.35);
+}
+
+#mts-exam-toast {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  background: #dc2626;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.35);
 }

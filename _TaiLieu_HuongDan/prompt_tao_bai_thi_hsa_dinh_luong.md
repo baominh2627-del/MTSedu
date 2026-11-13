@@ -289,7 +289,69 @@ let cheatCount = 0;
 let studentName = "";
 let studentClass = "";
 
+function isFullscreenActive() {
+  return !!(document.fullscreenElement || document.webkitFullscreenElement);
+}
+
+function enterExamFullscreen() {
+  if (isFullscreenActive()) return;
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+  if (req) Promise.resolve(req.call(el)).catch(() => {});
+}
+
+function exitExamFullscreen() {
+  if (!isFullscreenActive()) return;
+  const exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+  if (exit) Promise.resolve(exit.call(document)).catch(() => {});
+}
+
+function showExamToast(message) {
+  let toast = document.getElementById("mts-exam-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "mts-exam-toast";
+    document.body.appendChild(toast);
+  }
+  toast.innerText = message;
+  toast.classList.remove("hidden");
+  clearTimeout(window.__mtsToastTimer);
+  window.__mtsToastTimer = setTimeout(() => toast.classList.add("hidden"), 5000);
+}
+
+function syncFullscreenUI() {
+  const btn = document.getElementById("mts-fs-btn");
+  if (!btn) return;
+  const inExam = typeof examScreen !== "undefined" && examScreen && !examScreen.classList.contains("hidden") && !isFinished;
+  if (isFullscreenActive()) {
+    btn.innerText = "✕ Thoát toàn màn hình";
+    btn.classList.remove("needs-fs");
+  } else {
+    btn.innerText = inExam ? "⛶ Bật toàn màn hình để làm bài" : "⛶ Toàn màn hình";
+    btn.classList.toggle("needs-fs", inExam);
+  }
+}
+
+function ensureFullscreenBar() {
+  if (document.getElementById("mts-fs-bar")) { syncFullscreenUI(); return; }
+  const bar = document.createElement("div");
+  bar.id = "mts-fs-bar";
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.id = "mts-fs-btn";
+  btn.addEventListener("click", () => {
+    if (isFullscreenActive()) exitExamFullscreen();
+    else enterExamFullscreen();
+  });
+  bar.appendChild(btn);
+  document.body.appendChild(bar);
+  document.addEventListener("fullscreenchange", syncFullscreenUI);
+  document.addEventListener("webkitfullscreenchange", syncFullscreenUI);
+  syncFullscreenUI();
+}
+
 window.addEventListener("DOMContentLoaded", () => {
+  ensureFullscreenBar();
   const session = getMTSeduSession();
   const btnStart = document.getElementById("btn-start-exam");
   if (btnStart) {
@@ -299,6 +361,7 @@ window.addEventListener("DOMContentLoaded", () => {
         if (loginCard) showLoginRequired(loginCard, RETURN_HASH);
         return;
       }
+      enterExamFullscreen();
       const draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
       if (draft && !draft.isFinished && draft.studentName === studentName) {
         loadDraftAndContinue(draft);
@@ -322,6 +385,7 @@ function startExamDirectly() {
   document.getElementById("display-class").innerText = studentClass;
   loginScreen.classList.add("hidden");
   examScreen.classList.remove("hidden");
+  syncFullscreenUI();
   renderExam(); restoreDOMState(); renderBoard(); startTimer(); setupAntiCheat();
 }
 
@@ -336,6 +400,7 @@ function loadDraftAndContinue(draft) {
   document.getElementById("display-class").innerText = studentClass;
   loginScreen.classList.add("hidden");
   examScreen.classList.remove("hidden");
+  syncFullscreenUI();
   renderExam(); restoreDOMState(); renderBoard(); startTimer(); setupAntiCheat();
 }
 
@@ -493,7 +558,7 @@ function startTimer() {
     const s = (timeRemaining % 60).toString().padStart(2, "0");
     document.getElementById("countdown").innerText = `${m}:${s}`;
     if (timeRemaining === 30) {
-      alert("⚠️ Cảnh báo: Chỉ còn 30 giây!");
+      showExamToast("⚠️ Cảnh báo: Chỉ còn 30 giây!");
       document.querySelector(".timer-pill").classList.add("timer-danger");
     }
     if (timeRemaining <= 0) { clearInterval(timerInterval); submitExam(); }
@@ -512,11 +577,14 @@ function setupAntiCheat() {
 
 submitBtn.addEventListener("click", () => {
   if (confirm("Bạn có chắc muốn nộp bài?")) submitExam();
+  else syncFullscreenUI();
 });
 
 function submitExam() {
   isFinished = true;
   clearInterval(timerInterval);
+  exitExamFullscreen();
+  syncFullscreenUI();
   document.querySelectorAll("input, .btn-flag").forEach((el) => (el.disabled = true));
   submitBtn.style.display = "none";
   const timerPill = document.querySelector(".timer-pill");
@@ -611,9 +679,9 @@ document.getElementById("review-btn").addEventListener("click", () => {
 ---
 
 ## ⚠️ SAU KHI TẠO XONG:
-1. Copy file `style.css` **bản mới** từ thư mục `de-5-hsa-dinh-luong-vnes` vào (không thay đổi). Bản này có thanh ghim trên cùng (đồng hồ + bảng điều hướng luôn hiện khi cuộn). **Không dùng style.css cũ**.
-2. Dùng đúng `index.html` ở trên: bảng điều hướng và đồng hồ nằm chung trong `<div class="top-sticky">`. Nếu để lại cấu trúc cũ thì thanh sẽ không ghim được.
-3. `script.js` giữ nguyên, không cần sửa.
+1. Copy file `style.css` **bản mới nhất (giao diện Azota full-screen 2 cột)** từ `_TaiLieu_HuongDan/NHAP/style.css` vào repo đề thi (không thay đổi). Bản này phủ kín toàn màn hình máy tính khi vào thi & làm bài, đưa đồng hồ + bảng điều hướng thành thanh sidebar cố định bên phải trên desktop (tương thích cả HTML có `<div class="top-sticky">` lẫn HTML cũ).
+2. Dùng đúng `index.html` ở trên (`<div class="top-sticky">` chứa đồng hồ và bảng điều hướng) để tối ưu cả máy tính lẫn điện thoại.
+3. Dùng `script.js` ở trên (hoặc copy logic toàn màn hình từ `_TaiLieu_HuongDan/NHAP/script.js`) để tự động bật chế độ toàn màn hình (`requestFullscreen`) khi bấm Bắt đầu thi.
 
 
 
