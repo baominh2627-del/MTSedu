@@ -3,13 +3,27 @@
     "users": {
       ".read": true,
       ".write": true,
-      ".indexOn": ["username"]
+      ".indexOn": [
+        "username"
+      ]
     },
     "testResults": {
       ".read": true,
       ".write": true
     },
     "examLogs": {
+      ".read": true,
+      ".write": true
+    },
+    "activity": {
+      ".read": true,
+      ".write": true
+    },
+    "videoWatch": {
+      ".read": true,
+      ".write": true
+    },
+    "videos": {
       ".read": true,
       ".write": true
     }

@@ -17,12 +17,13 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-import { AuthProvider } from "./AuthContext.jsx";
+import { AuthProvider, useAuth } from "./AuthContext.jsx";
 import LoginPage from "./LoginPage.jsx";
 import MainframeHome from "./MainframeHome.jsx";
 import SubjectPage from "./SubjectPage.jsx";
 import ProfilePage from "./ProfilePage.jsx";
 import VideoPage from "./VideoPage.jsx";
+import { startSiteTracking } from "./activityService.js";
 import FeedbackModal from "./FeedbackModal.jsx";
 import "../css/App.css";
 
@@ -117,9 +118,17 @@ function AppContent() {
   );
 }
 
+function ActivityTracker() {
+  const { user } = useAuth();
+  const uid = user ? (user.id || user.username) : null;
+  useEffect(() => (user ? startSiteTracking(user) : undefined), [uid]); // eslint-disable-line
+  return null;
+}
+
 function App() {
   return (
     <AuthProvider>
+      <ActivityTracker />
       <AppContent />
       <FeedbackModal />
     </AuthProvider>

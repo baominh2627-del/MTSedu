@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { videos, videoFilters } from '../data/videosData.js';
 import { useAuth } from './AuthContext.jsx';
+import { subscribeVideos } from './videoService.js';
+import { startVideoTracking } from './activityService.js';
 import { getAvatar } from './avatarService.js';
 
 const NAV = [
@@ -11,7 +13,7 @@ const NAV = [
 
 const SOURCE_LABEL = { youtube: 'YouTube', drive: 'Google Drive', local: 'Tải lên' };
 
-function VideoPlayer({ video }) {
+function VideoPlayer({ video, trackerRef }) {
   if (video.source === 'youtube') {
     return (
       <iframe
@@ -35,7 +37,10 @@ function VideoPlayer({ video }) {
     );
   }
   return (
-    <video className="w-full h-full bg-black" src={video.file} poster={video.cover} controls autoPlay controlsList="nodownload" />
+    <video className="w-full h-full bg-black" src={video.file} poster={video.cover} controls autoPlay controlsList="nodownload"
+      onPlay={() => trackerRef.current?.setPlaying(true)}
+      onPause={() => trackerRef.current?.setPlaying(false)}
+      onEnded={() => trackerRef.current?.setPlaying(false)} />
   );
 }
 
@@ -48,6 +53,19 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState([]);
   const [playing, setPlaying] = useState(null);
+  const [dbVideos, setDbVideos] = useState([]);
+  const trackerRef = useRef(null);
+
+  useEffect(() => subscribeVideos(setDbVideos), []);
+  const allVideos = [...dbVideos, ...videos];
+
+  // Tính thời gian xem video của học sinh đang đăng nhập
+  useEffect(() => {
+    if (!playing || !user) return undefined;
+    const t = startVideoTracking(user, playing, playing.source !== 'local');
+    trackerRef.current = t;
+    return () => { t.stop(); trackerRef.current = null; };
+  }, [playing]); // eslint-disable-line
 
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && setPlaying(null);
@@ -58,7 +76,7 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
   const toggle = (t) => setSelected((p) => (p.includes(t) ? p.filter((x) => x !== t) : [...p, t]));
 
   // Mỗi nhóm lọc (Môn / Lớp / Kỳ thi): chọn nhiều trong nhóm = HOẶC, giữa các nhóm = VÀ
-  const filtered = videos.filter((v) => {
+  const filtered = allVideos.filter((v) => {
     if (!v.title.toLowerCase().includes(search.toLowerCase())) return false;
     return videoFilters.every((g) => {
       const picked = g.items.filter((i) => selected.includes(i));
@@ -166,7 +184,7 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
             <p className="text-[13px] text-black/50 mb-4">Hiển thị {filtered.length} video</p>
             {filtered.length === 0 ? (
               <div className="bg-white rounded-xl border border-black/10 p-10 text-center text-black/50">
-                {videos.length === 0 ? 'Chưa có video nào. Video bài giảng sẽ sớm được cập nhật!' : 'Không tìm thấy video phù hợp.'}
+                {allVideos.length === 0 ? 'Chưa có video nào. Video bài giảng sẽ sớm được cập nhật!' : 'Không tìm thấy video phù hợp.'}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -205,7 +223,7 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
               <button onClick={() => setPlaying(null)} className="text-[28px] leading-none px-2 hover:opacity-70">&times;</button>
             </div>
             <div className="aspect-video w-full rounded-xl overflow-hidden bg-black">
-              <VideoPlayer video={playing} />
+              <VideoPlayer video={playing} trackerRef={trackerRef} />
             </div>
           </div>
         </div>

@@ -21,7 +21,7 @@ try {
   console.error('Firebase initialization failed. Check environment variables:', error);
 }
 
-export { database };
+export { database, app };
 
 
 // Helper for SHA-256 hashing using Web Crypto API

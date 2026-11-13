@@ -1,4 +1,6 @@
 ﻿import { useEffect, useMemo, useState } from 'react';
+import AdminVideos from './AdminVideos.jsx';
+import AdminTracking from './AdminTracking.jsx';
 import { collectAdminResults, createAdminUser, createBulkAdminUsers, deleteAdminUser, subscribeAdminData } from '../services/adminService.js';
 
 const TABS = [
@@ -6,6 +8,8 @@ const TABS = [
   { id: 'bulk', label: '📋 Thêm hàng loạt' },
   { id: 'users', label: '👥 Danh sách users' },
   { id: 'results', label: '📊 Lịch sử bài làm' },
+  { id: 'tracking', label: '⏱️ Theo dõi học sinh' },
+  { id: 'videos', label: '🎬 Đăng video' },
 ];
 const firebaseLinks = [
   ['🔥 Xem Realtime Database MTS', 'https://console.firebase.google.com/project/mtsedu-85ea3/database/mtsedu-85ea3-default-rtdb/data'],
@@ -104,5 +108,7 @@ export default function AdminDashboard() {
       <h3 className="mb-1 text-lg font-bold text-slate-800">📊 Lịch sử bài làm</h3><p className="mb-4 text-sm text-slate-500">Tổng cộng: {results.length} lượt nộp</p>
       {!rootData ? <p className="text-sm text-slate-500">Đang tải dữ liệu…</p> : results.length === 0 ? <p className="text-sm text-slate-500">Chưa có dữ liệu bài làm.</p> : <div className="overflow-x-auto"><table className="w-full min-w-[850px] text-left text-sm"><thead className="bg-slate-50 text-slate-600"><tr>{['Học sinh','Mã đề','Phần 1','Phần 2','Phần 3','Tổng điểm','Thoát','Ngày nộp'].map((heading) => <th key={heading} className="px-3 py-3 font-semibold">{heading}</th>)}</tr></thead><tbody className="divide-y divide-slate-100">{results.map((result) => <tr key={`${result.maDe}-${result.id}`}><td className="px-3 py-3 font-medium">{result.hoTen}<span className="block text-xs font-normal text-slate-500">Lớp: {result.lop}</span></td><td className="px-3 py-3">{result.maDe}</td><td className="px-3 py-3">{result.diemPhan1}</td><td className="px-3 py-3">{result.diemPhan2}</td><td className="px-3 py-3">{result.diemPhan3}</td><td className="px-3 py-3 font-bold text-emerald-700">{result.tongDiem}</td><td className="px-3 py-3">{result.soLanThoat}</td><td className="px-3 py-3">{result.thoiGianNop ? new Date(result.thoiGianNop).toLocaleString('vi-VN') : '—'}</td></tr>)}</tbody></table></div>}
     </div>}
+    {tab === 'tracking' && <AdminTracking rootData={rootData} />}
+    {tab === 'videos' && <AdminVideos />}
   </section>;
 }
