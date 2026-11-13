@@ -8,11 +8,12 @@ import { database } from './firebase.js';
 
 const FLUSH_EVERY_SEC = 15;
 
-const todayKey = () => {
-  const d = new Date();
+export function toDateKey(date = new Date()) {
   const p = (n) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
-};
+  return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}`;
+}
+
+const todayKey = () => toDateKey(new Date());
 
 export const getUid = (user) => (user ? user.id || user.uid || `user_${user.username}` : null);
 
