@@ -35,7 +35,7 @@ const NAV = [
 function Logo({ className = '' }) {
   const [ok, setOk] = useState(true);
   return ok ? (
-    <img src="/logo_MTS.svg" alt="BM Education" className={className} onError={() => setOk(false)} />
+    <img src={`${import.meta.env.BASE_URL}net_ve.svg`} alt="BM Education" className={className} onError={() => setOk(false)} />
   ) : (
     <span className="text-2xl font-bold text-blue-600">BM Education</span>
   );
@@ -94,8 +94,8 @@ export default function ProfilePage({ onNavigate }) {
     <div className="min-h-screen bg-gradient-to-b from-[#eef5ff] to-[#f8fbff] text-slate-800">
       {/* Topbar */}
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-blue-100 px-4 sm:px-6 py-3 flex items-center justify-between">
-        <button onClick={() => onNavigate('home')} className="flex items-center gap-3">
-          <Logo className="h-11 w-auto" />
+        <button onClick={() => onNavigate('home')} className="flex items-center gap-3" aria-label="BM Education - Về trang chủ">
+          <Logo className="h-12 w-12 object-contain" />
         </button>
         <div className="flex items-center gap-3">
           <span className="hidden sm:block font-semibold">{name}</span>

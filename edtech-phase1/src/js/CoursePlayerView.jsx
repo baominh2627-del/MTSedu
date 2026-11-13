@@ -190,11 +190,11 @@ export default function CoursePlayerView({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="space-y-1.5 min-w-0">
             <div className="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm text-gray-500">
-              <button onClick={onBack} className="font-semibold text-black hover:text-blue-600 transition-colors cursor-pointer">
+              <button onClick={onBack} className="font-semibold text-black hover:text-black/70 hover:underline transition-colors cursor-pointer">
                 ← Thư mục Video
               </button>
               <span>/</span>
-              <span className="font-medium text-blue-600 truncate max-w-[260px] sm:max-w-none">{course.title}</span>
+              <span className="font-semibold text-gray-800 truncate max-w-[260px] sm:max-w-none">{course.title}</span>
               <span>/</span>
               <span className="truncate max-w-[240px] sm:max-w-none">{activeChapter?.title}</span>
             </div>
@@ -202,8 +202,8 @@ export default function CoursePlayerView({
           </div>
 
           <div className="flex items-center gap-2.5 shrink-0 relative">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-              <span className={`w-2 h-2 rounded-full ${isTrackingActive ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400'}`} />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-green-50 text-green-700 border border-green-200">
+              <span className={`w-2 h-2 rounded-full ${isTrackingActive ? 'bg-green-600 animate-pulse' : 'bg-gray-400'}`} />
               {isTrackingActive ? 'Đang ghi nhận:' : 'Tạm dừng:'} <strong>{formatMMSS(sessionSec)}</strong>
             </span>
 
@@ -221,16 +221,16 @@ export default function CoursePlayerView({
                   <span className="text-xs font-bold uppercase tracking-wide text-gray-500">Lộ trình bài giảng</span>
                   <button onClick={() => setShowTimeline(false)} className="text-xs text-gray-500 hover:text-black cursor-pointer">Đóng</button>
                 </div>
-                <div className="space-y-3 border-l-2 border-blue-200 pl-3 ml-1.5">
+                <div className="space-y-3 border-l-2 border-black/15 pl-3 ml-1.5">
                   {flatLessons.map(({ chapter, lesson }) => {
                     const active = lesson.id === activeLesson.id;
                     const done = Boolean(progressMap[lesson.id]?.completed);
                     return (
                       <div key={lesson.id} onClick={() => selectLesson(lesson.id, chapter.id)} className="relative cursor-pointer group">
                         <span className={`absolute -left-[19px] top-1 w-2.5 h-2.5 rounded-full border-2 border-white ${
-                          active ? 'bg-blue-600' : done ? 'bg-emerald-500' : 'bg-gray-300'
+                          active ? 'bg-black' : done ? 'bg-green-600' : 'bg-gray-300'
                         }`} />
-                        <p className={`text-xs leading-snug ${active ? 'font-bold text-blue-600' : 'text-gray-800 group-hover:text-blue-600'}`}>
+                        <p className={`text-xs leading-snug ${active ? 'font-bold text-black' : 'text-gray-700 group-hover:text-black'}`}>
                           {lesson.title}
                         </p>
                         {(lesson.duration || chapter.title) && (
@@ -296,8 +296,8 @@ export default function CoursePlayerView({
                   onClick={() => onToggleComplete(activeLesson.id, !isCurrentDone)}
                   className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold border transition cursor-pointer ${
                     isCurrentDone
-                      ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
-                      : 'bg-white text-gray-700 border-black/15 hover:border-emerald-500 hover:text-emerald-700'
+                      ? 'bg-green-50 text-green-700 border-green-300'
+                      : 'bg-white text-gray-700 border-black/15 hover:border-black hover:text-black'
                   }`}
                 >
                   {isCurrentDone ? '✓ Đã hoàn thành bài này' : '○ Đánh dấu đã học xong'}
@@ -329,7 +329,7 @@ export default function CoursePlayerView({
                   onClick={() => setActiveTab(id)}
                   className={`px-4 sm:px-5 py-3.5 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
                     activeTab === id
-                      ? 'border-blue-600 text-blue-600'
+                      ? 'border-black text-black'
                       : 'border-transparent text-gray-500 hover:text-black'
                   }`}
                 >
@@ -347,7 +347,7 @@ export default function CoursePlayerView({
                     {activeLesson.docs.map((doc, i) => (
                       <div key={i} className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl border border-black/10 bg-gray-50/60">
                         <div className="flex items-center gap-3 min-w-0">
-                          <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-100 text-amber-800 shrink-0">
+                          <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-black/5 text-gray-800 border border-black/10 shrink-0">
                             {doc.type || 'PDF'}
                           </span>
                           <span className="text-sm font-medium text-gray-800 truncate">{doc.name}</span>
@@ -356,7 +356,7 @@ export default function CoursePlayerView({
                           href={doc.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shrink-0"
+                          className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-black hover:bg-black/80 text-white transition shrink-0"
                         >
                           Xem / Tải về
                         </a>
@@ -372,7 +372,7 @@ export default function CoursePlayerView({
                 ) : (
                   <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl border border-black/10 bg-gray-50/60">
                     <div className="space-y-1">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">Bài kiểm tra liên quan</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Bài kiểm tra liên quan</p>
                       <h4 className="text-base font-bold text-black">{activeLesson.quiz.title}</h4>
                       {(activeLesson.quiz.questions || activeLesson.quiz.minutes) && (
                         <p className="text-sm text-gray-500">
@@ -409,7 +409,7 @@ export default function CoursePlayerView({
                       value={noteText}
                       onChange={(e) => saveNote(e.target.value)}
                       placeholder="Ghi lại công thức hoặc đoạn cần xem lại..."
-                      className="w-full rounded-xl border border-black/15 bg-white p-3 text-sm text-black outline-none focus:border-blue-500"
+                      className="w-full rounded-xl border border-black/15 bg-white p-3 text-sm text-black outline-none focus:border-black/40"
                     />
                     <p className="text-xs text-gray-400">Ghi chú được lưu tự động trên trình duyệt theo tài khoản của bạn.</p>
                   </div>
@@ -424,19 +424,19 @@ export default function CoursePlayerView({
           <div className="p-4 border-b border-black/8 space-y-3">
             <div className="flex items-center justify-between gap-2">
               <h3 className="text-base sm:text-lg font-bold text-black">Đề cương khóa học</h3>
-              <span className="text-xs font-semibold text-blue-600">
+              <span className="text-xs font-semibold text-gray-700 bg-black/5 px-2.5 py-1 rounded-full">
                 {doneCount}/{flatLessons.length} bài ({progressPct}%)
               </span>
             </div>
             <div className="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
-              <div className="h-full bg-emerald-500 transition-all duration-300" style={{ width: `${progressPct}%` }} />
+              <div className="h-full bg-green-600 transition-all duration-300" style={{ width: `${progressPct}%` }} />
             </div>
             <input
               type="text"
               value={syllabusSearch}
               onChange={(e) => setSyllabusSearch(e.target.value)}
               placeholder="Tìm nhanh tên bài trong khóa..."
-              className="w-full px-3 py-2 rounded-lg text-xs sm:text-sm bg-gray-50 border border-black/10 text-black placeholder-gray-400 outline-none focus:border-blue-500"
+              className="w-full px-3 py-2 rounded-lg text-xs sm:text-sm bg-gray-50 border border-black/10 text-black placeholder-gray-400 outline-none focus:border-black/40"
             />
           </div>
 
@@ -477,16 +477,16 @@ export default function CoursePlayerView({
                             onClick={() => selectLesson(lesson.id, chapter.id)}
                             className={`w-full px-4 py-3 text-left flex items-start gap-3 transition cursor-pointer border-l-4 ${
                               isActive
-                                ? 'border-blue-600 bg-blue-50/70'
+                                ? 'border-black bg-black/[0.04]'
                                 : 'border-transparent hover:bg-gray-50'
                             }`}
                           >
                             <span
                               className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-xs shrink-0 border ${
                                 isDone
-                                  ? 'bg-emerald-500 border-emerald-500 text-white'
+                                  ? 'bg-green-600 border-green-600 text-white'
                                   : isActive
-                                    ? 'border-blue-600 text-blue-600 font-bold'
+                                    ? 'border-black bg-black text-white font-bold'
                                     : 'border-gray-300 text-gray-400'
                               }`}
                             >
@@ -494,20 +494,20 @@ export default function CoursePlayerView({
                             </span>
 
                             <div className="flex-1 min-w-0 space-y-1">
-                              <p className={`text-sm leading-snug ${isActive ? 'font-bold text-blue-700' : 'font-medium text-gray-800'}`}>
+                              <p className={`text-sm leading-snug ${isActive ? 'font-bold text-black' : 'font-medium text-gray-800'}`}>
                                 {lesson.title}
                               </p>
                               <div className="flex flex-wrap items-center gap-1.5 text-xs text-gray-500">
                                 {lesson.duration && <span>{lesson.duration} ·</span>}
                                 <span>{SOURCE_LABEL[lesson.source] || lesson.source}</span>
                                 {lesson.parts.length > 1 && (
-                                  <span className="px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">{lesson.parts.length} phần</span>
+                                  <span className="px-1.5 py-0.5 rounded bg-black/5 text-gray-700 font-medium">{lesson.parts.length} phần</span>
                                 )}
                                 {lesson.docs.length > 0 && (
-                                  <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">Tài liệu</span>
+                                  <span className="px-1.5 py-0.5 rounded bg-black/5 text-gray-700 font-medium">Tài liệu</span>
                                 )}
                                 {lesson.quiz && (
-                                  <span className="px-1.5 py-0.5 rounded bg-purple-100 text-purple-700">Bài thi</span>
+                                  <span className="px-1.5 py-0.5 rounded bg-black/5 text-gray-700 font-medium">Bài thi</span>
                                 )}
                               </div>
                             </div>

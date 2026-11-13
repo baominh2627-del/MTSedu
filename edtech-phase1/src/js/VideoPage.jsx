@@ -242,7 +242,7 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
                                 loading="lazy"
                               />
                             ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-white/70 text-sm font-semibold px-4 text-center">
+                              <div className="w-full h-full bg-gradient-to-br from-neutral-800 to-black flex items-center justify-center text-white/70 text-sm font-semibold px-4 text-center">
                                 {course.title}
                               </div>
                             )}
@@ -283,10 +283,10 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
                               <div className="mb-4 space-y-1">
                                 <div className="flex justify-between text-xs text-gray-500">
                                   <span>Tiến độ</span>
-                                  <span className="font-semibold text-emerald-700">{doneCount}/{allLessons.length} bài ({pct}%)</span>
+                                  <span className="font-semibold text-green-600">{doneCount}/{allLessons.length} bài ({pct}%)</span>
                                 </div>
                                 <div className="w-full h-1.5 rounded-full bg-gray-100 overflow-hidden">
-                                  <div className="h-full bg-emerald-500 transition-all" style={{ width: `${pct}%` }} />
+                                  <div className="h-full bg-green-600 transition-all" style={{ width: `${pct}%` }} />
                                 </div>
                               </div>
                             )}
