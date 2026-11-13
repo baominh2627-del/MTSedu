@@ -35,9 +35,9 @@ const NAV = [
 function Logo({ className = '' }) {
   const [ok, setOk] = useState(true);
   return ok ? (
-    <img src="/logo_MTS.svg" alt="BM Education" className={className} onError={() => setOk(false)} />
+    <img src="/logo_MTS.svg" alt="MTSedu" className={className} onError={() => setOk(false)} />
   ) : (
-    <span className="text-2xl font-bold text-blue-600">BM Education</span>
+    <span className="text-2xl font-bold text-blue-600">MTSedu</span>
   );
 }
 function Mascot({ className = '' }) {

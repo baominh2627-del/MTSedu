@@ -99,7 +99,7 @@ Hãy kết thúc bằng dòng thông báo sau:
 ### PROMPT GIAI ĐOẠN 2 (GỬI CHO CLAUDE)
 
 ````text
-Tôi đang xây dựng hệ thống bài thi online cho BM Education. Tôi đã có sẵn file `data.js` (dán bên dưới / đính kèm). Bây giờ hãy tạo cho tôi 4 file còn lại để hoàn thiện bài thi HSA Phần Định Lượng.
+Tôi đang xây dựng hệ thống bài thi online cho MTS Education. Tôi đã có sẵn file `data.js` (dán bên dưới / đính kèm). Bây giờ hãy tạo cho tôi 4 file còn lại để hoàn thiện bài thi HSA Phần Định Lượng.
 
 ## THÔNG TIN BÀI THI
 - Tên đề: [VD: ĐỀ THI ĐỊNH LƯỢNG HSA - ĐỀ SỐ 1]
@@ -107,7 +107,7 @@ Tôi đang xây dựng hệ thống bài thi online cho BM Education. Tôi đã 
 - Mô tả ngắn trên header: [VD: BÀI THI ĐÁNH GIÁ NĂNG LỰC HSA · TOÁN HỌC VÀ XỬ LÝ SỐ LIỆU]
 - Thời gian làm bài: 75 phút
 - Mã đề (dùng cho Firebase, không dấu, không cách): [VD: HSA_DINHLUONG_DE1]
-- Hash trang BM Education để quay về: [VD: #math]
+- Hash trang MTSedu để quay về: [VD: #math]
 - Cấu trúc: 50 câu (trắc nghiệm và điền đáp án đan xen). Mỗi câu 1 điểm, tổng 50 điểm.
 
 ---
@@ -277,7 +277,7 @@ const submitBtn = document.getElementById("submit-btn");
 const MA_DE       = "[MÃ ĐỀ]";                       // mã đề Firebase (không dấu, không cách)
 const DRAFT_KEY   = "examDraft_[MÃ ĐỀ]";             // key localStorage
 const EXAM_MINUTES = 75;                             // thời gian làm bài (phút)
-const RETURN_HASH = "[HASH VD: #math]";              // hash trang BM Education
+const RETURN_HASH = "[HASH VD: #math]";              // hash trang MTSedu
 // ================================
 
 let timeRemaining = EXAM_MINUTES * 60;
@@ -634,7 +634,7 @@ Ví dụ bạn vừa tạo đề thi định lượng mới, bạn copy block sa
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong.jpg",
-        instructor: "BM Education",
+        instructor: "MTS Education",
         link: "https://baominh2627-del.github.io/link-thu-muc-chua-de-thi/" // Đổi link này trỏ tới link github pages của bạn
       },
 `

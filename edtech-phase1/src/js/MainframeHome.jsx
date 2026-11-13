@@ -71,7 +71,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
             className="text-[18px] sm:text-[22px] lg:text-[26px] tracking-tight text-black font-bold"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            BM Education
+            MTS Education
           </span>
           <span className="text-[22px] sm:text-[26px] lg:text-[30px] text-black/40 select-none">
             &#10033;
@@ -213,7 +213,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
               color: "rgba(0,0,0,0.4)",
             }}
           >
-            BM Education
+            MTS Education
           </div>
 
           {/* Typewriter Text */}

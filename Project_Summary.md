@@ -1,7 +1,7 @@
-# Tóm tắt dự án BM Education
+# Tóm tắt dự án MTS Education
 
 ## 1. Tổng quan dự án
-BM Education là một nền tảng giáo dục trực tuyến (EdTech) được xây dựng bằng **React**, **Vite**, và **Tailwind CSS**. Ứng dụng cung cấp giao diện hiển thị các bài kiểm tra, đề thi thử cho nhiều môn học (Toán, Lý, Hóa, Tin học, HSA/TSA...) và được tích hợp hệ thống xác thực người dùng thông qua **Firebase**.
+MTS Education là một nền tảng giáo dục trực tuyến (EdTech) được xây dựng bằng **React**, **Vite**, và **Tailwind CSS**. Ứng dụng cung cấp giao diện hiển thị các bài kiểm tra, đề thi thử cho nhiều môn học (Toán, Lý, Hóa, Tin học, HSA/TSA...) và được tích hợp hệ thống xác thực người dùng thông qua **Firebase**.
 
 ## 2. Cấu trúc thư mục chính
 Dự án được tổ chức theo cấu trúc tiêu chuẩn của một ứng dụng Vite + React:

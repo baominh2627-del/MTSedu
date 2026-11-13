@@ -1,6 +1,6 @@
 # 📚 HƯỚNG DẪN TẠO BÀI THI WEB TỪ FILE PDF
 
-Tài liệu này hướng dẫn quy trình 5 bước để chuyển đổi một file đề thi PDF thành bài thi trắc nghiệm online trên hệ thống BM Education.
+Tài liệu này hướng dẫn quy trình 5 bước để chuyển đổi một file đề thi PDF thành bài thi trắc nghiệm online trên hệ thống MTS Education.
 
 ## 🚀 QUY TRÌNH 5 BƯỚC CƠ BẢN
 
@@ -26,11 +26,11 @@ Tài liệu này hướng dẫn quy trình 5 bước để chuyển đổi một
 - Vào **Settings -> Pages** của repo, chọn Source là nhánh `main` để xuất bản.
 - Đợi 1-2 phút, bạn sẽ có link bài thi độc lập (VD: `https://[username].github.io/[ten-repo]/`).
 
-### Bước 5: Gắn vào hệ thống BM Education chính
-- Mở file source code của BM Education: `edtech-phase1/src/data/subjectsData.js`.
+### Bước 5: Gắn vào hệ thống MTSedu chính
+- Mở file source code của MTSedu: `edtech-phase1/src/data/subjectsData.js`.
 - Thêm thông tin bài thi mới vào mảng `tests` của môn học tương ứng.
 - Dán link GitHub Pages vừa lấy ở Bước 4 vào thuộc tính `link`.
-- Lưu lại và push repo BM Education lên GitHub (Vercel sẽ tự động deploy bản cập nhật trên trang chủ).
+- Lưu lại và push repo MTSedu lên GitHub (Vercel sẽ tự động deploy bản cập nhật trên trang chủ).
 
 ---
 

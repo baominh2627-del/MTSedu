@@ -174,7 +174,7 @@ function LoginPage({ onBack, onLoginSuccess }) {
           {/* Logo icon */}
           <div className="login-card__logo-icon">🎓</div>
           {/* Tên hệ thống */}
-          <h2 className="login-card__brand-title">BM Education</h2>
+          <h2 className="login-card__brand-title">MTS Education</h2>
         </div>
 
         {/* Đường kẻ trang trí */}

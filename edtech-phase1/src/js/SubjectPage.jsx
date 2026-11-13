@@ -81,7 +81,7 @@ export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) 
           onClick={() => onNavigate('home')}
         >
           <span className="text-[20px] sm:text-[24px] lg:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
-            BM Education
+            MTS Education
           </span>
           <span className="text-[24px] sm:text-[28px] lg:text-[30px] text-black/40 select-none">
             &#10033;
