@@ -189,7 +189,7 @@ export const subjectsData = {
         price: "99.000₫",
         thumbnail:
           "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-        instructor: "MTS Education",
+        instructor: "BM Education",
       },
       {
         id: "hsa_dinhluong_de1",
@@ -199,7 +199,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de1.jpg",
-        instructor: "MTS Education",
+        instructor: "BM Education",
         link: "https://baominh2627-del.github.io/de-1-hsa-dinh-luong-vnes/",
       },
       {
@@ -210,7 +210,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de2.jpg",
-        instructor: "MTS Education",
+        instructor: "BM Education",
         link: "https://baominh2627-del.github.io/de-2-hsa-dinh-luong-vnes/",
       },
 
@@ -222,7 +222,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de3.jpg",
-        instructor: "MTS Education",
+        instructor: "BM Education",
         link: "https://baominh2627-del.github.io/de-3-hsa-dinh-luong-vnes/",
       },
       {
@@ -233,7 +233,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de4.jpg",
-        instructor: "MTS Education",
+        instructor: "BM Education",
         link: "https://baominh2627-del.github.io/de-4-hsa-dinh-luong-vnes/",
       },
       {
@@ -244,7 +244,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de5.jpg",
-        instructor: "MTS Education",
+        instructor: "BM Education",
         link: "https://baominh2627-del.github.io/de-5-hsa-dinh-luong-vnes/",
       },
       {
@@ -255,7 +255,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de6.jpg",
-        instructor: "MTS Education",
+        instructor: "BM Education",
         link: "https://baominh2627-del.github.io/de-6-hsa-dinh-luong-vnes/",
       },
       {
@@ -266,7 +266,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de7.jpg",
-        instructor: "MTS Education",
+        instructor: "BM Education",
         link: "https://baominh2627-del.github.io/de-7-hsa-dinh-luong-vnes/"
       },
       {
@@ -277,7 +277,7 @@ export const subjectsData = {
           time: 60,
           price: "Miễn phí",
           thumbnail: "/thumb_hsa_dinh_luong_de1.jpg",
-          instructor: "MTS Education",
+          instructor: "BM Education",
           link: "https://baominh2627-del.github.io/de-1-hsa-dinh-tinh-vnes/"
         },
         {
@@ -288,7 +288,7 @@ export const subjectsData = {
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong_de8.jpg",
-        instructor: "MTS Education",
+        instructor: "BM Education",
         link: "https://baominh2627-del.github.io/de-8-hsa-dinh-luong-vnes/"
       },
     ],

@@ -107,7 +107,7 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
     <div className="relative w-full min-h-screen mts-bg text-black font-sans">
       <nav className="fixed top-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-4 sm:py-5 lg:py-4 flex flex-row justify-between items-center bg-white/80 backdrop-blur-md border-b border-black/8">
         <div className="flex flex-row gap-2 items-center cursor-pointer hover:opacity-70 transition-opacity" onClick={() => onNavigate('home')}>
-          <span className="text-[20px] sm:text-[24px] lg:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>MTS Education</span>
+          <span className="text-[20px] sm:text-[24px] lg:text-[26px] tracking-tight text-black font-bold" style={{ fontFamily: 'var(--font-heading)' }}>BM Education</span>
           <span className="text-[24px] sm:text-[28px] lg:text-[30px] text-black/40 select-none">&#10033;</span>
         </div>
 

@@ -152,7 +152,7 @@ Hãy kết thúc bằng dòng thông báo sau:
 ### PROMPT GIAI ĐOẠN 2 (GỬI CHO CLAUDE)
 
 ````
-Tôi đang xây dựng hệ thống bài thi online cho MTS Education. Tôi đã có sẵn file `data.js` (dán bên dưới / đính kèm). Bây giờ hãy tạo cho tôi 4 file còn lại để hoàn thiện bài thi.
+Tôi đang xây dựng hệ thống bài thi online cho BM Education. Tôi đã có sẵn file `data.js` (dán bên dưới / đính kèm). Bây giờ hãy tạo cho tôi 4 file còn lại để hoàn thiện bài thi.
 
 ## THÔNG TIN BÀI THI
 - Tên đề: [VD: ĐỀ 2 - LƯỢNG GIÁC - TOÁN 11]
@@ -160,7 +160,7 @@ Tôi đang xây dựng hệ thống bài thi online cho MTS Education. Tôi đã
 - Mô tả ngắn trên header: [VD: ĐỀ ÔN TẬP CHƯƠNG LƯỢNG GIÁC · NĂM HỌC 2024-2025]
 - Thời gian làm bài: [VD: 90] phút
 - Mã đề (dùng cho Firebase, không dấu, không cách): [VD: TOAN11_DE2]
-- Hash trang MTSedu để quay về: [VD: #math hoặc #physics]
+- Hash trang BM Education để quay về: [VD: #math hoặc #physics]
 
 ## CẤU TRÚC ĐỀ THI (để điền vào header và tính điểm đúng)
 - Phần I: [VD: 12] câu × 0.25đ = [VD: 3.0đ]
@@ -394,11 +394,11 @@ export function showLoginRequired(container, returnHash = '') {
       <div style="font-size:48px;margin-bottom:16px;">🔒</div>
       <h2 style="font-size:22px;font-weight:700;margin:0 0 8px;color:#111;">Vui lòng đăng nhập</h2>
       <p style="color:#666;font-size:15px;margin:0 0 28px;line-height:1.6;">
-        Bạn cần đăng nhập vào hệ thống <strong>MTS Education</strong> để làm bài thi này.
+        Bạn cần đăng nhập vào hệ thống <strong>BM Education</strong> để làm bài thi này.
       </p>
       <a href="${mtseduUrl}" style="display:inline-block;background:#000;color:#fff;
         text-decoration:none;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:600;">
-        Đăng nhập tại MTS Education →
+        Đăng nhập tại BM Education →
       </a>
       <p style="margin-top:20px;font-size:13px;color:#999;">Tài khoản được cung cấp bởi giáo viên</p>
     </div>
@@ -446,7 +446,7 @@ const submitBtn = document.getElementById("submit-btn");
 const MA_DE       = "[MÃ ĐỀ]";                       // mã đề Firebase (không dấu, không cách)
 const DRAFT_KEY   = "examDraft_[MÃ ĐỀ]";             // key localStorage (thêm mã đề vào sau)
 const EXAM_MINUTES = [THỜI GIAN PHÚT];                 // thời gian làm bài (phút)
-const RETURN_HASH = "[HASH VD: #physics]";           // hash trang MTSedu (vd: #math, #physics)
+const RETURN_HASH = "[HASH VD: #physics]";           // hash trang BM Education (vd: #math, #physics)
 // ================================
 
 let timeRemaining = EXAM_MINUTES * 60;
@@ -840,8 +840,8 @@ document.getElementById("review-btn").addEventListener("click", () => {
 1. Copy file `style.css` **bản mới** từ thư mục `de-5-hsa-dinh-luong-vnes` vào (không thay đổi). Bản này đã có thanh ghim trên cùng (đồng hồ + bảng điều hướng luôn hiện khi cuộn). **Không dùng style.css cũ** của `de-1-ktra-luong-giac-toan-11` vì bảng điều hướng cũ nằm cố định góc dưới phải, che nội dung trên điện thoại.
 2. Tạo GitHub repo mới, push code lên.
 3. Bật GitHub Pages (Settings → Pages → branch main).
-4. Thêm link GitHub Pages vào `subjectsData.js` trong MTSedu (field `link`).
-5. Commit & push MTSedu → Vercel tự deploy.
+4. Thêm link GitHub Pages vào `subjectsData.js` trong BM Education (field `link`).
+5. Commit & push BM Education → Vercel tự deploy.
 
 ---
 
@@ -877,7 +877,7 @@ Ví dụ bạn vừa tạo đề thi định lượng mới, bạn copy block sa
         time: 75,
         price: "Miễn phí",
         thumbnail: "/thumb_hsa_dinh_luong.jpg",
-        instructor: "MTS Education",
+        instructor: "BM Education",
         link: "https://baominh2627-del.github.io/link-thu-muc-chua-de-thi/" // Đổi link này trỏ tới link github pages của bạn
       },
 `

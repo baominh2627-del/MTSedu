@@ -69,7 +69,7 @@ export default function AdminDashboard() {
 
   return <section className="flex flex-col gap-5" aria-labelledby="admin-dashboard-title">
     <div>
-      <h2 id="admin-dashboard-title" className="text-2xl font-bold text-slate-800">🎓 Quản trị MTS Education</h2>
+      <h2 id="admin-dashboard-title" className="text-2xl font-bold text-slate-800">🎓 Quản trị BM Education</h2>
       <p className="mt-1 text-sm text-slate-500">Quản lý tài khoản và theo dõi bài làm từ Firebase.</p>
     </div>
     <div className="flex flex-wrap gap-2">
