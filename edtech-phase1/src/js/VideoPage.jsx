@@ -139,6 +139,7 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
       <main className="pt-[88px] sm:pt-[100px] lg:pt-[104px] pb-[60px] px-5 sm:px-8 md:px-10 max-w-[1400px] mx-auto">
         {activeCourse ? (
           <CoursePlayerView
+            key={activeCourse.id}
             course={activeCourse}
             onBack={() => setActiveCourseId(null)}
             user={user}
