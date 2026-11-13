@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { videos, videoFilters, groupVideosIntoCourses } from '../data/videosData.js';
 import { useAuth } from './AuthContext.jsx';
 import { handleYoutubeThumbFallback, subscribeVideos, subscribeVideoProgress, setLessonCompleted } from './videoService.js';
-import { getAvatar } from './avatarService.js';
+import { useUserAvatar } from './avatarService.js';
 import CoursePlayerView from './CoursePlayerView.jsx';
 
 const NAV = [
@@ -15,7 +15,7 @@ export default function VideoPage({ onNavigate, onRequireLogin }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isLoggedIn } = useAuth();
   const uid = user ? (user.id || user.uid || (`user_${user.username}`)) : null;
-  const avatar = uid ? getAvatar(uid) : null;
+  const avatar = useUserAvatar(uid);
 
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState([]);

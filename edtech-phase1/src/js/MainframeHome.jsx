@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext.jsx";
-import { getAvatar } from "./avatarService.js";
+import { useUserAvatar } from "./avatarService.js";
 
 // --- Custom Hook ---
 function useTypewriter(text, speed = 38, startDelay = 600) {
@@ -40,7 +40,7 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
   const { user, isLoggedIn, logout } = useAuth();
   
   const uid = user ? (user.id || user.uid || ('user_' + user.username)) : null;
-  const avatar = uid ? getAvatar(uid) : null;
+  const avatar = useUserAvatar(uid);
 
   // Typewriter
   const { displayed, done } = useTypewriter(

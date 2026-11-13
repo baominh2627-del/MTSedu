@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { subjectsData } from '../data/subjectsData.js';
 import { useAuth } from './AuthContext.jsx';
-import { getAvatar } from './avatarService.js';
+import { useUserAvatar } from './avatarService.js';
 
 export default function SubjectPage({ onNavigate, subjectKey, onRequireLogin }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isLoggedIn, logout } = useAuth();
   
   const uid = user ? (user.id || user.uid || ('user_' + user.username)) : null;
-  const avatar = uid ? getAvatar(uid) : null;
+  const avatar = useUserAvatar(uid);
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);

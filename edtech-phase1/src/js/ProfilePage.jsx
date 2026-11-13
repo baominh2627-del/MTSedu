@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useAuth } from './AuthContext.jsx';
-import { getAvatar, saveAvatar, removeAvatar, processImage } from './avatarService.js';
+import { useUserAvatar, saveAvatar, removeAvatar, processImage } from './avatarService.js';
 import { formatDuration, getUid, toDateKey } from './activityService.js';
 import { subscribeStudentStats } from './studentStatsService.js';
 import AdminDashboard from './admin/components/AdminDashboard.jsx';
@@ -251,17 +251,13 @@ export default function ProfilePage({ onNavigate }) {
   const uid = getUid(user);
   const name = user?.displayName || user?.username || 'Học sinh';
   const fileRef = useRef(null);
-  const [avatar, setAvatar] = useState(() => getAvatar(uid));
+  const avatar = useUserAvatar(uid);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const isAdmin = user?.role === 'admin' || user?.username === 'admin';
   const [showAdmin, setShowAdmin] = useState(false);
   const [stats, setStats] = useState(null);
   const [statsError, setStatsError] = useState('');
-
-  useEffect(() => {
-    setAvatar(uid ? getAvatar(uid) : null);
-  }, [uid]);
 
   useEffect(() => {
     if (!user) return undefined;
@@ -277,19 +273,24 @@ export default function ProfilePage({ onNavigate }) {
     setBusy(true);
     try {
       const dataUrl = await processImage(file);
-      if (!saveAvatar(uid, dataUrl)) throw new Error('Không lưu được ảnh (bộ nhớ trình duyệt đầy).');
-      setAvatar(dataUrl);
+      if (!(await saveAvatar(uid, dataUrl))) throw new Error('Không lưu được ảnh.');
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Không lưu được ảnh đại diện.');
     } finally {
       setBusy(false);
     }
   };
 
-  const handleRemove = () => {
-    removeAvatar(uid);
-    setAvatar(null);
+  const handleRemove = async () => {
     setError('');
+    setBusy(true);
+    try {
+      await removeAvatar(uid);
+    } catch (err) {
+      setError(err.message || 'Không xóa được ảnh đại diện.');
+    } finally {
+      setBusy(false);
+    }
   };
 
   if (!user) {
@@ -450,7 +451,7 @@ export default function ProfilePage({ onNavigate }) {
                     {avatar ? 'Đổi ảnh đại diện' : 'Tải ảnh đại diện'}
                   </button>
                   {avatar && (
-                    <button onClick={handleRemove} className="text-xs text-slate-500 underline hover:text-red-500">
+                    <button type="button" onClick={handleRemove} disabled={busy} className="text-xs text-slate-500 underline hover:text-red-500 disabled:opacity-50">
                       Xóa ảnh
                     </button>
                   )}
