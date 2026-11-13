@@ -612,18 +612,23 @@ body {
 html,
 body {
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 .hidden {
   display: none !important;
 }
 
+#login-screen.container,
+#exam-screen.container,
+#result-screen.container,
 body > .container {
   width: 100%;
   max-width: none;
   min-height: 100vh;
   margin: 0;
-  padding: 56px 20px 28px;
+  padding: 58px 20px 28px;
   box-sizing: border-box;
 }
 
@@ -737,6 +742,13 @@ body > .container {
     gap: 12px;
     width: 100%;
     max-height: calc(100vh - 72px);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
     z-index: 90;
     box-sizing: border-box;
   }
@@ -747,9 +759,16 @@ body > .container {
     padding: 14px 16px;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
     gap: 10px;
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  }
+
+  #exam-screen > .top-sticky .exam-info-bar .timer-pill,
+  #exam-screen > .top-sticky .exam-info-bar .score-pill {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
   #exam-screen > .top-sticky .info-left,
@@ -763,6 +782,7 @@ body > .container {
   }
 
   #exam-screen > .top-sticky #board-container {
+    display: block;
     position: static;
     inset: auto;
     bottom: auto;
@@ -774,7 +794,17 @@ body > .container {
     min-height: 180px;
     overflow-y: auto;
     margin: 0;
+    padding: 14px;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
     box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+    box-sizing: border-box;
+  }
+
+  #exam-screen > .top-sticky #board-container h3 {
+    display: block;
+    margin: 0 0 10px;
   }
 
   #exam-screen > .top-sticky #board-expand {
@@ -783,6 +813,7 @@ body > .container {
 
   /* HTML cũ (#board-container đứng trực tiếp trong #exam-screen) */
   #exam-screen > #board-container {
+    display: block;
     grid-column: 2;
     grid-row: 1 / span 3;
     position: sticky;
@@ -796,7 +827,9 @@ body > .container {
     max-height: calc(100vh - 72px);
     overflow-y: auto;
     margin: 0;
+    padding: 14px;
     box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+    box-sizing: border-box;
   }
 
   #exam-screen > .exam-header-block .exam-info-bar.sticky {
@@ -804,22 +837,39 @@ body > .container {
   }
 
   /* Lưới ô câu hỏi rộng, dễ bấm giống Azota */
+  #exam-screen #board-container .board-legend {
+    display: flex;
+  }
+
   #exam-screen #board-container .q-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 8px;
+    overflow-x: visible;
+    flex-wrap: unset;
+    padding-bottom: 0;
   }
 
   #exam-screen #board-container .q-box {
+    flex: initial;
+    min-width: 0;
     width: 100%;
     height: 36px;
+    padding: 0;
+  }
+
+  #exam-screen .question-card {
+    scroll-margin-top: 72px;
   }
 }
 
 /* MÀN HÌNH NHỎ / ĐIỆN THOẠI */
 @media (max-width: 959px) {
+  #login-screen.container,
+  #exam-screen.container,
+  #result-screen.container,
   body > .container {
-    padding: 52px 12px 24px;
+    padding: 56px 12px 24px;
   }
 
   #login-screen .form-card,
@@ -829,9 +879,9 @@ body > .container {
 
   #exam-screen > .top-sticky {
     position: sticky;
-    top: 52px;
+    top: 48px;
     z-index: 90;
-    margin-bottom: 14px;
+    margin: 0 0 14px;
   }
 
   #exam-screen > .top-sticky #board-container,
@@ -844,6 +894,7 @@ body > .container {
     max-width: none;
     max-height: 220px;
     margin: 8px 0 14px;
+    box-sizing: border-box;
   }
 }
 
