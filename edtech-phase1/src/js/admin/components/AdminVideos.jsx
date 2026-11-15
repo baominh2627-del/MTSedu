@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { addVideo, deleteVideo, getYoutubeThumbnail, handleYoutubeThumbFallback, parseYoutubeId, subscribeCourses, subscribeVideos, updateVideo } from '../../videoService.js';
+import { addVideo, deleteVideo, getDriveThumbnail, getYoutubeThumbnail, handleYoutubeThumbFallback, parseDriveId, parseYoutubeId, subscribeCourses, subscribeVideos, updateVideo } from '../../videoService.js';
 import { videos as builtInVideos, groupVideosIntoCourses } from '../../../data/videosData.js';
 import { subjectsData } from '../../../data/subjectsData.js';
 import { CourseFormCard, VideoTagPicker } from './AdminCourses.jsx';
@@ -410,7 +410,7 @@ export default function AdminVideos({ preselectedCourse = null, onOpenCourses })
           />
 
           <label className="block text-sm font-medium text-slate-600">
-            Ảnh bìa {editing ? '(để trống nếu giữ ảnh cũ)' : form.source === 'youtube' ? '(tự lấy từ YouTube nếu để trống)' : '(bắt buộc)'}
+            Ảnh bìa {editing ? '(để trống nếu giữ ảnh cũ)' : (form.source === 'youtube' || form.source === 'drive') ? `(tự lấy từ ${form.source === 'youtube' ? 'YouTube' : 'Google Drive'} nếu để trống)` : '(bắt buộc)'}
             <input key={`c-${fileKey}`} type="file" accept="image/*" className={inputCls} onChange={(e) => set('coverFile', e.target.files[0] || null)} />
           </label>
 
@@ -420,24 +420,33 @@ export default function AdminVideos({ preselectedCourse = null, onOpenCourses })
               className={inputCls}
               value={form.coverUrl}
               onChange={(e) => set('coverUrl', e.target.value)}
-              placeholder={form.source === 'youtube' ? 'Tự lấy thumbnail YouTube nếu để trống' : 'https://...'}
+              placeholder={(form.source === 'youtube' || form.source === 'drive') ? 'Tự lấy ảnh bìa từ video nếu để trống' : 'https://...'}
             />
           </label>
 
-          {!form.coverFile && (form.coverUrl.trim() || (form.source === 'youtube' && parseYoutubeId(form.link))) && (
-            <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 sm:col-span-2">
-              <img
-                src={form.coverUrl.trim() || getYoutubeThumbnail(parseYoutubeId(form.link))}
-                alt="Xem trước ảnh bìa"
-                onError={(e) => handleYoutubeThumbFallback(e.currentTarget)}
-                onLoad={(e) => e.currentTarget.naturalWidth <= 120 && handleYoutubeThumbFallback(e.currentTarget)}
-                className="h-12 w-20 rounded-md object-cover border border-slate-200 bg-white shrink-0"
-              />
-              <span className="text-xs text-slate-600">
-                {form.coverUrl.trim() ? 'Xem trước ảnh bìa từ link đã nhập.' : 'Đang tự động lấy ảnh bìa tương ứng từ video YouTube.'}
-              </span>
-            </div>
-          )}
+          {(() => {
+            const autoCover = form.source === 'youtube'
+              ? getYoutubeThumbnail(parseYoutubeId(form.link))
+              : form.source === 'drive'
+                ? getDriveThumbnail(parseDriveId(form.link))
+                : '';
+            const previewSrc = form.coverUrl.trim() || autoCover;
+            if (form.coverFile || !previewSrc) return null;
+            return (
+              <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 sm:col-span-2">
+                <img
+                  src={previewSrc}
+                  alt="Xem trước ảnh bìa"
+                  onError={(e) => handleYoutubeThumbFallback(e.currentTarget)}
+                  onLoad={(e) => e.currentTarget.naturalWidth <= 120 && handleYoutubeThumbFallback(e.currentTarget)}
+                  className="h-12 w-20 rounded-md object-cover border border-slate-200 bg-white shrink-0"
+                />
+                <span className="text-xs text-slate-600">
+                  {form.coverUrl.trim() ? 'Xem trước ảnh bìa từ link đã nhập.' : `Đang tự động lấy ảnh bìa tương ứng từ ${form.source === 'youtube' ? 'YouTube' : 'Google Drive'}.`}
+                </span>
+              </div>
+            );
+          })()}
 
           <div className="grid grid-cols-2 gap-3 sm:col-span-2">
             <label className="block text-sm font-medium text-slate-600">

@@ -34,6 +34,19 @@ export const videoFilters = [
 
 export const videos = [
   {
+    id: "phys12_n01_0811_de3",
+    title: "BUỔI 8/11 - NHÓM LÝ 12 - 01: CHỮA ĐỀ 3_IP (Còn đề 2, 4, 5, 6, Ngô Thì Nhậm)",
+    course: "Vật Lý 12 — Nhóm Lý 12 - 01",
+    chapter: "Chữa đề & Luyện tập",
+    order: 1,
+    tags: ["Lý", "Lớp 12"],
+    source: "drive",
+    driveId: "1aF9mWNkLS84smPEfOepMU2Istz5K_YE9",
+    cover: "https://drive.google.com/thumbnail?id=1aF9mWNkLS84smPEfOepMU2Istz5K_YE9&sz=w1280",
+    teacher: "Bảo Minh",
+    createdAt: 1794119650661,
+  },
+  {
     id: "phys12_cautruc_p1",
     title: "VẬT LÝ 12 - CẤU TRÚC CỦA CHẤT, SỰ CHUYỂN THỂ - Phần 1",
     course: "Vật Lý 12 — Chương trình mới",

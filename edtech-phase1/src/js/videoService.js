@@ -92,6 +92,10 @@ export function parseDriveId(input) {
   return /^[\w-]{20,}$/.test(s) ? s : '';
 }
 
+export function getDriveThumbnail(driveId) {
+  return driveId ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w1280` : '';
+}
+
 async function resolveVideoPart({ name, source, link, videoFile, existingFile, duration }, storagePathPrefix, onProgress) {
   const part = { name: (name || 'Video bài giảng').trim(), source, duration: (duration || '').trim() };
   if (source === 'youtube') {
@@ -128,8 +132,12 @@ async function buildVideoPayload(form, id, existing, onProgress) {
   );
 
   const manualCoverUrl = (form.coverUrl || '').trim();
-  const autoYoutubeCover = primaryPart.source === 'youtube' ? getYoutubeThumbnail(primaryPart.youtubeId) : '';
-  if (!form.coverFile && !manualCoverUrl && !existing?.cover && !autoYoutubeCover) {
+  const autoCover = primaryPart.source === 'youtube'
+    ? getYoutubeThumbnail(primaryPart.youtubeId)
+    : primaryPart.source === 'drive'
+      ? getDriveThumbnail(primaryPart.driveId)
+      : '';
+  if (!form.coverFile && !manualCoverUrl && !existing?.cover && !autoCover) {
     throw new Error('Video bắt buộc phải có ảnh bìa.');
   }
 
@@ -151,7 +159,7 @@ async function buildVideoPayload(form, id, existing, onProgress) {
     parts.push(part2);
   }
 
-  let cover = manualCoverUrl || existing?.cover || autoYoutubeCover;
+  let cover = manualCoverUrl || existing?.cover || autoCover;
   if (form.coverFile) {
     cover = await compressCoverImage(form.coverFile);
   }
