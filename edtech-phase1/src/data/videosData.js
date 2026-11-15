@@ -32,6 +32,17 @@ export const videoFilters = [
   { group: "Kỳ thi", items: ["HSA", "TSA"] },
 ];
 
+export const builtInCourses = [
+  {
+    id: "Vật Lý 12 — Nhóm Lý 12 - 01",
+    title: "Vật Lý 12 — Nhóm Lý 12 - 01",
+    cover: "/video-covers/course_vatly12_nhom01.jpg",
+    teacher: "Bảo Minh",
+    tags: ["Lý", "Lớp 12"],
+    description: "Chuỗi buổi học và chữa đề trực tiếp Nhóm Lý 12 - 01.",
+  },
+];
+
 export const videos = [
   {
     id: "phys12_n01_0811_de3",
@@ -42,7 +53,7 @@ export const videos = [
     tags: ["Lý", "Lớp 12"],
     source: "drive",
     driveId: "1aF9mWNkLS84smPEfOepMU2Istz5K_YE9",
-    cover: "https://drive.google.com/thumbnail?id=1aF9mWNkLS84smPEfOepMU2Istz5K_YE9&sz=w1280",
+    cover: "/video-covers/lesson_buoi0811_chua_de3_ip.jpg",
     teacher: "Bảo Minh",
     createdAt: 1794119650661,
   },
@@ -253,6 +264,42 @@ export function groupVideosIntoCourses(rawVideos = [], rawCourses = []) {
       const sourceKey = entry.sourceTitle.toLowerCase();
       if (!byTitleLower.has(sourceKey)) byTitleLower.set(sourceKey, entry);
     }
+  }
+
+  for (const bc of builtInCourses) {
+    const title = (bc?.title || "").trim();
+    if (!title) continue;
+    const key = title.toLowerCase();
+    const existing = byTitleLower.get(key);
+    if (existing) {
+      if (!existing.cover && bc.cover) {
+        existing.cover = bc.cover;
+        existing.hasExplicitCover = true;
+      }
+      continue;
+    }
+    const bcTags = Array.isArray(bc.tags) ? bc.tags.filter(Boolean) : [];
+    const entry = {
+      id: bc.id || title,
+      dbId: null,
+      _fromDb: false,
+      title,
+      sourceTitle: title,
+      cover: (bc.cover || "").trim(),
+      hasExplicitCover: Boolean((bc.cover || "").trim()),
+      teacher: (bc.teacher || "").trim(),
+      description: (bc.description || "").trim(),
+      tags: [...bcTags],
+      hasExplicitTags: bcTags.length > 0,
+      declaredChapters: normalizeDeclaredChapters(bc.chapters),
+      latestAt: bc.createdAt || 0,
+      createdAt: bc.createdAt || 0,
+      chapterMap: new Map(),
+      hasStaticLessons: false,
+      firebaseVideoIds: [],
+    };
+    courseMap.set(entry.id, entry);
+    byTitleLower.set(key, entry);
   }
 
   for (const item of rawVideos) {
