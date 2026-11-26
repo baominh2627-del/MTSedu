@@ -36,7 +36,6 @@ function useTypewriter(text, speed = 38, startDelay = 600) {
 // --- Component ---
 export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showPills, setShowPills] = useState(false);
   const { user, isLoggedIn, logout } = useAuth();
   
   const uid = user ? (user.id || user.uid || ('user_' + user.username)) : null;
@@ -46,19 +45,6 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
   const { displayed, done } = useTypewriter(
     "Bạn không bắt buộc phải thành công ngay từ đầu. Mà là bắt đầu để sau đó thành công. Nhưng muốn thành công thì học tập và rèn luyện mỗi ngày là một việc không thể thiếu.",
   );
-
-  // Show pill buttons after 400ms
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPills(true);
-    }, 400);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText("hello@mainframe.co");
-    alert("Email copied to clipboard!");
-  };
 
   return (
     <div className="relative w-full min-h-screen text-black mts-bg overflow-hidden">
@@ -247,66 +233,6 @@ export default function MainframeHome({ onNavigateToLogin, onNavigate }) {
               ></span>
             )}
           </p>
-
-          {/* Contact Pills */}
-          <div
-            className="flex flex-wrap gap-y-2 gap-x-1"
-            style={{
-              opacity: showPills ? 1 : 0,
-              transform: showPills ? "translateY(0)" : "translateY(8px)",
-              transition: "opacity 0.4s ease, transform 0.4s ease",
-            }}
-          >
-            {/* Facebook */}
-            <a
-              href="https://www.facebook.com/share/19m2ktwAXb/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-white text-black border border-black/10 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.4em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-              </svg>
-              Facebook
-            </a>
-
-            {/* TikTok */}
-            <a
-              href="https://www.tiktok.com/@tr.minh020627?_r=1&_t=ZS-9ACGg4F7fqW"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-white text-black border border-black/10 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.4em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.82a8.18 8.18 0 004.78 1.52V6.9a4.85 4.85 0 01-1.01-.21z"/>
-              </svg>
-              TikTok
-            </a>
-
-            {/* Zalo */}
-            <a
-              href="https://zalo.me/0372336302"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-white text-black border border-black/10 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.4em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 4.928a.42.42 0 01-.389.264h-.002a.42.42 0 01-.387-.261l-.87-2.143-2.07 4.783a.42.42 0 01-.386.261.42.42 0 01-.389-.264L9.13 10.834l-.667 1.52a.42.42 0 01-.385.254H6.453a.42.42 0 010-.84h1.378l.945-2.154a.42.42 0 01.772.006l1.962 4.802 2.073-4.79a.42.42 0 01.773.003l.868 2.138 1.743-4.36a.42.42 0 01.783.304l.002-.469z"/>
-              </svg>
-              Zalo
-            </a>
-
-            {/* Điện thoại */}
-            <a
-              href="tel:0372336302"
-              className="inline-flex items-center gap-2 bg-transparent text-black border border-black/20 rounded-full text-[13px] sm:text-[15px] px-4 sm:px-5 py-[0.4em] mx-[0.2em] mb-[0.4em] whitespace-nowrap hover:bg-black hover:text-white transition-colors duration-200"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82 19.79 19.79 0 01.09 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/>
-              </svg>
-              0372 336 302
-            </a>
-          </div>
         </div>
 
         {/* Right: Decorative SVG with color animation — shown on all screens */}
